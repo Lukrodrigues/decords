@@ -1,0 +1,49 @@
+CREATE TABLE `alunos` (
+  `id` INT NULL AUTO_INCREMENT DEFAULT NULL,
+  `nome` VARCHAR(50) NOT NULL,
+  `senha` VARCHAR(35) NULL,
+  `email` VARCHAR(50)  NULL,
+  `status` VARCHAR(10) NOT NULL DEFAULT 'ativo',
+  `cadastro_data` DATE NULL DEFAULT NULL,
+  `nivel` INT NULL DEFAULT 1,
+   PRIMARY KEY (`id`)
+)
+
+
+CREATE TABLE `exercicios` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `pergunta` VARCHAR(60) NOT NULL,
+  `partitura` MEDIUMTEXT NULL,
+  `resposta` MEDIUMTEXT NOT NULL,
+  `nivel` INT NULL DEFAULT NULL,
+  `a` VARCHAR(20) NULL DEFAULT NULL,
+  `b` VARCHAR(20) NULL DEFAULT NULL,
+  `c` VARCHAR(20) NULL DEFAULT NULL,
+  `d` VARCHAR(20) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+)
+nivel: 1-iniciante 2- intermediario 3-avançado
+
+
+CREATE TABLE `alunos_exercicios` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `id_usuario` INT NULL DEFAULT NULL,
+  `id_exercicio` INT NULL DEFAULT NULL,
+  `data_conclusao` DATE NULL,
+  `resultado` INT NULL DEFAULT NULL,
+  `status` INT NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+);
+status - 0=não fez 1=ja fez
+resultado - 0=não fez 1=acertou 2=errou
+
+
+CREATE TABLE `professor` (
+  `id` INT NULL AUTO_INCREMENT DEFAULT NULL,
+  `nome` VARCHAR(50) NOT NULL,
+  `senha` VARCHAR(35) NULL,
+  `email` VARCHAR(50)  NULL,
+  `status` VARCHAR(10) NOT NULL DEFAULT 'ativo',
+  `cadastro_data` DATE NULL DEFAULT NULL,
+   PRIMARY KEY (`id`)
+)

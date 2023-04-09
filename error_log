@@ -1,0 +1,930 @@
+[30-Jan-2017 21:44:35 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/index.php:2) in /home/decordst/public_html/Decords/index.php on line 3
+[30-Jan-2017 21:44:35 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/index.php:2) in /home/decordst/public_html/Decords/index.php on line 3
+[30-Jan-2017 21:44:51 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/historico.php:2) in /home/decordst/public_html/Decords/historico.php on line 3
+[30-Jan-2017 21:44:51 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/historico.php:2) in /home/decordst/public_html/Decords/historico.php on line 3
+[30-Jan-2017 21:44:56 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/login.php:2) in /home/decordst/public_html/Decords/login.php on line 3
+[30-Jan-2017 21:44:56 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/login.php:2) in /home/decordst/public_html/Decords/login.php on line 3
+[30-Jan-2017 21:46:09 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/index.php:2) in /home/decordst/public_html/Decords/index.php on line 3
+[30-Jan-2017 21:46:09 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/index.php:2) in /home/decordst/public_html/Decords/index.php on line 3
+[30-Jan-2017 21:48:45 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/login.php:2) in /home/decordst/public_html/Decords/login.php on line 3
+[30-Jan-2017 21:48:45 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/login.php:2) in /home/decordst/public_html/Decords/login.php on line 3
+[30-Jan-2017 21:48:54 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/login_aluno.php:1) in /home/decordst/public_html/Decords/login_aluno.php on line 2
+[30-Jan-2017 21:48:54 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/login_aluno.php:1) in /home/decordst/public_html/Decords/login_aluno.php on line 2
+[30-Jan-2017 21:48:54 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function mysql_connect() in /home/decordst/public_html/Decords/conexao.php:2
+Stack trace:
+#0 /home/decordst/public_html/Decords/login_aluno.php(6): include_once()
+#1 {main}
+  thrown in /home/decordst/public_html/Decords/conexao.php on line 2
+[30-Jan-2017 21:49:13 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/comentarios.php:2) in /home/decordst/public_html/Decords/comentarios.php on line 3
+[30-Jan-2017 21:49:13 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/comentarios.php:2) in /home/decordst/public_html/Decords/comentarios.php on line 3
+[30-Jan-2017 21:49:13 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function mysql_connect() in /home/decordst/public_html/Decords/conexao.php:2
+Stack trace:
+#0 /home/decordst/public_html/Decords/comentarios.php(4): include_once()
+#1 {main}
+  thrown in /home/decordst/public_html/Decords/conexao.php on line 2
+[30-Jan-2017 21:49:24 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/comentarios.php:2) in /home/decordst/public_html/Decords/comentarios.php on line 3
+[30-Jan-2017 21:49:24 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/comentarios.php:2) in /home/decordst/public_html/Decords/comentarios.php on line 3
+[30-Jan-2017 21:49:24 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function mysql_connect() in /home/decordst/public_html/Decords/conexao.php:2
+Stack trace:
+#0 /home/decordst/public_html/Decords/comentarios.php(4): include_once()
+#1 {main}
+  thrown in /home/decordst/public_html/Decords/conexao.php on line 2
+[30-Jan-2017 21:52:16 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/login.php:2) in /home/decordst/public_html/Decords/login.php on line 3
+[30-Jan-2017 21:52:16 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/login.php:2) in /home/decordst/public_html/Decords/login.php on line 3
+[30-Jan-2017 21:52:27 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/index.php:2) in /home/decordst/public_html/Decords/index.php on line 3
+[30-Jan-2017 21:52:27 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/index.php:2) in /home/decordst/public_html/Decords/index.php on line 3
+[31-Jan-2017 01:27:10 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/historico.php:2) in /home/decordst/public_html/Decords/historico.php on line 3
+[31-Jan-2017 01:27:10 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/historico.php:2) in /home/decordst/public_html/Decords/historico.php on line 3
+[31-Jan-2017 01:28:32 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/historico.php:2) in /home/decordst/public_html/Decords/historico.php on line 3
+[31-Jan-2017 01:28:32 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/historico.php:2) in /home/decordst/public_html/Decords/historico.php on line 3
+[31-Jan-2017 01:30:14 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/historico.php:2) in /home/decordst/public_html/Decords/historico.php on line 3
+[31-Jan-2017 01:30:14 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/historico.php:2) in /home/decordst/public_html/Decords/historico.php on line 3
+[31-Jan-2017 01:30:59 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/historico.php:2) in /home/decordst/public_html/Decords/historico.php on line 3
+[31-Jan-2017 01:30:59 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/historico.php:2) in /home/decordst/public_html/Decords/historico.php on line 3
+[31-Jan-2017 01:31:03 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/index.php:2) in /home/decordst/public_html/Decords/index.php on line 3
+[31-Jan-2017 01:31:03 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/index.php:2) in /home/decordst/public_html/Decords/index.php on line 3
+[31-Jan-2017 01:31:10 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/professor.php:2) in /home/decordst/public_html/Decords/professor.php on line 3
+[31-Jan-2017 01:31:10 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/professor.php:2) in /home/decordst/public_html/Decords/professor.php on line 3
+[31-Jan-2017 01:31:13 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/index.php:2) in /home/decordst/public_html/Decords/index.php on line 3
+[31-Jan-2017 01:31:13 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/index.php:2) in /home/decordst/public_html/Decords/index.php on line 3
+[31-Jan-2017 01:31:18 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/professor.php:2) in /home/decordst/public_html/Decords/professor.php on line 3
+[31-Jan-2017 01:31:18 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/professor.php:2) in /home/decordst/public_html/Decords/professor.php on line 3
+[31-Jan-2017 01:32:38 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/professor.php:2) in /home/decordst/public_html/Decords/professor.php on line 3
+[31-Jan-2017 01:32:38 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/professor.php:2) in /home/decordst/public_html/Decords/professor.php on line 3
+[31-Jan-2017 01:32:52 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/index.php:2) in /home/decordst/public_html/Decords/index.php on line 3
+[31-Jan-2017 01:32:52 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/index.php:2) in /home/decordst/public_html/Decords/index.php on line 3
+[31-Jan-2017 01:35:19 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/index.php:2) in /home/decordst/public_html/Decords/index.php on line 3
+[31-Jan-2017 01:35:19 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/index.php:2) in /home/decordst/public_html/Decords/index.php on line 3
+[31-Jan-2017 01:35:25 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/videos.php:2) in /home/decordst/public_html/Decords/videos.php on line 3
+[31-Jan-2017 01:35:25 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/videos.php:2) in /home/decordst/public_html/Decords/videos.php on line 3
+[31-Jan-2017 01:36:27 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/index.php:2) in /home/decordst/public_html/Decords/index.php on line 3
+[31-Jan-2017 01:36:27 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/index.php:2) in /home/decordst/public_html/Decords/index.php on line 3
+[31-Jan-2017 01:36:31 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/contato.php:2) in /home/decordst/public_html/Decords/contato.php on line 3
+[31-Jan-2017 01:36:31 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/contato.php:2) in /home/decordst/public_html/Decords/contato.php on line 3
+[31-Jan-2017 01:39:39 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/contato.php:2) in /home/decordst/public_html/Decords/contato.php on line 3
+[31-Jan-2017 01:39:39 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/contato.php:2) in /home/decordst/public_html/Decords/contato.php on line 3
+[31-Jan-2017 01:39:59 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/contato.php:2) in /home/decordst/public_html/Decords/contato.php on line 3
+[31-Jan-2017 01:39:59 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/contato.php:2) in /home/decordst/public_html/Decords/contato.php on line 3
+[31-Jan-2017 01:40:20 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/comentarios.php:2) in /home/decordst/public_html/Decords/comentarios.php on line 3
+[31-Jan-2017 01:40:20 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/comentarios.php:2) in /home/decordst/public_html/Decords/comentarios.php on line 3
+[31-Jan-2017 01:40:20 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function mysql_connect() in /home/decordst/public_html/Decords/conexao.php:2
+Stack trace:
+#0 /home/decordst/public_html/Decords/comentarios.php(4): include_once()
+#1 {main}
+  thrown in /home/decordst/public_html/Decords/conexao.php on line 2
+[31-Jan-2017 01:43:02 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/comentarios.php:2) in /home/decordst/public_html/Decords/comentarios.php on line 3
+[31-Jan-2017 01:43:02 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/comentarios.php:2) in /home/decordst/public_html/Decords/comentarios.php on line 3
+[31-Jan-2017 01:43:02 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function mysql_connect() in /home/decordst/public_html/Decords/conexao.php:2
+Stack trace:
+#0 /home/decordst/public_html/Decords/comentarios.php(4): include_once()
+#1 {main}
+  thrown in /home/decordst/public_html/Decords/conexao.php on line 2
+[31-Jan-2017 01:43:03 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/comentarios.php:2) in /home/decordst/public_html/Decords/comentarios.php on line 3
+[31-Jan-2017 01:43:03 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/comentarios.php:2) in /home/decordst/public_html/Decords/comentarios.php on line 3
+[31-Jan-2017 01:43:03 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function mysql_connect() in /home/decordst/public_html/Decords/conexao.php:2
+Stack trace:
+#0 /home/decordst/public_html/Decords/comentarios.php(4): include_once()
+#1 {main}
+  thrown in /home/decordst/public_html/Decords/conexao.php on line 2
+[31-Jan-2017 01:43:05 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/comentarios.php:2) in /home/decordst/public_html/Decords/comentarios.php on line 3
+[31-Jan-2017 01:43:05 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/comentarios.php:2) in /home/decordst/public_html/Decords/comentarios.php on line 3
+[31-Jan-2017 01:43:05 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function mysql_connect() in /home/decordst/public_html/Decords/conexao.php:2
+Stack trace:
+#0 /home/decordst/public_html/Decords/comentarios.php(4): include_once()
+#1 {main}
+  thrown in /home/decordst/public_html/Decords/conexao.php on line 2
+[31-Jan-2017 01:43:06 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/comentarios.php:2) in /home/decordst/public_html/Decords/comentarios.php on line 3
+[31-Jan-2017 01:43:06 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/comentarios.php:2) in /home/decordst/public_html/Decords/comentarios.php on line 3
+[31-Jan-2017 01:43:06 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function mysql_connect() in /home/decordst/public_html/Decords/conexao.php:2
+Stack trace:
+#0 /home/decordst/public_html/Decords/comentarios.php(4): include_once()
+#1 {main}
+  thrown in /home/decordst/public_html/Decords/conexao.php on line 2
+[31-Jan-2017 01:43:20 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/comentarios.php:2) in /home/decordst/public_html/Decords/comentarios.php on line 3
+[31-Jan-2017 01:43:20 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/comentarios.php:2) in /home/decordst/public_html/Decords/comentarios.php on line 3
+[31-Jan-2017 01:43:20 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function mysql_connect() in /home/decordst/public_html/Decords/conexao.php:2
+Stack trace:
+#0 /home/decordst/public_html/Decords/comentarios.php(4): include_once()
+#1 {main}
+  thrown in /home/decordst/public_html/Decords/conexao.php on line 2
+[31-Jan-2017 01:43:21 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/comentarios.php:2) in /home/decordst/public_html/Decords/comentarios.php on line 3
+[31-Jan-2017 01:43:21 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/comentarios.php:2) in /home/decordst/public_html/Decords/comentarios.php on line 3
+[31-Jan-2017 01:43:21 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function mysql_connect() in /home/decordst/public_html/Decords/conexao.php:2
+Stack trace:
+#0 /home/decordst/public_html/Decords/comentarios.php(4): include_once()
+#1 {main}
+  thrown in /home/decordst/public_html/Decords/conexao.php on line 2
+[31-Jan-2017 01:43:23 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/comentarios.php:2) in /home/decordst/public_html/Decords/comentarios.php on line 3
+[31-Jan-2017 01:43:23 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/comentarios.php:2) in /home/decordst/public_html/Decords/comentarios.php on line 3
+[31-Jan-2017 01:43:23 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function mysql_connect() in /home/decordst/public_html/Decords/conexao.php:2
+Stack trace:
+#0 /home/decordst/public_html/Decords/comentarios.php(4): include_once()
+#1 {main}
+  thrown in /home/decordst/public_html/Decords/conexao.php on line 2
+[31-Jan-2017 01:44:03 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/comentarios.php:2) in /home/decordst/public_html/Decords/comentarios.php on line 3
+[31-Jan-2017 01:44:03 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/comentarios.php:2) in /home/decordst/public_html/Decords/comentarios.php on line 3
+[31-Jan-2017 01:44:03 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function mysql_connect() in /home/decordst/public_html/Decords/conexao.php:2
+Stack trace:
+#0 /home/decordst/public_html/Decords/comentarios.php(4): include_once()
+#1 {main}
+  thrown in /home/decordst/public_html/Decords/conexao.php on line 2
+[31-Jan-2017 01:54:01 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/contato.php:2) in /home/decordst/public_html/Decords/contato.php on line 3
+[31-Jan-2017 01:54:01 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/contato.php:2) in /home/decordst/public_html/Decords/contato.php on line 3
+[31-Jan-2017 01:54:05 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/comentarios.php:1) in /home/decordst/public_html/Decords/comentarios.php on line 1
+[31-Jan-2017 01:54:05 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/comentarios.php:1) in /home/decordst/public_html/Decords/comentarios.php on line 1
+[31-Jan-2017 01:54:05 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function mysql_connect() in /home/decordst/public_html/Decords/conexao.php:2
+Stack trace:
+#0 /home/decordst/public_html/Decords/comentarios.php(1): include_once()
+#1 {main}
+  thrown in /home/decordst/public_html/Decords/conexao.php on line 2
+[31-Jan-2017 01:54:12 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/comentarios.php:1) in /home/decordst/public_html/Decords/comentarios.php on line 1
+[31-Jan-2017 01:54:12 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/comentarios.php:1) in /home/decordst/public_html/Decords/comentarios.php on line 1
+[31-Jan-2017 01:54:12 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function mysql_connect() in /home/decordst/public_html/Decords/conexao.php:2
+Stack trace:
+#0 /home/decordst/public_html/Decords/comentarios.php(1): include_once()
+#1 {main}
+  thrown in /home/decordst/public_html/Decords/conexao.php on line 2
+[31-Jan-2017 01:55:22 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/login.php:2) in /home/decordst/public_html/Decords/login.php on line 3
+[31-Jan-2017 01:55:22 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/login.php:2) in /home/decordst/public_html/Decords/login.php on line 3
+[31-Jan-2017 01:55:31 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/comentarios.php:1) in /home/decordst/public_html/Decords/comentarios.php on line 1
+[31-Jan-2017 01:55:31 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/comentarios.php:1) in /home/decordst/public_html/Decords/comentarios.php on line 1
+[31-Jan-2017 01:55:31 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function mysql_connect() in /home/decordst/public_html/Decords/conexao.php:2
+Stack trace:
+#0 /home/decordst/public_html/Decords/comentarios.php(1): include_once()
+#1 {main}
+  thrown in /home/decordst/public_html/Decords/conexao.php on line 2
+[31-Jan-2017 01:59:12 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/comentarios.php:1) in /home/decordst/public_html/Decords/comentarios.php on line 1
+[31-Jan-2017 01:59:12 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/comentarios.php:1) in /home/decordst/public_html/Decords/comentarios.php on line 1
+[31-Jan-2017 01:59:12 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function mysql_connect() in /home/decordst/public_html/Decords/conexao.php:2
+Stack trace:
+#0 /home/decordst/public_html/Decords/comentarios.php(1): include_once()
+#1 {main}
+  thrown in /home/decordst/public_html/Decords/conexao.php on line 2
+[31-Jan-2017 02:00:32 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/comentarios.php:1) in /home/decordst/public_html/Decords/comentarios.php on line 1
+[31-Jan-2017 02:00:32 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/comentarios.php:1) in /home/decordst/public_html/Decords/comentarios.php on line 1
+[31-Jan-2017 02:00:32 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function mysql_connect() in /home/decordst/public_html/Decords/conexao.php:2
+Stack trace:
+#0 /home/decordst/public_html/Decords/comentarios.php(1): include_once()
+#1 {main}
+  thrown in /home/decordst/public_html/Decords/conexao.php on line 2
+[31-Jan-2017 02:00:45 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/login.php:2) in /home/decordst/public_html/Decords/login.php on line 3
+[31-Jan-2017 02:00:45 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/login.php:2) in /home/decordst/public_html/Decords/login.php on line 3
+[31-Jan-2017 02:00:54 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/login_aluno.php:1) in /home/decordst/public_html/Decords/login_aluno.php on line 2
+[31-Jan-2017 02:00:54 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/login_aluno.php:1) in /home/decordst/public_html/Decords/login_aluno.php on line 2
+[31-Jan-2017 02:00:54 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function mysql_connect() in /home/decordst/public_html/Decords/conexao.php:2
+Stack trace:
+#0 /home/decordst/public_html/Decords/login_aluno.php(6): include_once()
+#1 {main}
+  thrown in /home/decordst/public_html/Decords/conexao.php on line 2
+[31-Jan-2017 02:02:57 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/login.php:2) in /home/decordst/public_html/Decords/login.php on line 3
+[31-Jan-2017 02:02:57 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/login.php:2) in /home/decordst/public_html/Decords/login.php on line 3
+[31-Jan-2017 02:03:18 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/comentarios.php:1) in /home/decordst/public_html/Decords/comentarios.php on line 1
+[31-Jan-2017 02:03:18 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/comentarios.php:1) in /home/decordst/public_html/Decords/comentarios.php on line 1
+[31-Jan-2017 02:03:18 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function mysql_connect() in /home/decordst/public_html/Decords/conexao.php:2
+Stack trace:
+#0 /home/decordst/public_html/Decords/comentarios.php(1): include_once()
+#1 {main}
+  thrown in /home/decordst/public_html/Decords/conexao.php on line 2
+[31-Jan-2017 02:08:59 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/comentarios.php:1) in /home/decordst/public_html/Decords/comentarios.php on line 1
+[31-Jan-2017 02:08:59 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/comentarios.php:1) in /home/decordst/public_html/Decords/comentarios.php on line 1
+[31-Jan-2017 02:08:59 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function mysql_connect() in /home/decordst/public_html/Decords/conexao.php:2
+Stack trace:
+#0 /home/decordst/public_html/Decords/comentarios.php(1): include_once()
+#1 {main}
+  thrown in /home/decordst/public_html/Decords/conexao.php on line 2
+[31-Jan-2017 02:10:22 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/index.php:2) in /home/decordst/public_html/Decords/index.php on line 3
+[31-Jan-2017 02:10:22 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/index.php:2) in /home/decordst/public_html/Decords/index.php on line 3
+[31-Jan-2017 02:10:25 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/comentarios.php:1) in /home/decordst/public_html/Decords/comentarios.php on line 1
+[31-Jan-2017 02:10:25 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/comentarios.php:1) in /home/decordst/public_html/Decords/comentarios.php on line 1
+[31-Jan-2017 02:10:25 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function mysql_connect() in /home/decordst/public_html/Decords/conexao.php:2
+Stack trace:
+#0 /home/decordst/public_html/Decords/comentarios.php(1): include_once()
+#1 {main}
+  thrown in /home/decordst/public_html/Decords/conexao.php on line 2
+[31-Jan-2017 02:11:34 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/comentarios.php:1) in /home/decordst/public_html/Decords/comentarios.php on line 1
+[31-Jan-2017 02:11:34 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/comentarios.php:1) in /home/decordst/public_html/Decords/comentarios.php on line 1
+[31-Jan-2017 02:11:34 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function mysql_connect() in /home/decordst/public_html/Decords/conexao.php:2
+Stack trace:
+#0 /home/decordst/public_html/Decords/comentarios.php(1): include_once()
+#1 {main}
+  thrown in /home/decordst/public_html/Decords/conexao.php on line 2
+[31-Jan-2017 02:13:22 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/historico.php:2) in /home/decordst/public_html/Decords/historico.php on line 3
+[31-Jan-2017 02:13:22 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/historico.php:2) in /home/decordst/public_html/Decords/historico.php on line 3
+[31-Jan-2017 02:13:27 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/contato.php:2) in /home/decordst/public_html/Decords/contato.php on line 3
+[31-Jan-2017 02:13:27 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/contato.php:2) in /home/decordst/public_html/Decords/contato.php on line 3
+[31-Jan-2017 02:13:34 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/professor.php:2) in /home/decordst/public_html/Decords/professor.php on line 3
+[31-Jan-2017 02:13:34 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/professor.php:2) in /home/decordst/public_html/Decords/professor.php on line 3
+[31-Jan-2017 02:13:39 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/index.php:2) in /home/decordst/public_html/Decords/index.php on line 3
+[31-Jan-2017 02:13:39 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/index.php:2) in /home/decordst/public_html/Decords/index.php on line 3
+[31-Jan-2017 02:13:42 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/historico.php:2) in /home/decordst/public_html/Decords/historico.php on line 3
+[31-Jan-2017 02:13:42 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/historico.php:2) in /home/decordst/public_html/Decords/historico.php on line 3
+[31-Jan-2017 02:13:46 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/login.php:2) in /home/decordst/public_html/Decords/login.php on line 3
+[31-Jan-2017 02:13:46 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/login.php:2) in /home/decordst/public_html/Decords/login.php on line 3
+[31-Jan-2017 02:13:54 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/contato.php:2) in /home/decordst/public_html/Decords/contato.php on line 3
+[31-Jan-2017 02:13:54 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/contato.php:2) in /home/decordst/public_html/Decords/contato.php on line 3
+[31-Jan-2017 02:14:06 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/login_professor.php:2) in /home/decordst/public_html/Decords/login_professor.php on line 3
+[31-Jan-2017 02:14:06 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/login_professor.php:2) in /home/decordst/public_html/Decords/login_professor.php on line 3
+[31-Jan-2017 02:14:54 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/comentarios.php:1) in /home/decordst/public_html/Decords/comentarios.php on line 1
+[31-Jan-2017 02:14:54 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/comentarios.php:1) in /home/decordst/public_html/Decords/comentarios.php on line 1
+[31-Jan-2017 02:14:54 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function mysql_connect() in /home/decordst/public_html/Decords/conexao.php:2
+Stack trace:
+#0 /home/decordst/public_html/Decords/comentarios.php(1): include_once()
+#1 {main}
+  thrown in /home/decordst/public_html/Decords/conexao.php on line 2
+[31-Jan-2017 02:16:38 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/login_professor.php:2) in /home/decordst/public_html/Decords/login_professor.php on line 3
+[31-Jan-2017 02:16:38 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/login_professor.php:2) in /home/decordst/public_html/Decords/login_professor.php on line 3
+[31-Jan-2017 02:17:02 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/comentarios.php:1) in /home/decordst/public_html/Decords/comentarios.php on line 1
+[31-Jan-2017 02:17:02 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/comentarios.php:1) in /home/decordst/public_html/Decords/comentarios.php on line 1
+[31-Jan-2017 02:17:02 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function mysql_connect() in /home/decordst/public_html/Decords/conexao.php:2
+Stack trace:
+#0 /home/decordst/public_html/Decords/comentarios.php(1): include_once()
+#1 {main}
+  thrown in /home/decordst/public_html/Decords/conexao.php on line 2
+[31-Jan-2017 02:17:18 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/login.php:2) in /home/decordst/public_html/Decords/login.php on line 3
+[31-Jan-2017 02:17:18 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/login.php:2) in /home/decordst/public_html/Decords/login.php on line 3
+[31-Jan-2017 02:20:23 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/login.php:2) in /home/decordst/public_html/Decords/login.php on line 3
+[31-Jan-2017 02:20:23 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/login.php:2) in /home/decordst/public_html/Decords/login.php on line 3
+[31-Jan-2017 02:20:26 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/contato.php:2) in /home/decordst/public_html/Decords/contato.php on line 3
+[31-Jan-2017 02:20:26 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/contato.php:2) in /home/decordst/public_html/Decords/contato.php on line 3
+[31-Jan-2017 02:20:32 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/login_professor.php:2) in /home/decordst/public_html/Decords/login_professor.php on line 3
+[31-Jan-2017 02:20:32 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/login_professor.php:2) in /home/decordst/public_html/Decords/login_professor.php on line 3
+[31-Jan-2017 02:20:34 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/contato.php:2) in /home/decordst/public_html/Decords/contato.php on line 3
+[31-Jan-2017 02:20:34 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/contato.php:2) in /home/decordst/public_html/Decords/contato.php on line 3
+[31-Jan-2017 02:20:40 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/login.php:2) in /home/decordst/public_html/Decords/login.php on line 3
+[31-Jan-2017 02:20:40 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/login.php:2) in /home/decordst/public_html/Decords/login.php on line 3
+[31-Jan-2017 02:21:19 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/comentarios.php:1) in /home/decordst/public_html/Decords/comentarios.php on line 1
+[31-Jan-2017 02:21:19 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/comentarios.php:1) in /home/decordst/public_html/Decords/comentarios.php on line 1
+[31-Jan-2017 02:21:19 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function mysql_connect() in /home/decordst/public_html/Decords/conexao.php:2
+Stack trace:
+#0 /home/decordst/public_html/Decords/comentarios.php(1): include_once()
+#1 {main}
+  thrown in /home/decordst/public_html/Decords/conexao.php on line 2
+[31-Jan-2017 02:21:33 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/comentarios.php:1) in /home/decordst/public_html/Decords/comentarios.php on line 1
+[31-Jan-2017 02:21:33 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/comentarios.php:1) in /home/decordst/public_html/Decords/comentarios.php on line 1
+[31-Jan-2017 02:21:33 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function mysql_connect() in /home/decordst/public_html/Decords/conexao.php:2
+Stack trace:
+#0 /home/decordst/public_html/Decords/comentarios.php(1): include_once()
+#1 {main}
+  thrown in /home/decordst/public_html/Decords/conexao.php on line 2
+[31-Jan-2017 02:31:39 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/contato.php:2) in /home/decordst/public_html/Decords/contato.php on line 3
+[31-Jan-2017 02:31:39 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/contato.php:2) in /home/decordst/public_html/Decords/contato.php on line 3
+[31-Jan-2017 02:32:49 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/contato.php:2) in /home/decordst/public_html/Decords/contato.php on line 3
+[31-Jan-2017 02:32:49 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/contato.php:2) in /home/decordst/public_html/Decords/contato.php on line 3
+[31-Jan-2017 02:32:57 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/login.php:2) in /home/decordst/public_html/Decords/login.php on line 3
+[31-Jan-2017 02:32:57 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/login.php:2) in /home/decordst/public_html/Decords/login.php on line 3
+[31-Jan-2017 02:33:01 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/login_professor.php:2) in /home/decordst/public_html/Decords/login_professor.php on line 3
+[31-Jan-2017 02:33:01 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/login_professor.php:2) in /home/decordst/public_html/Decords/login_professor.php on line 3
+[31-Jan-2017 02:33:07 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/comentarios.php:1) in /home/decordst/public_html/Decords/comentarios.php on line 1
+[31-Jan-2017 02:33:07 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/comentarios.php:1) in /home/decordst/public_html/Decords/comentarios.php on line 1
+[31-Jan-2017 02:33:07 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function mysql_connect() in /home/decordst/public_html/Decords/conexao.php:2
+Stack trace:
+#0 /home/decordst/public_html/Decords/comentarios.php(1): include_once()
+#1 {main}
+  thrown in /home/decordst/public_html/Decords/conexao.php on line 2
+[31-Jan-2017 02:33:50 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/login_professor.php:2) in /home/decordst/public_html/Decords/login_professor.php on line 3
+[31-Jan-2017 02:33:50 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/login_professor.php:2) in /home/decordst/public_html/Decords/login_professor.php on line 3
+[31-Jan-2017 02:33:54 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/login.php:2) in /home/decordst/public_html/Decords/login.php on line 3
+[31-Jan-2017 02:33:54 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/login.php:2) in /home/decordst/public_html/Decords/login.php on line 3
+[31-Jan-2017 02:33:59 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/contato.php:2) in /home/decordst/public_html/Decords/contato.php on line 3
+[31-Jan-2017 02:33:59 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/contato.php:2) in /home/decordst/public_html/Decords/contato.php on line 3
+[31-Jan-2017 02:34:53 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/contato.php:2) in /home/decordst/public_html/Decords/contato.php on line 3
+[31-Jan-2017 02:34:53 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/contato.php:2) in /home/decordst/public_html/Decords/contato.php on line 3
+[31-Jan-2017 02:35:02 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/index.php:2) in /home/decordst/public_html/Decords/index.php on line 3
+[31-Jan-2017 02:35:02 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/index.php:2) in /home/decordst/public_html/Decords/index.php on line 3
+[31-Jan-2017 02:36:02 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/index.php:2) in /home/decordst/public_html/Decords/index.php on line 3
+[31-Jan-2017 02:36:02 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/index.php:2) in /home/decordst/public_html/Decords/index.php on line 3
+[31-Jan-2017 02:36:07 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/historico.php:2) in /home/decordst/public_html/Decords/historico.php on line 3
+[31-Jan-2017 02:36:07 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/historico.php:2) in /home/decordst/public_html/Decords/historico.php on line 3
+[31-Jan-2017 02:36:53 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/historico.php:2) in /home/decordst/public_html/Decords/historico.php on line 3
+[31-Jan-2017 02:36:53 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/historico.php:2) in /home/decordst/public_html/Decords/historico.php on line 3
+[31-Jan-2017 02:36:58 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/contato.php:2) in /home/decordst/public_html/Decords/contato.php on line 3
+[31-Jan-2017 02:36:58 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/contato.php:2) in /home/decordst/public_html/Decords/contato.php on line 3
+[31-Jan-2017 02:37:02 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/professor.php:2) in /home/decordst/public_html/Decords/professor.php on line 3
+[31-Jan-2017 02:37:03 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/professor.php:2) in /home/decordst/public_html/Decords/professor.php on line 3
+[31-Jan-2017 02:37:49 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/professor.php:2) in /home/decordst/public_html/Decords/professor.php on line 3
+[31-Jan-2017 02:37:49 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/professor.php:2) in /home/decordst/public_html/Decords/professor.php on line 3
+[31-Jan-2017 02:37:54 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/historico.php:2) in /home/decordst/public_html/Decords/historico.php on line 3
+[31-Jan-2017 02:37:54 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/historico.php:2) in /home/decordst/public_html/Decords/historico.php on line 3
+[31-Jan-2017 02:38:49 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/videos.php:2) in /home/decordst/public_html/Decords/videos.php on line 3
+[31-Jan-2017 02:38:49 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/videos.php:2) in /home/decordst/public_html/Decords/videos.php on line 3
+[31-Jan-2017 02:51:54 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/videos.php:2) in /home/decordst/public_html/Decords/videos.php on line 3
+[31-Jan-2017 02:51:54 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/videos.php:2) in /home/decordst/public_html/Decords/videos.php on line 3
+[31-Jan-2017 02:52:11 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/comentarios.php:1) in /home/decordst/public_html/Decords/comentarios.php on line 1
+[31-Jan-2017 02:52:11 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/comentarios.php:1) in /home/decordst/public_html/Decords/comentarios.php on line 1
+[31-Jan-2017 02:52:11 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function mysql_connect() in /home/decordst/public_html/Decords/conexao.php:2
+Stack trace:
+#0 /home/decordst/public_html/Decords/comentarios.php(1): include_once()
+#1 {main}
+  thrown in /home/decordst/public_html/Decords/conexao.php on line 2
+[31-Jan-2017 03:13:50 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/comentarios.php:1) in /home/decordst/public_html/Decords/comentarios.php on line 1
+[31-Jan-2017 03:13:50 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/comentarios.php:1) in /home/decordst/public_html/Decords/comentarios.php on line 1
+[31-Jan-2017 03:13:50 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function mysql_connect() in /home/decordst/public_html/Decords/conexao.php:2
+Stack trace:
+#0 /home/decordst/public_html/Decords/comentarios.php(1): include_once()
+#1 {main}
+  thrown in /home/decordst/public_html/Decords/conexao.php on line 2
+[31-Jan-2017 03:13:55 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/comentarios.php:1) in /home/decordst/public_html/Decords/comentarios.php on line 1
+[31-Jan-2017 03:13:55 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/comentarios.php:1) in /home/decordst/public_html/Decords/comentarios.php on line 1
+[31-Jan-2017 03:13:55 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function mysql_connect() in /home/decordst/public_html/Decords/conexao.php:2
+Stack trace:
+#0 /home/decordst/public_html/Decords/comentarios.php(1): include_once()
+#1 {main}
+  thrown in /home/decordst/public_html/Decords/conexao.php on line 2
+[31-Jan-2017 03:13:58 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/comentarios.php:1) in /home/decordst/public_html/Decords/comentarios.php on line 1
+[31-Jan-2017 03:13:58 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/comentarios.php:1) in /home/decordst/public_html/Decords/comentarios.php on line 1
+[31-Jan-2017 03:13:58 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function mysql_connect() in /home/decordst/public_html/Decords/conexao.php:2
+Stack trace:
+#0 /home/decordst/public_html/Decords/comentarios.php(1): include_once()
+#1 {main}
+  thrown in /home/decordst/public_html/Decords/conexao.php on line 2
+[31-Jan-2017 03:14:06 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/comentarios.php:1) in /home/decordst/public_html/Decords/comentarios.php on line 1
+[31-Jan-2017 03:14:06 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/comentarios.php:1) in /home/decordst/public_html/Decords/comentarios.php on line 1
+[31-Jan-2017 03:14:06 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function mysql_connect() in /home/decordst/public_html/Decords/conexao.php:2
+Stack trace:
+#0 /home/decordst/public_html/Decords/comentarios.php(1): include_once()
+#1 {main}
+  thrown in /home/decordst/public_html/Decords/conexao.php on line 2
+[31-Jan-2017 03:19:54 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/index.php:2) in /home/decordst/public_html/Decords/index.php on line 3
+[31-Jan-2017 03:19:54 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/index.php:2) in /home/decordst/public_html/Decords/index.php on line 3
+[31-Jan-2017 03:26:06 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/Decords/comentarios.php:1) in /home/decordst/public_html/Decords/comentarios.php on line 1
+[31-Jan-2017 03:26:06 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/Decords/comentarios.php:1) in /home/decordst/public_html/Decords/comentarios.php on line 1
+[31-Jan-2017 03:26:06 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function mysql_connect() in /home/decordst/public_html/Decords/conexao.php:2
+Stack trace:
+#0 /home/decordst/public_html/Decords/comentarios.php(1): include_once()
+#1 {main}
+  thrown in /home/decordst/public_html/Decords/conexao.php on line 2
+[31-Jan-2017 03:36:08 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[31-Jan-2017 03:36:08 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[31-Jan-2017 03:36:20 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/comentarios.php:1) in /home/decordst/public_html/comentarios.php on line 1
+[31-Jan-2017 03:36:20 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/comentarios.php:1) in /home/decordst/public_html/comentarios.php on line 1
+[31-Jan-2017 03:36:20 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function mysql_connect() in /home/decordst/public_html/conexao.php:2
+Stack trace:
+#0 /home/decordst/public_html/comentarios.php(1): include_once()
+#1 {main}
+  thrown in /home/decordst/public_html/conexao.php on line 2
+[31-Jan-2017 03:36:25 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/contato.php:2) in /home/decordst/public_html/contato.php on line 3
+[31-Jan-2017 03:36:25 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/contato.php:2) in /home/decordst/public_html/contato.php on line 3
+[31-Jan-2017 03:36:32 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/login.php:2) in /home/decordst/public_html/login.php on line 3
+[31-Jan-2017 03:36:32 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/login.php:2) in /home/decordst/public_html/login.php on line 3
+[31-Jan-2017 03:36:40 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/login_aluno.php:1) in /home/decordst/public_html/login_aluno.php on line 2
+[31-Jan-2017 03:36:40 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/login_aluno.php:1) in /home/decordst/public_html/login_aluno.php on line 2
+[31-Jan-2017 03:36:40 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function mysql_connect() in /home/decordst/public_html/conexao.php:2
+Stack trace:
+#0 /home/decordst/public_html/login_aluno.php(6): include_once()
+#1 {main}
+  thrown in /home/decordst/public_html/conexao.php on line 2
+[31-Jan-2017 03:36:56 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[31-Jan-2017 03:36:56 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[31-Jan-2017 03:37:17 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/login.php:2) in /home/decordst/public_html/login.php on line 3
+[31-Jan-2017 03:37:17 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/login.php:2) in /home/decordst/public_html/login.php on line 3
+[31-Jan-2017 03:37:30 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[31-Jan-2017 03:37:30 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[31-Jan-2017 03:37:43 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[31-Jan-2017 03:37:43 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[31-Jan-2017 03:38:12 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[31-Jan-2017 03:38:12 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[31-Jan-2017 03:42:51 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[31-Jan-2017 03:42:51 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[31-Jan-2017 03:44:40 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[31-Jan-2017 03:44:40 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[31-Jan-2017 03:44:54 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/professor.php:2) in /home/decordst/public_html/professor.php on line 3
+[31-Jan-2017 03:44:54 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/professor.php:2) in /home/decordst/public_html/professor.php on line 3
+[31-Jan-2017 03:45:02 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/professor.php:2) in /home/decordst/public_html/professor.php on line 3
+[31-Jan-2017 03:45:02 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/professor.php:2) in /home/decordst/public_html/professor.php on line 3
+[31-Jan-2017 03:45:36 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/professor.php:2) in /home/decordst/public_html/professor.php on line 3
+[31-Jan-2017 03:45:36 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/professor.php:2) in /home/decordst/public_html/professor.php on line 3
+[31-Jan-2017 03:45:38 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[31-Jan-2017 03:45:38 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[31-Jan-2017 03:45:50 UTC] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home/decordst/public_html/exercicio.php:2) in /home/decordst/public_html/exercicio.php on line 3
+[31-Jan-2017 03:45:50 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/exercicio.php:2) in /home/decordst/public_html/exercicio.php on line 4
+[31-Jan-2017 03:45:50 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/exercicio.php:2) in /home/decordst/public_html/exercicio.php on line 4
+[31-Jan-2017 03:45:50 UTC] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home/decordst/public_html/exercicio.php:2) in /home/decordst/public_html/exercicio.php on line 114
+[31-Jan-2017 03:45:50 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function mysql_connect() in /home/decordst/public_html/conexao.php:2
+Stack trace:
+#0 /home/decordst/public_html/exercicio.php(117): include_once()
+#1 {main}
+  thrown in /home/decordst/public_html/conexao.php on line 2
+[31-Jan-2017 03:46:00 UTC] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home/decordst/public_html/iniciantes.php:2) in /home/decordst/public_html/iniciantes.php on line 3
+[31-Jan-2017 03:46:00 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/iniciantes.php:2) in /home/decordst/public_html/iniciantes.php on line 4
+[31-Jan-2017 03:46:00 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/iniciantes.php:2) in /home/decordst/public_html/iniciantes.php on line 4
+[31-Jan-2017 03:46:00 UTC] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home/decordst/public_html/iniciantes.php:2) in /home/decordst/public_html/iniciantes.php on line 7
+[31-Jan-2017 03:46:06 UTC] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home/decordst/public_html/iniciantes.php:2) in /home/decordst/public_html/iniciantes.php on line 3
+[31-Jan-2017 03:46:06 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/iniciantes.php:2) in /home/decordst/public_html/iniciantes.php on line 4
+[31-Jan-2017 03:46:06 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/iniciantes.php:2) in /home/decordst/public_html/iniciantes.php on line 4
+[31-Jan-2017 03:46:06 UTC] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home/decordst/public_html/iniciantes.php:2) in /home/decordst/public_html/iniciantes.php on line 7
+[31-Jan-2017 03:47:10 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[31-Jan-2017 03:47:10 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[31-Jan-2017 03:47:46 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/login.php:2) in /home/decordst/public_html/login.php on line 3
+[31-Jan-2017 03:47:46 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/login.php:2) in /home/decordst/public_html/login.php on line 3
+[31-Jan-2017 03:48:22 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/login.php:2) in /home/decordst/public_html/login.php on line 3
+[31-Jan-2017 03:48:22 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/login.php:2) in /home/decordst/public_html/login.php on line 3
+[31-Jan-2017 03:48:24 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[31-Jan-2017 03:48:24 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[31-Jan-2017 03:48:31 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/login.php:2) in /home/decordst/public_html/login.php on line 3
+[31-Jan-2017 03:48:31 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/login.php:2) in /home/decordst/public_html/login.php on line 3
+[31-Jan-2017 03:48:39 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/comentarios.php:1) in /home/decordst/public_html/comentarios.php on line 1
+[31-Jan-2017 03:48:39 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/comentarios.php:1) in /home/decordst/public_html/comentarios.php on line 1
+[31-Jan-2017 03:48:39 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function mysql_connect() in /home/decordst/public_html/conexao.php:2
+Stack trace:
+#0 /home/decordst/public_html/comentarios.php(1): include_once()
+#1 {main}
+  thrown in /home/decordst/public_html/conexao.php on line 2
+[31-Jan-2017 03:49:02 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[31-Jan-2017 03:49:02 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[31-Jan-2017 03:49:19 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/contato.php:2) in /home/decordst/public_html/contato.php on line 3
+[31-Jan-2017 03:49:19 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/contato.php:2) in /home/decordst/public_html/contato.php on line 3
+[31-Jan-2017 03:49:42 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function mysql_connect() in /home/decordst/public_html/conexao.php:2
+Stack trace:
+#0 /home/decordst/public_html/salva_mensagem.php(3): include_once()
+#1 {main}
+  thrown in /home/decordst/public_html/conexao.php on line 2
+[31-Jan-2017 03:49:42 UTC] PHP Warning:  stream_socket_enable_crypto(): SSL operation failed with code 1. OpenSSL Error messages:
+error:14090086:SSL routines:SSL3_GET_SERVER_CERTIFICATE:certificate verify failed in /home/decordst/public_html/phpmailer/class.smtp.php on line 356
+[31-Jan-2017 03:54:15 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/contato.php:2) in /home/decordst/public_html/contato.php on line 3
+[31-Jan-2017 03:54:15 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/contato.php:2) in /home/decordst/public_html/contato.php on line 3
+[31-Jan-2017 03:54:42 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function mysql_connect() in /home/decordst/public_html/conexao.php:2
+Stack trace:
+#0 /home/decordst/public_html/salva_mensagem.php(3): include_once()
+#1 {main}
+  thrown in /home/decordst/public_html/conexao.php on line 2
+[31-Jan-2017 03:54:42 UTC] PHP Warning:  stream_socket_enable_crypto(): SSL operation failed with code 1. OpenSSL Error messages:
+error:14090086:SSL routines:SSL3_GET_SERVER_CERTIFICATE:certificate verify failed in /home/decordst/public_html/phpmailer/class.smtp.php on line 356
+[31-Jan-2017 03:56:58 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/login.php:2) in /home/decordst/public_html/login.php on line 3
+[31-Jan-2017 03:56:58 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/login.php:2) in /home/decordst/public_html/login.php on line 3
+[31-Jan-2017 03:57:00 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/contato.php:2) in /home/decordst/public_html/contato.php on line 3
+[31-Jan-2017 03:57:00 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/contato.php:2) in /home/decordst/public_html/contato.php on line 3
+[31-Jan-2017 04:09:10 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[31-Jan-2017 04:09:10 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[31-Jan-2017 04:52:15 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[31-Jan-2017 04:52:15 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[31-Jan-2017 04:52:32 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/login.php:2) in /home/decordst/public_html/login.php on line 3
+[31-Jan-2017 04:52:32 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/login.php:2) in /home/decordst/public_html/login.php on line 3
+[31-Jan-2017 04:52:38 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[31-Jan-2017 04:52:38 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[31-Jan-2017 06:50:59 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[31-Jan-2017 06:50:59 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[31-Jan-2017 09:04:32 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[31-Jan-2017 09:04:32 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[31-Jan-2017 10:03:27 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[31-Jan-2017 10:03:27 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[31-Jan-2017 10:03:31 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[31-Jan-2017 10:03:31 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[31-Jan-2017 10:03:34 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[31-Jan-2017 10:03:34 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[31-Jan-2017 10:03:37 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[31-Jan-2017 10:03:37 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[31-Jan-2017 11:46:27 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[31-Jan-2017 11:46:27 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[31-Jan-2017 14:09:37 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[31-Jan-2017 14:09:37 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[31-Jan-2017 15:52:49 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[31-Jan-2017 15:52:49 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[31-Jan-2017 15:52:59 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/login_professor.php:2) in /home/decordst/public_html/login_professor.php on line 3
+[31-Jan-2017 15:52:59 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/login_professor.php:2) in /home/decordst/public_html/login_professor.php on line 3
+[31-Jan-2017 15:53:04 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/valida_login.php:1) in /home/decordst/public_html/valida_login.php on line 2
+[31-Jan-2017 15:53:04 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/valida_login.php:1) in /home/decordst/public_html/valida_login.php on line 2
+[31-Jan-2017 15:53:04 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function mysql_connect() in /home/decordst/public_html/conexao.php:2
+Stack trace:
+#0 /home/decordst/public_html/valida_login.php(6): include_once()
+#1 {main}
+  thrown in /home/decordst/public_html/conexao.php on line 2
+[31-Jan-2017 15:58:32 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[31-Jan-2017 15:58:32 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[31-Jan-2017 15:59:15 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/comentarios.php:1) in /home/decordst/public_html/comentarios.php on line 1
+[31-Jan-2017 15:59:15 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/comentarios.php:1) in /home/decordst/public_html/comentarios.php on line 1
+[31-Jan-2017 15:59:15 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function mysql_connect() in /home/decordst/public_html/conexao.php:2
+Stack trace:
+#0 /home/decordst/public_html/comentarios.php(1): include_once()
+#1 {main}
+  thrown in /home/decordst/public_html/conexao.php on line 2
+[31-Jan-2017 15:59:30 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/contato.php:2) in /home/decordst/public_html/contato.php on line 3
+[31-Jan-2017 15:59:30 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/contato.php:2) in /home/decordst/public_html/contato.php on line 3
+[31-Jan-2017 17:28:41 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[31-Jan-2017 17:28:41 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[31-Jan-2017 17:30:34 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[31-Jan-2017 17:30:34 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[31-Jan-2017 17:30:41 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/comentarios.php:1) in /home/decordst/public_html/comentarios.php on line 1
+[31-Jan-2017 17:30:41 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/comentarios.php:1) in /home/decordst/public_html/comentarios.php on line 1
+[31-Jan-2017 17:30:41 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function mysql_connect() in /home/decordst/public_html/conexao.php:2
+Stack trace:
+#0 /home/decordst/public_html/comentarios.php(1): include_once()
+#1 {main}
+  thrown in /home/decordst/public_html/conexao.php on line 2
+[31-Jan-2017 17:35:57 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[31-Jan-2017 17:35:57 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[31-Jan-2017 17:36:00 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/comentarios.php:2) in /home/decordst/public_html/comentarios.php on line 3
+[31-Jan-2017 17:36:00 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/comentarios.php:2) in /home/decordst/public_html/comentarios.php on line 3
+[31-Jan-2017 17:36:00 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function mysql_connect() in /home/decordst/public_html/conexao.php:2
+Stack trace:
+#0 /home/decordst/public_html/comentarios.php(4): include_once()
+#1 {main}
+  thrown in /home/decordst/public_html/conexao.php on line 2
+[31-Jan-2017 17:36:20 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[31-Jan-2017 17:36:20 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[31-Jan-2017 17:36:33 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[31-Jan-2017 17:36:33 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[31-Jan-2017 17:36:37 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/historico.php:2) in /home/decordst/public_html/historico.php on line 3
+[31-Jan-2017 17:36:37 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/historico.php:2) in /home/decordst/public_html/historico.php on line 3
+[31-Jan-2017 17:36:40 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/contato.php:2) in /home/decordst/public_html/contato.php on line 3
+[31-Jan-2017 17:36:40 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/contato.php:2) in /home/decordst/public_html/contato.php on line 3
+[01-Feb-2017 02:16:26 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[01-Feb-2017 02:16:26 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[01-Feb-2017 03:08:02 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[01-Feb-2017 03:08:02 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[01-Feb-2017 06:49:20 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[01-Feb-2017 06:49:20 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[01-Feb-2017 10:55:43 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[01-Feb-2017 10:55:43 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[01-Feb-2017 14:06:04 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[01-Feb-2017 14:06:04 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[01-Feb-2017 17:02:38 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[01-Feb-2017 17:32:14 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[01-Feb-2017 17:32:14 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[01-Feb-2017 17:51:31 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[01-Feb-2017 17:51:31 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[01-Feb-2017 19:21:31 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[01-Feb-2017 19:21:31 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[01-Feb-2017 20:48:57 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/login.php:2) in /home/decordst/public_html/login.php on line 3
+[01-Feb-2017 20:48:57 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/login.php:2) in /home/decordst/public_html/login.php on line 3
+[01-Feb-2017 23:48:36 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[01-Feb-2017 23:48:36 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[02-Feb-2017 01:19:27 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[02-Feb-2017 01:19:27 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[02-Feb-2017 05:04:53 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[02-Feb-2017 05:04:53 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[02-Feb-2017 12:05:35 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[02-Feb-2017 12:05:35 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[02-Feb-2017 13:15:22 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[02-Feb-2017 13:15:22 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[02-Feb-2017 13:23:38 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[02-Feb-2017 13:23:38 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[02-Feb-2017 13:29:51 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[02-Feb-2017 13:29:51 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[02-Feb-2017 13:29:57 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/comentarios.php:2) in /home/decordst/public_html/comentarios.php on line 3
+[02-Feb-2017 13:29:57 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/comentarios.php:2) in /home/decordst/public_html/comentarios.php on line 3
+[02-Feb-2017 13:29:57 UTC] PHP Fatal error:  Call to undefined function mysql_connect() in /home/decordst/public_html/conexao.php on line 2
+[02-Feb-2017 14:21:06 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/contato.php:2) in /home/decordst/public_html/contato.php on line 3
+[02-Feb-2017 14:21:06 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/contato.php:2) in /home/decordst/public_html/contato.php on line 3
+[02-Feb-2017 14:42:15 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/contato.php:2) in /home/decordst/public_html/contato.php on line 3
+[02-Feb-2017 14:42:15 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/contato.php:2) in /home/decordst/public_html/contato.php on line 3
+[02-Feb-2017 14:42:26 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/comentarios.php:2) in /home/decordst/public_html/comentarios.php on line 3
+[02-Feb-2017 14:42:26 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/comentarios.php:2) in /home/decordst/public_html/comentarios.php on line 3
+[02-Feb-2017 14:42:26 UTC] PHP Fatal error:  Call to undefined function mysql_connect() in /home/decordst/public_html/conexao.php on line 2
+[02-Feb-2017 14:47:48 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[02-Feb-2017 14:47:48 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[02-Feb-2017 14:47:53 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/contato.php:2) in /home/decordst/public_html/contato.php on line 3
+[02-Feb-2017 14:47:53 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/contato.php:2) in /home/decordst/public_html/contato.php on line 3
+[02-Feb-2017 14:48:01 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/historico.php:2) in /home/decordst/public_html/historico.php on line 3
+[02-Feb-2017 14:48:01 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/historico.php:2) in /home/decordst/public_html/historico.php on line 3
+[02-Feb-2017 14:48:04 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/contato.php:2) in /home/decordst/public_html/contato.php on line 3
+[02-Feb-2017 14:48:04 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/contato.php:2) in /home/decordst/public_html/contato.php on line 3
+[02-Feb-2017 15:24:29 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/historico.php:2) in /home/decordst/public_html/historico.php on line 3
+[02-Feb-2017 15:24:29 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/historico.php:2) in /home/decordst/public_html/historico.php on line 3
+[02-Feb-2017 15:24:48 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/contato.php:2) in /home/decordst/public_html/contato.php on line 3
+[02-Feb-2017 15:24:48 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/contato.php:2) in /home/decordst/public_html/contato.php on line 3
+[02-Feb-2017 15:25:36 UTC] PHP Fatal error:  Call to undefined function mysql_connect() in /home/decordst/public_html/conexao.php on line 2
+[02-Feb-2017 15:33:33 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/login.php:2) in /home/decordst/public_html/login.php on line 3
+[02-Feb-2017 15:33:33 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/login.php:2) in /home/decordst/public_html/login.php on line 3
+[02-Feb-2017 15:33:41 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/comentarios.php:2) in /home/decordst/public_html/comentarios.php on line 3
+[02-Feb-2017 15:33:41 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/comentarios.php:2) in /home/decordst/public_html/comentarios.php on line 3
+[02-Feb-2017 15:33:41 UTC] PHP Fatal error:  Call to undefined function mysql_connect() in /home/decordst/public_html/conexao.php on line 2
+[02-Feb-2017 15:49:36 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/comentarios.php:2) in /home/decordst/public_html/comentarios.php on line 3
+[02-Feb-2017 15:49:36 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/comentarios.php:2) in /home/decordst/public_html/comentarios.php on line 3
+[02-Feb-2017 15:49:36 UTC] PHP Fatal error:  Call to undefined function mysql_connect() in /home/decordst/public_html/conexao.php on line 2
+[02-Feb-2017 16:07:51 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/contato.php:2) in /home/decordst/public_html/contato.php on line 3
+[02-Feb-2017 16:07:51 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/contato.php:2) in /home/decordst/public_html/contato.php on line 3
+[02-Feb-2017 16:08:01 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/login.php:2) in /home/decordst/public_html/login.php on line 3
+[02-Feb-2017 16:08:01 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/login.php:2) in /home/decordst/public_html/login.php on line 3
+[02-Feb-2017 23:37:00 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[02-Feb-2017 23:37:00 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[03-Feb-2017 01:38:46 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[03-Feb-2017 01:38:46 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[03-Feb-2017 02:43:18 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[03-Feb-2017 02:43:18 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[03-Feb-2017 02:54:30 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/login.php:2) in /home/decordst/public_html/login.php on line 3
+[03-Feb-2017 02:54:30 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/login.php:2) in /home/decordst/public_html/login.php on line 3
+[03-Feb-2017 03:15:44 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[03-Feb-2017 03:15:44 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[03-Feb-2017 11:24:20 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[03-Feb-2017 11:24:20 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[03-Feb-2017 11:27:57 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[03-Feb-2017 11:27:57 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[03-Feb-2017 12:14:46 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[03-Feb-2017 12:14:46 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[03-Feb-2017 12:21:41 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/login.php:2) in /home/decordst/public_html/login.php on line 3
+[03-Feb-2017 12:21:41 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/login.php:2) in /home/decordst/public_html/login.php on line 3
+[03-Feb-2017 12:22:38 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[03-Feb-2017 12:22:38 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[03-Feb-2017 12:24:18 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/videos.php:2) in /home/decordst/public_html/videos.php on line 3
+[03-Feb-2017 12:24:18 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/videos.php:2) in /home/decordst/public_html/videos.php on line 3
+[03-Feb-2017 12:26:34 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/cadastrar.php:2) in /home/decordst/public_html/cadastrar.php on line 3
+[03-Feb-2017 12:26:35 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/cadastrar.php:2) in /home/decordst/public_html/cadastrar.php on line 3
+[03-Feb-2017 19:44:53 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[03-Feb-2017 19:44:53 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[03-Feb-2017 20:38:42 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[03-Feb-2017 20:38:42 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[03-Feb-2017 22:22:35 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[03-Feb-2017 22:22:35 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[03-Feb-2017 23:06:06 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[03-Feb-2017 23:06:06 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[04-Feb-2017 05:12:02 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[04-Feb-2017 05:12:02 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[04-Feb-2017 08:41:34 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[04-Feb-2017 08:41:34 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[04-Feb-2017 08:47:00 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[04-Feb-2017 08:47:00 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[04-Feb-2017 13:31:58 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[04-Feb-2017 13:31:58 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[04-Feb-2017 14:56:16 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[04-Feb-2017 14:56:16 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[04-Feb-2017 21:00:17 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[04-Feb-2017 21:00:17 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[04-Feb-2017 21:00:18 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[04-Feb-2017 21:00:18 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[04-Feb-2017 21:56:21 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[04-Feb-2017 21:56:21 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[04-Feb-2017 22:47:56 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/comentarios.php:2) in /home/decordst/public_html/comentarios.php on line 3
+[04-Feb-2017 22:47:56 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/comentarios.php:2) in /home/decordst/public_html/comentarios.php on line 3
+[04-Feb-2017 22:47:56 UTC] PHP Fatal error:  Call to undefined function mysql_connect() in /home/decordst/public_html/conexao.php on line 2
+[04-Feb-2017 23:03:06 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[04-Feb-2017 23:03:06 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[04-Feb-2017 23:08:09 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[04-Feb-2017 23:08:09 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[05-Feb-2017 00:44:36 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[05-Feb-2017 00:44:36 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[05-Feb-2017 01:25:29 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[05-Feb-2017 01:25:29 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[05-Feb-2017 01:35:36 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/videos.php:2) in /home/decordst/public_html/videos.php on line 3
+[05-Feb-2017 01:35:36 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/videos.php:2) in /home/decordst/public_html/videos.php on line 3
+[05-Feb-2017 05:44:18 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[05-Feb-2017 05:44:18 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[05-Feb-2017 07:00:21 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[05-Feb-2017 07:00:21 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[05-Feb-2017 07:39:15 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[05-Feb-2017 07:39:15 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[05-Feb-2017 08:40:27 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/cadastrar.php:2) in /home/decordst/public_html/cadastrar.php on line 3
+[05-Feb-2017 08:40:27 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/cadastrar.php:2) in /home/decordst/public_html/cadastrar.php on line 3
+[05-Feb-2017 11:25:57 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[05-Feb-2017 11:25:57 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[05-Feb-2017 11:26:00 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[05-Feb-2017 11:26:00 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[05-Feb-2017 12:31:16 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[05-Feb-2017 12:31:16 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[05-Feb-2017 13:48:40 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[05-Feb-2017 13:48:40 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[05-Feb-2017 15:17:16 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[05-Feb-2017 15:17:16 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[05-Feb-2017 23:30:24 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[05-Feb-2017 23:30:24 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[06-Feb-2017 00:12:28 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[06-Feb-2017 00:12:28 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[06-Feb-2017 02:14:30 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/login.php:2) in /home/decordst/public_html/login.php on line 3
+[06-Feb-2017 02:14:30 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/login.php:2) in /home/decordst/public_html/login.php on line 3
+[06-Feb-2017 09:28:40 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[06-Feb-2017 09:28:40 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[06-Feb-2017 12:14:56 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[06-Feb-2017 12:14:56 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[06-Feb-2017 17:23:28 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[06-Feb-2017 17:23:28 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[06-Feb-2017 19:34:34 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/login.php:2) in /home/decordst/public_html/login.php on line 3
+[06-Feb-2017 19:34:34 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/login.php:2) in /home/decordst/public_html/login.php on line 3
+[07-Feb-2017 02:55:08 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[07-Feb-2017 02:55:08 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[07-Feb-2017 10:46:48 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[07-Feb-2017 10:46:48 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[07-Feb-2017 15:18:28 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[07-Feb-2017 15:18:28 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[07-Feb-2017 15:18:39 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/comentarios.php:2) in /home/decordst/public_html/comentarios.php on line 3
+[07-Feb-2017 15:18:39 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/comentarios.php:2) in /home/decordst/public_html/comentarios.php on line 3
+[07-Feb-2017 15:18:39 UTC] PHP Fatal error:  Call to undefined function mysql_connect() in /home/decordst/public_html/conexao.php on line 2
+[07-Feb-2017 15:54:04 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[07-Feb-2017 15:54:04 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[07-Feb-2017 15:54:07 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/comentarios.php:2) in /home/decordst/public_html/comentarios.php on line 3
+[07-Feb-2017 15:54:07 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/comentarios.php:2) in /home/decordst/public_html/comentarios.php on line 3
+[07-Feb-2017 15:54:07 UTC] PHP Parse error:  syntax error, unexpected '$conectar' (T_VARIABLE) in /home/decordst/public_html/conexao.php on line 1
+[07-Feb-2017 15:54:19 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/login.php:2) in /home/decordst/public_html/login.php on line 3
+[07-Feb-2017 15:54:19 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/login.php:2) in /home/decordst/public_html/login.php on line 3
+[07-Feb-2017 15:54:33 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/login_aluno.php:1) in /home/decordst/public_html/login_aluno.php on line 2
+[07-Feb-2017 15:54:33 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/login_aluno.php:1) in /home/decordst/public_html/login_aluno.php on line 2
+[07-Feb-2017 15:54:33 UTC] PHP Parse error:  syntax error, unexpected '$conectar' (T_VARIABLE) in /home/decordst/public_html/conexao.php on line 1
+[07-Feb-2017 16:02:08 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/login.php:2) in /home/decordst/public_html/login.php on line 3
+[07-Feb-2017 16:02:08 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/login.php:2) in /home/decordst/public_html/login.php on line 3
+[07-Feb-2017 16:02:11 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/comentarios.php:2) in /home/decordst/public_html/comentarios.php on line 3
+[07-Feb-2017 16:02:11 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/comentarios.php:2) in /home/decordst/public_html/comentarios.php on line 3
+[07-Feb-2017 16:02:11 UTC] PHP Parse error:  syntax error, unexpected '$conectar' (T_VARIABLE) in /home/decordst/public_html/conexao.php on line 1
+[07-Feb-2017 16:11:16 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/comentarios.php:2) in /home/decordst/public_html/comentarios.php on line 3
+[07-Feb-2017 16:11:16 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/comentarios.php:2) in /home/decordst/public_html/comentarios.php on line 3
+[07-Feb-2017 16:11:16 UTC] PHP Parse error:  syntax error, unexpected '$conectar' (T_VARIABLE) in /home/decordst/public_html/conexao.php on line 1
+[07-Feb-2017 16:11:20 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/login.php:2) in /home/decordst/public_html/login.php on line 3
+[07-Feb-2017 16:11:20 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/login.php:2) in /home/decordst/public_html/login.php on line 3
+[07-Feb-2017 16:11:23 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/comentarios.php:2) in /home/decordst/public_html/comentarios.php on line 3
+[07-Feb-2017 16:11:23 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/comentarios.php:2) in /home/decordst/public_html/comentarios.php on line 3
+[07-Feb-2017 16:11:23 UTC] PHP Parse error:  syntax error, unexpected '$conectar' (T_VARIABLE) in /home/decordst/public_html/conexao.php on line 1
+[07-Feb-2017 16:13:45 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/login.php:2) in /home/decordst/public_html/login.php on line 3
+[07-Feb-2017 16:13:45 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/login.php:2) in /home/decordst/public_html/login.php on line 3
+[07-Feb-2017 16:13:47 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/comentarios.php:2) in /home/decordst/public_html/comentarios.php on line 3
+[07-Feb-2017 16:13:47 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/comentarios.php:2) in /home/decordst/public_html/comentarios.php on line 3
+[07-Feb-2017 16:13:47 UTC] PHP Parse error:  syntax error, unexpected '$conectar' (T_VARIABLE) in /home/decordst/public_html/conexao.php on line 1
+[07-Feb-2017 16:23:17 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/login.php:2) in /home/decordst/public_html/login.php on line 3
+[07-Feb-2017 16:23:17 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/login.php:2) in /home/decordst/public_html/login.php on line 3
+[07-Feb-2017 16:23:21 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/comentarios.php:2) in /home/decordst/public_html/comentarios.php on line 3
+[07-Feb-2017 16:23:21 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/comentarios.php:2) in /home/decordst/public_html/comentarios.php on line 3
+[07-Feb-2017 16:23:21 UTC] PHP Parse error:  syntax error, unexpected '$conectar' (T_VARIABLE) in /home/decordst/public_html/conexao.php on line 1
+[07-Feb-2017 16:48:38 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/login.php:2) in /home/decordst/public_html/login.php on line 3
+[07-Feb-2017 16:48:38 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/login.php:2) in /home/decordst/public_html/login.php on line 3
+[07-Feb-2017 16:48:42 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/comentarios.php:2) in /home/decordst/public_html/comentarios.php on line 3
+[07-Feb-2017 16:48:42 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/comentarios.php:2) in /home/decordst/public_html/comentarios.php on line 3
+[07-Feb-2017 16:48:42 UTC] PHP Parse error:  syntax error, unexpected '$conectar' (T_VARIABLE) in /home/decordst/public_html/conexao.php on line 1
+[07-Feb-2017 16:50:31 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[07-Feb-2017 16:50:31 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[07-Feb-2017 16:50:41 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/comentarios.php:2) in /home/decordst/public_html/comentarios.php on line 3
+[07-Feb-2017 16:50:41 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/comentarios.php:2) in /home/decordst/public_html/comentarios.php on line 3
+[07-Feb-2017 16:50:41 UTC] PHP Parse error:  syntax error, unexpected '$conectar' (T_VARIABLE) in /home/decordst/public_html/conexao.php on line 1
+[07-Feb-2017 16:50:50 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/login.php:2) in /home/decordst/public_html/login.php on line 3
+[07-Feb-2017 16:50:50 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/login.php:2) in /home/decordst/public_html/login.php on line 3
+[07-Feb-2017 16:50:59 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/login_aluno.php:1) in /home/decordst/public_html/login_aluno.php on line 2
+[07-Feb-2017 16:50:59 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/login_aluno.php:1) in /home/decordst/public_html/login_aluno.php on line 2
+[07-Feb-2017 16:50:59 UTC] PHP Parse error:  syntax error, unexpected '$conectar' (T_VARIABLE) in /home/decordst/public_html/conexao.php on line 1
+[07-Feb-2017 16:53:50 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/login.php:2) in /home/decordst/public_html/login.php on line 3
+[07-Feb-2017 16:53:50 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/login.php:2) in /home/decordst/public_html/login.php on line 3
+[07-Feb-2017 16:53:54 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/comentarios.php:2) in /home/decordst/public_html/comentarios.php on line 3
+[07-Feb-2017 16:53:54 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/comentarios.php:2) in /home/decordst/public_html/comentarios.php on line 3
+[07-Feb-2017 16:53:54 UTC] PHP Parse error:  syntax error, unexpected ''$conectar'' (T_CONSTANT_ENCAPSED_STRING) in /home/decordst/public_html/conexao.php on line 1
+[07-Feb-2017 16:59:43 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/comentarios.php:2) in /home/decordst/public_html/comentarios.php on line 3
+[07-Feb-2017 16:59:43 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/comentarios.php:2) in /home/decordst/public_html/comentarios.php on line 3
+[07-Feb-2017 16:59:43 UTC] PHP Parse error:  syntax error, unexpected ''$conectar'' (T_CONSTANT_ENCAPSED_STRING) in /home/decordst/public_html/conexao.php on line 1
+[07-Feb-2017 17:00:42 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/login_aluno.php:1) in /home/decordst/public_html/login_aluno.php on line 2
+[07-Feb-2017 17:00:42 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/login_aluno.php:1) in /home/decordst/public_html/login_aluno.php on line 2
+[07-Feb-2017 17:00:42 UTC] PHP Parse error:  syntax error, unexpected ''$conectar'' (T_CONSTANT_ENCAPSED_STRING) in /home/decordst/public_html/conexao.php on line 1
+[07-Feb-2017 17:04:30 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/comentarios.php:2) in /home/decordst/public_html/comentarios.php on line 3
+[07-Feb-2017 17:04:30 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/comentarios.php:2) in /home/decordst/public_html/comentarios.php on line 3
+[07-Feb-2017 17:04:30 UTC] PHP Parse error:  syntax error, unexpected '$conectar' (T_VARIABLE) in /home/decordst/public_html/conexao.php on line 1
+[07-Feb-2017 17:28:53 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/login.php:2) in /home/decordst/public_html/login.php on line 3
+[07-Feb-2017 17:28:53 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/login.php:2) in /home/decordst/public_html/login.php on line 3
+[07-Feb-2017 17:28:54 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/login.php:2) in /home/decordst/public_html/login.php on line 3
+[07-Feb-2017 17:28:54 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/login.php:2) in /home/decordst/public_html/login.php on line 3
+[07-Feb-2017 17:29:03 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/login_aluno.php:1) in /home/decordst/public_html/login_aluno.php on line 2
+[07-Feb-2017 17:29:03 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/login_aluno.php:1) in /home/decordst/public_html/login_aluno.php on line 2
+[07-Feb-2017 17:29:03 UTC] PHP Parse error:  syntax error, unexpected '$conectar' (T_VARIABLE) in /home/decordst/public_html/conexao.php on line 1
+[07-Feb-2017 17:34:30 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/login.php:2) in /home/decordst/public_html/login.php on line 3
+[07-Feb-2017 17:34:30 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/login.php:2) in /home/decordst/public_html/login.php on line 3
+[07-Feb-2017 17:34:43 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/login_aluno.php:1) in /home/decordst/public_html/login_aluno.php on line 2
+[07-Feb-2017 17:34:43 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/login_aluno.php:1) in /home/decordst/public_html/login_aluno.php on line 2
+[07-Feb-2017 17:34:43 UTC] PHP Parse error:  syntax error, unexpected '$conectar' (T_VARIABLE) in /home/decordst/public_html/conexao.php on line 1
+[07-Feb-2017 17:38:52 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/login.php:2) in /home/decordst/public_html/login.php on line 3
+[07-Feb-2017 17:38:52 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/login.php:2) in /home/decordst/public_html/login.php on line 3
+[07-Feb-2017 17:38:56 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/comentarios.php:2) in /home/decordst/public_html/comentarios.php on line 3
+[07-Feb-2017 17:38:56 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/comentarios.php:2) in /home/decordst/public_html/comentarios.php on line 3
+[07-Feb-2017 17:38:56 UTC] PHP Parse error:  syntax error, unexpected '$conectar' (T_VARIABLE) in /home/decordst/public_html/conexao.php on line 1
+[07-Feb-2017 17:44:48 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/login.php:2) in /home/decordst/public_html/login.php on line 3
+[07-Feb-2017 17:44:48 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/login.php:2) in /home/decordst/public_html/login.php on line 3
+[07-Feb-2017 17:44:51 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/comentarios.php:2) in /home/decordst/public_html/comentarios.php on line 141
+[07-Feb-2017 17:44:51 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/comentarios.php:2) in /home/decordst/public_html/comentarios.php on line 141
+[07-Feb-2017 17:44:58 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/comentarios.php:2) in /home/decordst/public_html/comentarios.php on line 141
+[07-Feb-2017 17:44:58 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/comentarios.php:2) in /home/decordst/public_html/comentarios.php on line 141
+[07-Feb-2017 17:45:12 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/login_professor.php:2) in /home/decordst/public_html/login_professor.php on line 3
+[07-Feb-2017 17:45:12 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/login_professor.php:2) in /home/decordst/public_html/login_professor.php on line 3
+[07-Feb-2017 17:45:15 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/comentarios.php:2) in /home/decordst/public_html/comentarios.php on line 141
+[07-Feb-2017 17:45:15 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/comentarios.php:2) in /home/decordst/public_html/comentarios.php on line 141
+[07-Feb-2017 17:46:31 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/comentarios.php:2) in /home/decordst/public_html/comentarios.php on line 3
+[07-Feb-2017 17:46:31 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/comentarios.php:2) in /home/decordst/public_html/comentarios.php on line 3
+[07-Feb-2017 17:46:31 UTC] PHP Fatal error:  Call to undefined function mysql_query() in /home/decordst/public_html/comentarios.php on line 109
+[07-Feb-2017 17:51:38 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/comentarios.php:2) in /home/decordst/public_html/comentarios.php on line 3
+[07-Feb-2017 17:51:38 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/comentarios.php:2) in /home/decordst/public_html/comentarios.php on line 3
+[07-Feb-2017 17:51:38 UTC] PHP Parse error:  syntax error, unexpected '$conectar' (T_VARIABLE) in /home/decordst/public_html/conexao.php on line 1
+[07-Feb-2017 17:54:32 UTC] PHP Parse error:  syntax error, unexpected '$conectar' (T_VARIABLE) in /home/decordst/public_html/conexao.php on line 1
+[07-Feb-2017 17:56:09 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/comentarios.php:2) in /home/decordst/public_html/comentarios.php on line 3
+[07-Feb-2017 17:56:09 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/comentarios.php:2) in /home/decordst/public_html/comentarios.php on line 3
+[07-Feb-2017 17:56:09 UTC] PHP Parse error:  syntax error, unexpected '$conectar' (T_VARIABLE) in /home/decordst/public_html/conexao.php on line 1
+[07-Feb-2017 17:56:21 UTC] PHP Parse error:  syntax error, unexpected '$conectar' (T_VARIABLE) in /home/decordst/public_html/conexao.php on line 1
+[07-Feb-2017 18:33:42 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/comentarios.php:2) in /home/decordst/public_html/comentarios.php on line 3
+[07-Feb-2017 18:33:42 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/comentarios.php:2) in /home/decordst/public_html/comentarios.php on line 3
+[07-Feb-2017 18:33:42 UTC] PHP Parse error:  syntax error, unexpected '$conectar' (T_VARIABLE) in /home/decordst/public_html/conexao.php on line 1
+[07-Feb-2017 18:33:55 UTC] PHP Parse error:  syntax error, unexpected '$conectar' (T_VARIABLE) in /home/decordst/public_html/conexao.php on line 1
+[07-Feb-2017 18:34:10 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/comentarios.php:2) in /home/decordst/public_html/comentarios.php on line 3
+[07-Feb-2017 18:34:10 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/comentarios.php:2) in /home/decordst/public_html/comentarios.php on line 3
+[07-Feb-2017 18:34:10 UTC] PHP Parse error:  syntax error, unexpected '$conectar' (T_VARIABLE) in /home/decordst/public_html/conexao.php on line 1
+[07-Feb-2017 20:03:21 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[07-Feb-2017 20:03:21 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[07-Feb-2017 20:09:56 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[07-Feb-2017 20:09:56 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[08-Feb-2017 00:05:49 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[08-Feb-2017 00:05:49 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[08-Feb-2017 01:42:47 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[08-Feb-2017 01:42:47 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[08-Feb-2017 04:10:16 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[08-Feb-2017 04:10:16 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[08-Feb-2017 05:08:18 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[08-Feb-2017 05:08:18 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[08-Feb-2017 13:40:24 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[08-Feb-2017 13:40:24 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[08-Feb-2017 15:09:52 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[08-Feb-2017 15:09:52 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[08-Feb-2017 22:54:08 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[08-Feb-2017 22:54:08 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[09-Feb-2017 07:03:58 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[09-Feb-2017 07:03:58 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[09-Feb-2017 13:37:31 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[09-Feb-2017 13:37:31 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[09-Feb-2017 15:42:39 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[09-Feb-2017 15:42:39 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[10-Feb-2017 00:22:26 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[10-Feb-2017 00:22:26 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[10-Feb-2017 09:56:32 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[10-Feb-2017 09:56:32 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[10-Feb-2017 18:05:17 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[10-Feb-2017 18:05:17 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[10-Feb-2017 19:31:07 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[10-Feb-2017 19:31:07 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[10-Feb-2017 19:54:29 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[10-Feb-2017 19:54:29 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[10-Feb-2017 20:07:48 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[10-Feb-2017 20:07:48 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[10-Feb-2017 22:04:54 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/contato.php:2) in /home/decordst/public_html/contato.php on line 3
+[10-Feb-2017 22:04:54 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/contato.php:2) in /home/decordst/public_html/contato.php on line 3
+[10-Feb-2017 22:25:31 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/historico.php:2) in /home/decordst/public_html/historico.php on line 3
+[10-Feb-2017 22:25:31 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/historico.php:2) in /home/decordst/public_html/historico.php on line 3
+[10-Feb-2017 22:41:53 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/professor.php:2) in /home/decordst/public_html/professor.php on line 3
+[10-Feb-2017 22:41:53 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/professor.php:2) in /home/decordst/public_html/professor.php on line 3
+[10-Feb-2017 22:57:49 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/comentarios.php:2) in /home/decordst/public_html/comentarios.php on line 3
+[10-Feb-2017 22:57:49 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/comentarios.php:2) in /home/decordst/public_html/comentarios.php on line 3
+[10-Feb-2017 22:57:49 UTC] PHP Parse error:  syntax error, unexpected '$conectar' (T_VARIABLE) in /home/decordst/public_html/conexao.php on line 1
+[10-Feb-2017 23:12:03 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/login_professor.php:2) in /home/decordst/public_html/login_professor.php on line 3
+[10-Feb-2017 23:12:03 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/login_professor.php:2) in /home/decordst/public_html/login_professor.php on line 3
+[11-Feb-2017 03:19:20 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[11-Feb-2017 03:19:21 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[11-Feb-2017 03:53:21 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[11-Feb-2017 03:53:22 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[11-Feb-2017 03:57:21 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[11-Feb-2017 03:57:21 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[11-Feb-2017 11:30:18 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[11-Feb-2017 11:30:18 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[11-Feb-2017 12:21:09 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[11-Feb-2017 12:21:09 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[11-Feb-2017 12:30:35 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[11-Feb-2017 12:30:35 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[11-Feb-2017 12:56:33 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[11-Feb-2017 12:56:33 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[11-Feb-2017 20:11:11 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[11-Feb-2017 20:11:11 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[11-Feb-2017 21:02:12 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[11-Feb-2017 21:02:12 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[12-Feb-2017 06:11:26 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[12-Feb-2017 06:11:26 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[12-Feb-2017 14:38:48 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[12-Feb-2017 14:38:48 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[12-Feb-2017 18:11:06 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[12-Feb-2017 18:11:06 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[12-Feb-2017 19:20:51 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[12-Feb-2017 19:20:51 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[12-Feb-2017 22:00:40 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/login.php:2) in /home/decordst/public_html/login.php on line 3
+[12-Feb-2017 22:00:40 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/login.php:2) in /home/decordst/public_html/login.php on line 3
+[12-Feb-2017 23:19:17 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[12-Feb-2017 23:19:17 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[13-Feb-2017 08:52:20 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[13-Feb-2017 08:52:20 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[13-Feb-2017 17:31:44 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[13-Feb-2017 17:31:44 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[13-Feb-2017 17:32:51 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[13-Feb-2017 17:32:51 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/index.php:2) in /home/decordst/public_html/index.php on line 3
+[13-Feb-2017 17:33:00 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/comentarios.php:2) in /home/decordst/public_html/comentarios.php on line 3
+[13-Feb-2017 17:33:00 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/comentarios.php:2) in /home/decordst/public_html/comentarios.php on line 3
+[13-Feb-2017 17:33:00 UTC] PHP Parse error:  syntax error, unexpected '$conectar' (T_VARIABLE) in /home/decordst/public_html/conexao.php on line 1
+[13-Feb-2017 17:33:06 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/login.php:2) in /home/decordst/public_html/login.php on line 3
+[13-Feb-2017 17:33:06 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/login.php:2) in /home/decordst/public_html/login.php on line 3
+[13-Feb-2017 17:33:16 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/login_aluno.php:1) in /home/decordst/public_html/login_aluno.php on line 2
+[13-Feb-2017 17:33:16 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/login_aluno.php:1) in /home/decordst/public_html/login_aluno.php on line 2
+[13-Feb-2017 17:33:16 UTC] PHP Parse error:  syntax error, unexpected '$conectar' (T_VARIABLE) in /home/decordst/public_html/conexao.php on line 1
+[13-Feb-2017 17:37:49 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/login.php:2) in /home/decordst/public_html/login.php on line 3
+[13-Feb-2017 17:37:49 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/login.php:2) in /home/decordst/public_html/login.php on line 3
+[13-Feb-2017 17:37:58 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/login_aluno.php:1) in /home/decordst/public_html/login_aluno.php on line 2
+[13-Feb-2017 17:37:58 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/login_aluno.php:1) in /home/decordst/public_html/login_aluno.php on line 2
+[13-Feb-2017 17:37:58 UTC] PHP Parse error:  syntax error, unexpected '$conectar' (T_VARIABLE) in /home/decordst/public_html/conexao.php on line 1
+[13-Feb-2017 17:41:40 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/login_professor.php:2) in /home/decordst/public_html/login_professor.php on line 3
+[13-Feb-2017 17:41:40 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/login_professor.php:2) in /home/decordst/public_html/login_professor.php on line 3
+[13-Feb-2017 17:41:47 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/valida_login.php:1) in /home/decordst/public_html/valida_login.php on line 2
+[13-Feb-2017 17:41:47 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/valida_login.php:1) in /home/decordst/public_html/valida_login.php on line 2
+[13-Feb-2017 17:41:47 UTC] PHP Parse error:  syntax error, unexpected '$conectar' (T_VARIABLE) in /home/decordst/public_html/conexao.php on line 1
+[13-Feb-2017 17:42:46 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/login_professor.php:2) in /home/decordst/public_html/login_professor.php on line 3
+[13-Feb-2017 17:42:46 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/login_professor.php:2) in /home/decordst/public_html/login_professor.php on line 3
+[13-Feb-2017 17:42:49 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/login_professor.php:2) in /home/decordst/public_html/login_professor.php on line 3
+[13-Feb-2017 17:42:49 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/login_professor.php:2) in /home/decordst/public_html/login_professor.php on line 3
+[13-Feb-2017 17:42:57 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/valida_login.php:1) in /home/decordst/public_html/valida_login.php on line 2
+[13-Feb-2017 17:42:57 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/valida_login.php:1) in /home/decordst/public_html/valida_login.php on line 2
+[13-Feb-2017 17:42:57 UTC] PHP Parse error:  syntax error, unexpected '$conectar' (T_VARIABLE) in /home/decordst/public_html/conexao.php on line 1
+[13-Feb-2017 17:43:10 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/login_professor.php:2) in /home/decordst/public_html/login_professor.php on line 3
+[13-Feb-2017 17:43:10 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/login_professor.php:2) in /home/decordst/public_html/login_professor.php on line 3
+[13-Feb-2017 17:43:16 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/login_professor.php:2) in /home/decordst/public_html/login_professor.php on line 3
+[13-Feb-2017 17:43:16 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/login_professor.php:2) in /home/decordst/public_html/login_professor.php on line 3
+[13-Feb-2017 17:43:23 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/valida_login.php:1) in /home/decordst/public_html/valida_login.php on line 2
+[13-Feb-2017 17:43:23 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/valida_login.php:1) in /home/decordst/public_html/valida_login.php on line 2
+[13-Feb-2017 17:43:23 UTC] PHP Fatal error:  Call to undefined function mysql_query() in /home/decordst/public_html/valida_login.php on line 7
+[13-Feb-2017 17:43:30 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/login_professor.php:2) in /home/decordst/public_html/login_professor.php on line 3
+[13-Feb-2017 17:43:32 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/login_professor.php:2) in /home/decordst/public_html/login_professor.php on line 3
+[13-Feb-2017 17:43:36 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/login.php:2) in /home/decordst/public_html/login.php on line 3
+[13-Feb-2017 17:43:36 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/login.php:2) in /home/decordst/public_html/login.php on line 3
+[13-Feb-2017 17:43:42 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/login_professor.php:2) in /home/decordst/public_html/login_professor.php on line 3
+[13-Feb-2017 17:43:42 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/login_professor.php:2) in /home/decordst/public_html/login_professor.php on line 3
+[13-Feb-2017 17:43:49 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/decordst/public_html/valida_login.php:1) in /home/decordst/public_html/valida_login.php on line 2
+[13-Feb-2017 17:43:49 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/decordst/public_html/valida_login.php:1) in /home/decordst/public_html/valida_login.php on line 2
+[13-Feb-2017 17:43:49 UTC] PHP Fatal error:  Call to undefined function mysql_query() in /home/decordst/public_html/valida_login.php on line 7
