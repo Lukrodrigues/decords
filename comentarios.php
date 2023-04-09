@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <?php
  	session_start();
-	//include_once("conexao.php");
+	include_once("conexao.php");
 ?>
 <html lang="pt-br">
 	<head>
@@ -97,6 +97,9 @@
 								<textarea class="form-control" rows="6" id="mensagem" name="mensagem" required></textarea>
 						</div>
 					  </div>
+					 	 <img src="captcha.php" alt="Código captcha"><br>
+						 <label>Digite o código</label>
+						 <input type="text" name="captcha" placeholder="Digite o código" required><br><br>
 					  <div class="form-group">
 						<div class="col-sm-offset-2 col-sm-10">
 						  <button type="submit" onclick="validar_contato()" value="enviar comentarios" class="btn btn-success">Enviar</button>
@@ -106,9 +109,9 @@
 									
 				<?php
 				 include_once("conexao.php");
+				 if(!empty($_POST)){
 				 
-				 
-				  $sql = mysqli_query ($conectar, "SELECT * FROM  comentarios_db order by data desc");
+				  $sql = mysqli_query ($conn,"SELECT * FROM  comentarios_db order by data desc");
 				  $row = mysqli_num_rows($sql);
 
 
@@ -134,5 +137,7 @@
 					  echo "Seja o primeiro a comentar";
 				  }
 					  echo"</hr>";
+				}
 				?>
+				
 </body>

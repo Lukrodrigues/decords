@@ -3,7 +3,7 @@
 header('Content-Type: text/html; charset=utf-8');
 include_once("conexao.php");
 
-	   $conteudo = addslashes($_POST['editor1');
+	   $conteudo = addslashes($_POST(['editor1']));
 
 	try
 	{

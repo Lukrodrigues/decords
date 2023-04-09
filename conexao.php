@@ -1,1 +1,24 @@
-<?php$conectar = mysql_connect("localhost",'decordst_bd',"bVUreCH8{~dt") or die("Erro na conexao");mysql_select_db("decordst_bd", $conectar) or die ("base não encontrada");?>
+<?php
+/*header('Content-Type: text/html; charset=utf-8');
+$conectar = mysqli_connect("localhost",'root',"") or die("Erro na conexao");
+    mysqli_select_db($conectar,"decords") or die ("base não encontrada");
+    mysqli_query($conectar,"SET NAMES 'utf8'");
+    mysqli_query($conectar,'SET character_set_connection=utf8');
+    mysqli_query($conectar,'SET character_set_client=utf8');
+    mysqli_query($conectar,'SET character_set_results=utf8');
+    ini_set('default_charset','UTF-8');
+*/
+
+$servername = "localhost";
+$database = "decords";
+$username = "root";
+$password = "";
+// Create connection
+$conn = mysqli_connect($servername, $username, $password, $database);
+// Check connection
+if (!$conn) {
+    die("Connection failed: " . mysqli_connect_error());
+}
+echo "Connected successfully";
+mysqli_close($conn);
+?>

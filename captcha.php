@@ -5,13 +5,13 @@ $codigoCaptcha = substr(md5(time()) ,0, 8);
 
 $_SESSION['captcha'] = $codigoCaptcha;
 
-$imagemCaptcha = imagecreatefrompng("img/fundocaptch.png");
+$imagemCaptcha = imagecreatefrompng("pngegg.png");
 
 $fonteCaptcha = imageloadfont("anonymous.gdf");
 
-$corCaptcha = imagecolorallocate($imagemCaptcha, 255,0,0);
+$corCaptcha = imagecolorallocate($imagemCaptcha, 255,10,0);
 
-imagestring($imagemCaptcha, $fonteCaptcha, 15, 5, $codigoCaptcha, $corCaptcha);
+imagestring($imagemCaptcha, $fonteCaptcha, 10, 5, $codigoCaptcha, $corCaptcha);
 
 imagepng($imagemCaptcha);
 
