@@ -109,7 +109,7 @@
 									
 				<?php
 				 include_once("conexao.php");
-				 if(!empty($_POST)){
+				 if(!empty($_POST)) {
 				 
 				  $sql = mysqli_query ($conn,"SELECT * FROM  comentarios_db order by data desc");
 				  $row = mysqli_num_rows($sql);
@@ -120,7 +120,7 @@
 						  $nome = $linha['nome'];
 						  $cidade = $linha['cidade'];
 						  $mensagem = $linha['mensagem'];
-						  $data = $linha['data'];
+						  $data = $linha['date'];
 						  
 						  echo "<strong>Nome:</strong>$nome";
 						  echo"</br></hr>";

@@ -4,8 +4,8 @@ $emailt = $_POST['email'];
 $senhat = $_POST['senha'];
 echo $emailt.' - '.$senhat;
 include_once("conexao.php");
-$result = mysql_query("SELECT * FROM alunos WHERE email='$emailt' AND senha='$senhat' LIMIT 1");
-$resultado = mysql_fetch_assoc($result);
+$result = mysqli_query($conn,"SELECT * FROM alunos WHERE email='$emailt' AND senha='$senhat' LIMIT 1");
+$resultado = mysqli_fetch_assoc($result);
 echo "aluno: " .$resultado['nome'];
 if (empty($resultado)){
 	// msg Errro
