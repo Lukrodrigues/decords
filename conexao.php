@@ -13,12 +13,14 @@ $servername = "localhost";
 $database = "decords";
 $username = "root";
 $password = "";
-// Create connection
-$conn = mysqli_connect($servername, $username, $password, $database);
+//Create connection
+$conn = new mysqli($servername, $username, $password, $database);
 // Check connection
-if (!$conn) {
-    die("Connection failed: " . mysqli_connect_error());
+if ($conn) {
+  error_log('Connection failed: '. mysqli_connect_error());
 }
 echo "Connected successfully";
-mysqli_close($conn);
+//mysqli_close($conn);
+
 ?>
+

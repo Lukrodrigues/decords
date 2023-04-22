@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <?php
- 	session_start();
+session_start();
 ?>
+
 <html lang="pt-br">
 	<head>
 		<meta charset="utf-8">
@@ -124,6 +125,10 @@
     </div>
 
      <footer>
+	 	<h2>
+			Mapa do site:
+		</h2>
+			<h4>Categorias</h4>
         <p>&copy; 2016 Luciano Moraes Rodrigues. &middot;</a></p>
       </footer>
 

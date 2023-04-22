@@ -11,7 +11,7 @@ $fonteCaptcha = imageloadfont("anonymous.gdf");
 
 $corCaptcha = imagecolorallocate($imagemCaptcha, 255,10,0);
 
-imagestring($imagemCaptcha, $fonteCaptcha, 10, 5, $codigoCaptcha, $corCaptcha);
+imagestring($imagemCaptcha, $fonteCaptcha, 10, 70, $codigoCaptcha, $corCaptcha);
 
 imagepng($imagemCaptcha);
 

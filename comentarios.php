@@ -97,7 +97,7 @@
 								<textarea class="form-control" rows="6" id="mensagem" name="mensagem" required></textarea>
 						</div>
 					  </div>
-					 	 <img src="captcha.php" alt="Código captcha"><br>
+					 	 <img src="captcha.php" alt="Código captcha"><br><br>
 						 <label>Digite o código</label>
 						 <input type="text" name="captcha" placeholder="Digite o código" required><br><br>
 					  <div class="form-group">
@@ -111,9 +111,9 @@
 				 include_once("conexao.php");
 				 if(!empty($_POST)) {
 				 
-				  $sql = mysqli_query ($conn,"SELECT * FROM  comentarios_db order by data desc");
+				  $sql = mysqli_query ($conn,"SELECT * FROM comentarios_db order by data desc");
 				  $row = mysqli_num_rows($sql);
-
+				  var_dump($sql);
 
 				  if ($row > 0) {
 					  while ($linha = mysqli_fetch_array($sql)){
@@ -129,15 +129,17 @@
 						  echo date('d/m/Y', strtotime($data));
 						  echo"</br>";
 						  echo "<strong>Mensagem:</strong>$mensagem";
-						  echo"</hr> </br> </br>";				  
+						  echo"</hr> </br> </br>";	
+						  
+						  
 						  
 					  }		  
 					  
 				  }else{
 					  echo "Seja o primeiro a comentar";
 				  }
-					  echo"</hr>";
+					
 				}
-				?>
+			?>
 				
 </body>
