@@ -113,7 +113,7 @@
 				 
 				  $sql = mysqli_query ($conn,"SELECT * FROM comentarios_db order by data desc");
 				  $row = mysqli_num_rows($sql);
-				  var_dump($sql);
+				 
 
 				  if ($row > 0) {
 					  while ($linha = mysqli_fetch_array($sql)){
@@ -125,13 +125,13 @@
 						  echo "<strong>Nome:</strong>$nome";
 						  echo"</br></hr>";
 						  echo "<strong>Cidade:</strong>$cidade";
-						  echo"</br>";echo "<strong>Data:</strong>";
+						  echo"</br>";
+						  echo "<strong>Data:</strong>";
 						  echo date('d/m/Y', strtotime($data));
 						  echo"</br>";
 						  echo "<strong>Mensagem:</strong>$mensagem";
 						  echo"</hr> </br> </br>";	
-						  
-						  
+						  	  
 						  
 					  }		  
 					  
