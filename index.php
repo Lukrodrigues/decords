@@ -124,7 +124,7 @@ session_start();
 					</br></br></br></br>
 				</div><!-- /.col-lg-4 -->
 				<div class="col-lg-4 text-right">
-					<img class="img-responsive img-circle align=" center"" src="img/foto22.jpg" alt="Generic placeholder image" width="140" height="140">
+					<img class="img-responsive img-circle" src="img/foto22.jpg" alt="Generic placeholder image" width="140" height="140">
 					<h2>Exercicios</h2>
 					<p>Para utilizar para entendimento do tutorial-01 e conhecer um pouco de teoria musical para violao</p>
 					<p><a class="btn btn-success" href="login.php" role="button">Ver Detalhes &raquo;</a></p>
