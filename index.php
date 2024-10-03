@@ -136,8 +136,9 @@ session_start();
 			<h2>
 				Mapa do site:
 			</h2>
-			<h4>Categorias<href=""</h4>
-					<p>&copy; 2016 Luciano Moraes Rodrigues. &middot;</a></p>
+			<h4>Categorias<a href=""></a>
+			</h4>
+			<p>&copy; 2016 Luciano Moraes Rodrigues. &middot;</a></p>
 		</footer>
 
 
