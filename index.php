@@ -12,7 +12,7 @@ session_start();
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="description" content="Decords Música e Teoria">
 	<meta name="" content="Luciano Moraes Rodrigues">
-	<link rel="icon" href="img/favicon.ico">
+	<!--<link rel="icon" href="img/favicon.ico">-->
 	<link href="css/style.css" rel="stylesheet">
 	<link href="css/bootstrap.min.css" rel="stylesheet">
 	<link href="css/carousel.css" rel="stylesheet">
