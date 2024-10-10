@@ -10,7 +10,7 @@ include_once("conexao.php");
 	
         //insere na BD                    
         $inserir = "INSERT INTO tutorial (editor1) VALUES ('$conteudo')";
-		 $result = mysql_query($inserir) or die(mysql_error());
+		 $result = mysqli_query($inserir) or die(mysqli_error());
 			
         //retorna 1 para no sucesso do ajax saber que foi com inserido sucesso
         echo "1";
@@ -20,12 +20,12 @@ include_once("conexao.php");
         //retorna 0 para no sucesso do ajax saber que foi um erro
         echo "0";
     }
-	   
-	mysql_query("SET NAMES 'utf-8'");
-	mysql_query("SET character_set_connection=utf-8");
-	mysql_query("SET character_set_clent=utf-8");
-	mysql_query("SET character_set_results=utf-8");
+	/*   
+	mysqli_query("SET NAMES 'utf-8'");
+	mysqli_query("SET character_set_connection=utf-8");
+	mysqli_query("SET character_set_clent=utf-8");
+	mysqli_query("SET character_set_results=utf-8");
 		
-	
+	*/
 	
 ?>
