@@ -1,8 +1,12 @@
-<!DOCTYPE html>
 <?php
 session_start();
-include_once("conexao.php");
+
+//include_once("conexao.php");
+
 ?>
+
+<!DOCTYPE html>
+
 <html lang="pt-br">
 
 <head>
