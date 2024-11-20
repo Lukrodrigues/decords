@@ -1,12 +1,13 @@
 <?php
 
-$servername = "127.0.0.1";
-$db = "decords_bd";
-$username = "root";
+$servername = "localhost";
+$dbname = "decords_bd";
 $password = "";
+$username = "root";
+
 //Create connection
 
-$conn = new mysqli($servername, $db, $username, $password);
+$conn = new mysqli($servername, $dbname, $password, $username,);
 
 // Verificar conexão
 
