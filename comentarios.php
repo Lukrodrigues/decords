@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-include_once("conexao.php");
+//include_once("conexao.php");
 
 ?>
 
@@ -119,35 +119,44 @@ include_once("conexao.php");
 	</form>
 	<hr />
 
+
 	<?php
+	include_once("conexao.php");
 
-	if (!empty($_POST)) {
+	// Não depende de POST para exibir os comentários
+	$sql = "SELECT * FROM comentarios_db ORDER BY date DESC";
+	$result = mysqli_query($conn, $sql);
 
-		$sql = mysqli_query($conn, "SELECT * FROM comentarios order by data desc");
-		$row = mysqli_num_rows($sql);
+	if ($result) {
+		// Processa os resultados
+	} else {
+		echo "Erro na consulta: " . mysqli_error($conn);
+	}
 
+	if ($result) {
+		$row = mysqli_num_rows($result);
 
 		if ($row > 0) {
-			while ($linha = mysqli_fetch_array($sql)) {
-				$nome = $linha['nome'];
-				$cidade = $linha['cidade'];
-				$mensagem = $linha['mensagem'];
+			while ($linha = mysqli_fetch_assoc($result)) {
+				// Sanitização dos dados
+				$nome = htmlspecialchars($linha['nome'], ENT_QUOTES, 'UTF-8');
+				$cidade = htmlspecialchars($linha['cidade'], ENT_QUOTES, 'UTF-8');
+				$mensagem = htmlspecialchars($linha['mensagem'], ENT_QUOTES, 'UTF-8');
 				$data = $linha['date'];
 
-				echo "<strong>Nome:</strong>$nome";
-				echo "</br></hr>";
-				echo "<strong>Cidade:</strong>$cidade";
-				echo "</br>";
-				echo "<strong>Data:</strong>";
-				echo date('d/m/Y', strtotime($data));
-				echo "</br>";
-				echo "<strong>Mensagem:</strong>$mensagem";
-				echo "</hr> </br> </br>";
+				// Exibição formatada
+				echo "<div style='margin-bottom: 20px; border-bottom: 1px solid #ddd; padding-bottom: 10px;'>";
+				echo "<strong>Nome:</strong> $nome<br>";
+				echo "<strong>Cidade:</strong> $cidade<br>";
+				echo "<strong>Mensagem:</strong><br>$mensagem<br>";
+				echo "<strong>Data:</strong> " . date('Y/m/d', strtotime($data)) . "<br>";
+				echo "</div>";
 			}
 		} else {
-			echo "Seja o primeiro a comentar";
+			echo "Seja o primeiro a comentar!";
 		}
+	} else {
+		echo "Erro ao buscar os comentários: " . mysqli_error($conn);
 	}
 	?>
-
 </body>
