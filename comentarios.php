@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-//include_once("conexao.php");
+include_once("conexao.php");
 
 ?>
 
@@ -120,7 +120,7 @@ session_start();
 	<hr />
 
 	<?php
-	include_once("conexao.php");
+
 	if (!empty($_POST)) {
 
 		$sql = mysqli_query($conn, "SELECT * FROM comentarios order by data desc");

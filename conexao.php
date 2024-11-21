@@ -2,20 +2,18 @@
 
 $servername = "localhost";
 $dbname = "decords_bd";
-$password = "";
-$username = "root";
+$username = "root"; // Nome de usuário do MySQL
+$password = ""; // Senha do MySQL (vazia no XAMPP por padrão)
 
-//Create connection
-
-$conn = new mysqli($servername, $dbname, $password, $username,);
+// Criar conexão
+$conn = new mysqli($servername, $username, $password, $dbname);
 
 // Verificar conexão
-
-
 if ($conn->connect_error) {
   die("Connection failed: " . $conn->connect_error); // Exibe o erro e encerra o script
 }
 echo "Connected successfullyyyyyy";
+
 
 /* Só exibe essa mensagem se a conexão for bem-sucedida
 header('Content-Type: text/html; charset=utf-8');
