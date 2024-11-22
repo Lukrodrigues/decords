@@ -1,20 +1,30 @@
 ﻿<?php
 session_start();
-$emailt = $_POST['email'];
-$senhat = $_POST['senha'];
-echo $emailt . ' - ' . $senhat;
 include_once("conexao.php");
-$result = mysqli_query($conn, "SELECT * FROM professor WHERE email='$emailt' AND senha='$senhat' LIMIT 1");
-$resultado = mysqli_fetch_assoc($result, $conn);
-echo "professor: " . $resultado['nome'];
-if (empty($resultado)) {
-	// msg Errro
-	$_SESSION['loginErro'] = "Email ou senha invalido";
 
-	// manda para tela de login
-	header("Location: login.php");
+if (isset($_POST['email']) && isset($_POST['senha'])) {
+	$email = $_POST['email'];
+	$senha = $_POST['senha'];
+
+	// Consulta para validar login
+	$sql = "SELECT * FROM professor WHERE email = '$email' AND senha = '$senha'";
+	$result = mysqli_query($conn, $sql);
+
+	if ($result && mysqli_num_rows($result) > 0) {
+		$professor = mysqli_fetch_assoc($result); // Apenas um argumento
+		$_SESSION['professor'] = $professor; // Salva os dados do usuário na sessão
+		header("Location: acompanhamento.php"); // Redireciona para o dashboard
+		exit;
+	} else {
+		$_SESSION['msg'] = "<p style='color:red;'>Email ou senha incorretos.</p>";
+		header("Location: login.php"); // Redireciona para a tela de login
+		exit;
+	}
 } else {
-
+	$_SESSION['msg'] = "<p style='color:red;'>Preencha todos os campos.</p>";
+	header("Location: login.php");
+	exit;
+} {
 	// //Define os valores atribuidos na sessao do aluno
 	$_SESSION['AlunoId'] = $resultado['id'];
 	$_SESSION['AlunoEmail'] = $resultado['email'];

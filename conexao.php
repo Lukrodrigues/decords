@@ -12,7 +12,7 @@ $conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
   die("Connection failed: " . $conn->connect_error); // Exibe o erro e encerra o script
 }
-echo "Connected successfullyyyyyy";
+echo "Conexão bem-sucedida!";
 
 
 /* Só exibe essa mensagem se a conexão for bem-sucedida

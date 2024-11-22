@@ -119,44 +119,27 @@ session_start();
 	</form>
 	<hr />
 
-
 	<?php
 	include_once("conexao.php");
-
-	// Não depende de POST para exibir os comentários
-	$sql = "SELECT * FROM comentarios_db ORDER BY date DESC";
+	$sql = "SELECT * FROM comentarios_db ORDER BY data DESC";
 	$result = mysqli_query($conn, $sql);
 
 	if ($result) {
-		// Processa os resultados
+		$row_count = mysqli_num_rows($result);
+
+		if ($row_count > 0) {
+			while ($row = mysqli_fetch_assoc($result)) {
+				echo "<strong>Nome:</strong> " . htmlspecialchars($row['nome']) . "<br>";
+				echo "<strong>Cidade:</strong> " . htmlspecialchars($row['cidade']) . "<br>";
+				echo "<strong>Mensagem:</strong><br>" . nl2br(htmlspecialchars($row['mensagem'])) . "<br>";
+				echo "<strong>Data:</strong> " . date('Y/m/d/', strtotime($row['data'])) . "<hr>";
+			}
+		} else {
+			echo "Nenhum comentário encontrado.";
+		}
 	} else {
 		echo "Erro na consulta: " . mysqli_error($conn);
 	}
-
-	if ($result) {
-		$row = mysqli_num_rows($result);
-
-		if ($row > 0) {
-			while ($linha = mysqli_fetch_assoc($result)) {
-				// Sanitização dos dados
-				$nome = htmlspecialchars($linha['nome'], ENT_QUOTES, 'UTF-8');
-				$cidade = htmlspecialchars($linha['cidade'], ENT_QUOTES, 'UTF-8');
-				$mensagem = htmlspecialchars($linha['mensagem'], ENT_QUOTES, 'UTF-8');
-				$data = $linha['date'];
-
-				// Exibição formatada
-				echo "<div style='margin-bottom: 20px; border-bottom: 1px solid #ddd; padding-bottom: 10px;'>";
-				echo "<strong>Nome:</strong> $nome<br>";
-				echo "<strong>Cidade:</strong> $cidade<br>";
-				echo "<strong>Mensagem:</strong><br>$mensagem<br>";
-				echo "<strong>Data:</strong> " . date('Y/m/d', strtotime($data)) . "<br>";
-				echo "</div>";
-			}
-		} else {
-			echo "Seja o primeiro a comentar!";
-		}
-	} else {
-		echo "Erro ao buscar os comentários: " . mysqli_error($conn);
-	}
 	?>
+
 </body>
