@@ -132,7 +132,7 @@ session_start();
 				echo "<strong>Nome:</strong> " . htmlspecialchars($row['nome']) . "<br>";
 				echo "<strong>Cidade:</strong> " . htmlspecialchars($row['cidade']) . "<br>";
 				echo "<strong>Mensagem:</strong><br>" . nl2br(htmlspecialchars($row['mensagem'])) . "<br>";
-				echo "<strong>Data:</strong> " . date('Y/m/d/', strtotime($row['data'])) . "<hr>";
+				echo "<strong>Data:</strong> " . date('Y/m/d', strtotime($row['data'])) . "<hr>";
 			}
 		} else {
 			echo "Nenhum comentário encontrado.";
