@@ -24,7 +24,8 @@ if (!isset($_SESSION['AlunoEmail']) and !isset($_SESSION['AlunoSenha'])) {
 	<link href="css/style.css" rel="stylesheet">
 	<link href="css/signin.css" rel="stylesheet">
 	<link href="css/tabdiv.css" media="screen" rel="Stylesheet" type="text/css" />
-	<script src="js/jquery.min.js"></script>
+	<script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+	<script src="js/jquery.min.js" defer></script>
 	<script src="js/bootstrap.min.js"></script>
 	<script src="js/ie-emulation-modes-warning.js"></script>
 
@@ -34,6 +35,8 @@ if (!isset($_SESSION['AlunoEmail']) and !isset($_SESSION['AlunoSenha'])) {
 	<script src="js/partitura/jquery.js"></script>
 	<script src="js/partitura/tabdiv-min.js"></script>
 	<!-- Support partitura -->
+
+
 </head>
 
 <body>
@@ -95,122 +98,87 @@ if (!isset($_SESSION['AlunoEmail']) and !isset($_SESSION['AlunoSenha'])) {
 							if (session_status() === PHP_SESSION_NONE) {
 								session_start();
 							}
-							$aluno = $_SESSION['AlunoId']; // ID do aluno
-							include_once("conexao.php"); // Certifique-se de que sua conexão usa MySQLi
-
-							// Verificar se a resposta foi enviada
-							if (isset($_POST['escolha']) && isset($_POST['resposta']) && isset($_POST['exe'])) {
-								$escolha = $_POST['escolha'];
-								$resposta = $_POST['resposta'];
-								$exe = $_POST['exe']; // Exercício atual
-
-								// Verificar se a resposta está correta
-								$resultado = ($escolha == $resposta) ? 1 : 2; // 1 = acertou, 2 = errou
-								$status = 1; // Marcar como concluído
-
-								// Preparar consulta para atualizar o status e resultado do exercício
-								$sqlUpdate = "UPDATE alunos_exercicios 
-                  SET resultado = ?, status = ?, data_termino = NOW() 
-                  WHERE id_usuario = ? AND id_exercicios = ?";
-								if ($stmtUpdate = $conn->prepare($sqlUpdate)) {
-									$stmtUpdate->bind_param("iiii", $resultado, $status, $aluno, $exe);
-									$stmtUpdate->execute();
-									$stmtUpdate->close();
-								} else {
-									echo "Erro ao preparar a consulta: " . $conn->error;
-								}
+							// Verifica se o usuário está logado
+							if (!isset($_SESSION['AlunoId'])) {
+								die("Acesso negado!");
 							}
 
-							// Consultar os exercícios do nível atual
+							$aluno = intval($_SESSION['AlunoId']); // ID do aluno
+							include_once("conexao.php");
+
+							// Verificar exercícios do nível atual
+							$nivel = $_SESSION['AlunoNivel'] ?? 1; // Nível atual (padrão: 1)
 							$numeracao = 1;
-							$sql = "SELECT id, pergunta FROM exercicios WHERE nivel = 1"; // Ajuste para o nível do aluno
-							if ($queryResult = $conn->query($sql)) {
-								while ($row = $queryResult->fetch_assoc()) {
-									$ident = $row['id'];
-									$pergunta = $row['pergunta'];
-									$botao = "Fazer";
-									$botaocor = "btn btn-warning";
-									$link = "exercicio.php?id=" . $ident;
 
-									// Consultar o status e resultado do exercício do aluno
-									$sql4 = "SELECT resultado, status FROM alunos_exercicios WHERE id_usuario = ? AND id_exercicios = ?";
-									if ($stmt4 = $conn->prepare($sql4)) {
-										$stmt4->bind_param("ii", $aluno, $ident);
-										$stmt4->execute();
-										$stmt4->bind_result($resultado, $status);
-										$stmt4->fetch();
-										$stmt4->close();
-									}
+							$sql = "SELECT id, pergunta FROM exercicios WHERE nivel = ?";
+							$stmt = $conn->prepare($sql);
+							$stmt->bind_param("i", $nivel);
+							$stmt->execute();
+							$result = $stmt->get_result();
 
-									// Definir status e resultado
-									if ($status == 0) {
-										$status = "Não";
-									} else {
-										$status = "Sim";
-										$link = "#";
-										$botao = "Concluído";
-										$botaocor = "btn btn-success";
-									}
+							while ($row = $result->fetch_assoc()) {
+								$ident = $row['id'];
+								$pergunta = $row['pergunta'];
+								$botao = "Fazer";
+								$botaocor = "btn btn-warning";
+								$link = "exercicio.php?id=" . $ident;
 
-									if ($resultado == 1) {
-										$resultado = "Acertou";
-									} else if ($resultado == 2) {
-										$resultado = "Errou";
-									} else {
-										$resultado = "--";
-									}
+								// Consultar status e resultado do exercício
+								$sql4 = "SELECT resultado, status FROM alunos_exercicios WHERE id_usuario = ? AND id_exercicios = ?";
+								$stmt2 = $conn->prepare($sql4);
+								$stmt2->bind_param("ii", $aluno, $ident);
+								$stmt2->execute();
+								$stmt2->bind_result($resultado, $status);
+								$stmt2->fetch();
+								$stmt2->close();
 
-									// Exibir os exercícios
-									echo '<tr>
-                <td>' . $numeracao . '</td>
-                <td>' . $pergunta . '</td>
-                <td>' . $status . '</td>
-                <td>' . $resultado . '</td>
-                <td><a href="' . $link . '"><button type="button" class="' . $botaocor . '">' . $botao . '</button></a></td>
-              </tr>';
-
-									$numeracao++;
+								// Determinar status e botões
+								if ($status === 1) {
+									$botao = $resultado == 1 ? "Acertou" : "Errou";
+									$botaocor = $resultado == 1 ? "btn btn-success" : "btn btn-danger";
+									$link = "#";
 								}
-							} else {
-								echo "Erro na consulta de exercícios: " . $conn->error;
+
+								$resultadoTexto = $resultado == 1 ? "Acertou" : ($resultado == 2 ? "Errou" : "--");
+
+								// Exibir exercícios
+								echo '<tr>
+            <td>' . $numeracao . '</td>
+            <td>' . htmlspecialchars($pergunta, ENT_QUOTES, 'UTF-8') . '</td>
+            <td>' . ($status === 1 ? "Sim" : "Não") . '</td>
+            <td>' . $resultadoTexto . '</td>
+            <td><a href="' . $link . '"><button type="button" class="' . $botaocor . '">' . $botao . '</button></a></td>
+          </tr>';
+
+								$numeracao++;
 							}
 
-							// Verificar se todos os exercícios foram concluídos para o próximo nível
-							$nivelAtual = 1; // Atribuindo o nível atual à variável (pode ser dinâmico, dependendo do contexto)
-							$stmtCheckNivel = $conn->prepare("SELECT COUNT(*) FROM alunos_exercicios ae 
-                                  INNER JOIN exercicios e ON ae.id_exercicios = e.id
-                                  WHERE ae.id_usuario = ? AND e.nivel = ? AND ae.status = 1");
+							// Verificar porcentagem de acertos no nível atual
+							$sqlAcertos = "
+    SELECT COUNT(*) AS total, 
+           SUM(CASE WHEN resultado = 1 THEN 1 ELSE 0 END) AS acertos 
+    FROM alunos_exercicios ae
+    INNER JOIN exercicios e ON ae.id_exercicios = e.id
+    WHERE ae.id_usuario = ? AND e.nivel = ? AND ae.status = 1";
+							$stmt3 = $conn->prepare($sqlAcertos);
+							$stmt3->bind_param("ii", $aluno, $nivel);
+							$stmt3->execute();
+							$stmt3->bind_result($total, $acertos);
+							$stmt3->fetch();
+							$stmt3->close();
 
-							$stmtCheckNivel->bind_param("ii", $aluno, $nivelAtual); // Agora, passando $nivelAtual
-							$stmtCheckNivel->execute();
-							$stmtCheckNivel->bind_result($concluidos);
-							$stmtCheckNivel->fetch();
-							$stmtCheckNivel->close();
+							$percentualAcertos = $total > 0 ? ($acertos / $total) * 100 : 0;
 
-
-							$nivelAtual = $_SESSION['AlunoNivel']; // O nível pode variar, dependendo da sessão do aluno
-
-							// Prepara a consulta para contar o total de exercícios no nível atual
-							$stmtTotalExercicios = $conn->prepare("SELECT COUNT(*) FROM exercicios WHERE nivel = ?");
-							$stmtTotalExercicios->bind_param("i", $nivelAtual); // Usando o nível atual da sessão
-
-							// Executa a consulta
-							$stmtTotalExercicios->execute();
-
-							// Associa o resultado à variável
-							$stmtTotalExercicios->bind_result($totalExercicios);
-
-							// Recupera o valor
-							$stmtTotalExercicios->fetch();
-
-							// Fecha a consulta
-							//$stmtTotalExercicios->close();
-
-							if ($concluidos === $totalExercicios) {
-								$_SESSION['AlunoNivel'] = 2; // Mudar para o próximo nível
-								echo "<div class='alert alert-success'>Parabéns! Você concluiu o nível 1. Você foi promovido ao próximo nível!</div>";
+							if ($percentualAcertos >= 60) {
+								$_SESSION['AlunoNivel'] = $nivel + 1;
+								echo "<div class='alert alert-success'>Parabéns! Você alcançou $percentualAcertos% de acertos e foi promovido ao próximo nível.</div>";
 							}
+
+
+							$conn->close();
 							?>
 
+							
 				</div>
+
 </body>
