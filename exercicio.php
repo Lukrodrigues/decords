@@ -16,7 +16,6 @@ session_start();
 	<link href="css/bootstrap.min.css" rel="stylesheet">
 	<link href="css/bootstrap-theme.min.css" rel="stylesheet">
 	<link href="css/theme.css" rel="stylesheet">
-	<script src="js/document.min.js"></script>
 	<script src="js/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 
@@ -26,112 +25,143 @@ session_start();
 	<script src="js/partitura/jquery.js"></script>
 	<script src="js/partitura/tabdiv-min.js"></script>
 	<!-- Support partitura -->
-
-	<style>
-		#continua {
-			display: none;
-		}
-	</style>
-
-	<script type="text/javascript">
-		function escolha() {
-			var nnn = getRadioValor('res');
-			document.getElementById('inf').value = nnn;
-		}
-
-		function getRadioValor(name) {
-			var rads = document.getElementsByName(name);
-			for (var i = 0; i < rads.length; i++) {
-				if (rads[i].checked) {
-					return rads[i].value;
-				}
-			}
-			return null;
-		}
-
-		function finaliza() {
-			$.ajax({
-				type: "POST",
-				url: "valida_exercicio.php",
-				data: {
-					escolha: $('#inf').val(),
-					resposta: $('#resp').val(),
-					cod: $('#usr').val(),
-					exe: $('#exe').val()
-				},
-				success: function(data) {
-					$('#resolucao').html(data);
-					termina();
-				}
-			});
-		}
-
-		function termina() {
-			$('#questao').hide();
-		}
-	</script>
-
 </head>
+<style>
+	#continua {
+		display: none;
+	}
+</style>
 
-<body role="document">
-	<!-- Fixed navbar -->
-	<nav class="navbar navbar-inverse navbar-fixed-top">
-		<div class="row">
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-					<span class="sr-only">Toggle navigation</span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				</button>
-				<a class="navbar-brand" href="index.php">Decords</a>
-			</div>
-			<div id="navbar" class="navbar-collapse collapse">
-				<ul class="nav navbar-nav">
-					<li class="active"><a href="iniciantes.php">Voltar</a></li>
-				</ul>
-			</div>
-		</div>
-	</nav>
 
-	<div class="container theme showcase" role="main">
-		<div class="page-header">
-			<h1>Exercício:</h1>
-		</div>
-		<div class="box-content">
-			<div class="form-horizontal">
-				<?php
-				// Configurações iniciais
-				$cod = isset($_GET['id']) ? intval($_GET['id']) : 0;
-				$codd = isset($_SESSION['AlunoId']) ? intval($_SESSION['AlunoId']) : 0;
+<script type="text/javascript">
+	function escolha() {
+		var nnn = getRadioValor('res');
+		document.getElementById('inf').value = nnn;
+	}
 
-				// Conexão com o banco de dados
-				include_once("conexao.php");
+	function getRadioValor(name) {
+		var rads = document.getElementsByName(name);
+		for (var i = 0; i < rads.length; i++) {
+			if (rads[i].checked) {
+				return rads[i].value;
+			}
+		}
+		return null;
+	}
 
-				if ($conn->connect_error) {
-					die("Falha na conexão: " . $conn->connect_error);
+	function finaliza() {
+		// Faz a requisição AJAX
+		$.ajax({
+			type: "POST",
+			url: "valida_exercicio.php",
+			data: {
+				escolha: $('#inf').val(),
+				resposta: $('#resp').val(),
+				cod: $('#usr').val(),
+				exe: $('#exe').val()
+			},
+			success: function(data) {
+				// Processa a resposta do servidor
+				if (data.trim() === "Acertou") {
+					$('#envio').removeClass('btn-primary').addClass('btn-success').text('Acertou');
+					setTimeout(function() {
+						window.location.href = 'iniciantes.php';
+					}, 1500);
+				} else if (data.trim() === "Errou") {
+					$('#envio').removeClass('btn-primary').addClass('btn-danger').text('Errou');
+				} else {
+					alert("Resposta inesperada do servidor: " + data);
 				}
+			},
+			error: function(xhr, status, error) {
+				alert("Erro na requisição: " + error);
+			}
 
-				$conn->set_charset("utf8");
+		});
+	}
 
-				$sql = "SELECT * FROM exercicios WHERE id = ?";
-				$stmt = $conn->prepare($sql);
-				$stmt->bind_param("i", $cod);
-				$stmt->execute();
-				$result = $stmt->get_result();
 
-				if ($result->num_rows > 0) {
-					while ($row = $result->fetch_assoc()) {
-						$pergunta = $row['pergunta'];
-						$tablatura = $row['tablatura'];
-						$dica = $row['dica'];
-						$a = $row['a'];
-						$b = $row['b'];
-						$c = $row['c'];
-						$d = $row['d'];
-						$resp = $row['resposta'];
+	<
+	body role = "document" >
+		<
+		!--Fixed navbar-- >
+		<
+		nav class = "navbar navbar-inverse navbar-fixed-top" >
+		<
+		div class = "row" >
+		<
+		div class = "navbar-header" >
+		<
+		button type = "button"
+	class = "navbar-toggle collapsed"
+	data - toggle = "collapse"
+	data - target = "#navbar"
+	aria - expanded = "false"
+	aria - controls = "navbar" >
+		<
+		span class = "sr-only" > Toggle navigation < /span> <
+		span class = "icon-bar" > < /span> <
+		span class = "icon-bar" > < /span> <
+		span class = "icon-bar" > < /span> <
+		/button> <
+		a class = "navbar-brand"
+	href = "index.php" > Decords < /a> <
+		/div> <
+		div id = "navbar"
+	class = "navbar-collapse collapse" >
+	<
+	ul class = "nav navbar-nav" >
+	<
+	li class = "active" > < a href = "iniciantes.php" > Voltar < /a></li >
+		<
+		/ul> <
+		/div> <
+		/div> <
+		/nav>
 
-						echo '
+		<
+		div class = "container theme showcase"
+	role = "main" >
+		<
+		div class = "page-header" >
+		<
+		h1 > Exercício: < /h1> <
+		/div> <
+		div class = "box-content" >
+		<
+		div class = "form-horizontal" >
+		<?php
+		// Configurações iniciais
+		$cod = isset($_GET['id']) ? intval($_GET['id']) : 0;
+		$codd = isset($_SESSION['AlunoId']) ? intval($_SESSION['AlunoId']) : 0;
+
+		// Conexão com o banco de dados
+		include_once("conexao.php");
+
+		if ($conn->connect_error) {
+			die("Falha na conexão: " . $conn->connect_error);
+		}
+
+		$conn->set_charset("utf8");
+
+		$sql = "SELECT * FROM exercicios WHERE id = ?";
+		$stmt = $conn->prepare($sql);
+		$stmt->bind_param("i", $cod);
+		$stmt->execute();
+		$result = $stmt->get_result();
+
+		if ($result->num_rows > 0) {
+			while ($row = $result->fetch_assoc()) {
+				$pergunta = $row['pergunta'];
+				$tablatura = $row['tablatura'];
+				$dica = $row['dica'];
+				$a = $row['a'];
+				$b = $row['b'];
+				$c = $row['c'];
+				$d = $row['d'];
+				$resp = $row['resposta'];
+
+				echo '
                         <div id="questao">
                             <div class="form-group">
                                 <label>Enunciado</label>
@@ -173,17 +203,18 @@ session_start();
                         <input type="hidden" name="usr" id="usr" value="' . htmlspecialchars($codd, ENT_QUOTES, 'UTF-8') . '">
                         <input type="hidden" name="exe" id="exe" value="' . htmlspecialchars($cod, ENT_QUOTES, 'UTF-8') . '">
                         ';
-					}
-				} else {
-					echo "Nenhum exercício encontrado.";
-				}
+			}
+		} else {
+			echo "Nenhum exercício encontrado.";
+		}
 
-				$stmt->close();
-				$conn->close();
-				?>
-			</div>
-		</div>
-	</div>
-</body>
+		$stmt->close();
+		$conn->close();
+		?> <
+		/div> <
+		/div> <
+		/div> <
+		/body>
 
-</html>
+		<
+		/html>

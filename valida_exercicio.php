@@ -9,6 +9,7 @@ if (!isset($_SESSION['AlunoId'])) {
 
 include_once("conexao.php");
 
+
 $aluno = intval($_SESSION['AlunoId']);
 $exe = intval($_POST['exe']);
 $escolha = $_POST['escolha'];
@@ -35,5 +36,11 @@ if (!$stmt->execute()) {
 } else {
 	echo "Exercício atualizado com sucesso!";
 }
+if ($resultado === 1) {
+	echo "Acertou";
+} else {
+	echo "Errou";
+}
+
 $stmt->close();
 $conn->close();

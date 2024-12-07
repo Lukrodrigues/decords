@@ -24,8 +24,7 @@ if (!isset($_SESSION['AlunoEmail']) and !isset($_SESSION['AlunoSenha'])) {
 	<link href="css/style.css" rel="stylesheet">
 	<link href="css/signin.css" rel="stylesheet">
 	<link href="css/tabdiv.css" media="screen" rel="Stylesheet" type="text/css" />
-	<script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
-	<script src="js/jquery.min.js" defer></script>
+	<script src="js/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 	<script src="js/ie-emulation-modes-warning.js"></script>
 
@@ -143,23 +142,23 @@ if (!isset($_SESSION['AlunoEmail']) and !isset($_SESSION['AlunoSenha'])) {
 
 								// Exibir exercícios
 								echo '<tr>
-            <td>' . $numeracao . '</td>
-            <td>' . htmlspecialchars($pergunta, ENT_QUOTES, 'UTF-8') . '</td>
-            <td>' . ($status === 1 ? "Sim" : "Não") . '</td>
-            <td>' . $resultadoTexto . '</td>
-            <td><a href="' . $link . '"><button type="button" class="' . $botaocor . '">' . $botao . '</button></a></td>
-          </tr>';
+										<td>' . $numeracao . '</td>
+										<td>' . htmlspecialchars($pergunta, ENT_QUOTES, 'UTF-8') . '</td>
+										<td>' . ($status === 1 ? "Sim" : "Não") . '</td>
+										<td>' . $resultadoTexto . '</td>
+										<td><a href="' . $link . '"><button type="button" class="' . $botaocor . '">' . $botao . '</button></a></td>
+									</tr>';
 
 								$numeracao++;
 							}
 
 							// Verificar porcentagem de acertos no nível atual
 							$sqlAcertos = "
-    SELECT COUNT(*) AS total, 
-           SUM(CASE WHEN resultado = 1 THEN 1 ELSE 0 END) AS acertos 
-    FROM alunos_exercicios ae
-    INNER JOIN exercicios e ON ae.id_exercicios = e.id
-    WHERE ae.id_usuario = ? AND e.nivel = ? AND ae.status = 1";
+								SELECT COUNT(*) AS total, 
+								SUM(CASE WHEN resultado = 1 THEN 1 ELSE 0 END) AS acertos 
+								FROM alunos_exercicios ae
+								INNER JOIN exercicios e ON ae.id_exercicios = e.id
+								WHERE ae.id_usuario = ? AND e.nivel = ? AND ae.status = 1";
 							$stmt3 = $conn->prepare($sqlAcertos);
 							$stmt3->bind_param("ii", $aluno, $nivel);
 							$stmt3->execute();
@@ -167,18 +166,23 @@ if (!isset($_SESSION['AlunoEmail']) and !isset($_SESSION['AlunoSenha'])) {
 							$stmt3->fetch();
 							$stmt3->close();
 
-							$percentualAcertos = $total > 0 ? ($acertos / $total) * 100 : 0;
+							// Apenas exibir mensagem se o aluno tiver tentado pelo menos um exercício
+							if ($total > 0) {
+								$percentualAcertos = ($acertos / $total) * 100;
 
-							if ($percentualAcertos >= 60) {
-								$_SESSION['AlunoNivel'] = $nivel + 1;
-								echo "<div class='alert alert-success'>Parabéns! Você alcançou $percentualAcertos% de acertos e foi promovido ao próximo nível.</div>";
+								if ($percentualAcertos >= 60) {
+									$_SESSION['AlunoNivel'] = $nivel + 1;
+									echo "<div class='alert alert-success'>Parabéns! Você alcançou $percentualAcertos% de acertos e foi promovido ao próximo nível.</div>";
+								} else {
+									echo "<div class='alert alert-warning'>Você precisa de pelo menos 60% de acertos para avançar.</div>";
+								}
 							}
-
 
 							$conn->close();
 							?>
-
-							
 				</div>
 
+
 </body>
+
+</html>

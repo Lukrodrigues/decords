@@ -112,15 +112,15 @@ include_once("conexao.php");
 			</p>
 
 
-	</div> <!-- /container -->
-	<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-	<!--<script src="js/ie10-viewport-bug-workaround.js"></script>
-						</body>
+			<!-- </div>/container -->
+			<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+			<!--<script src="js/ie10-viewport-bug-workaround.js"></script>
+															</body>-->
 
-						<!-- <div class="vex-tabdiv" width=500 scale=1.0 editor="false" editor_height=100>
-						tabstave notation=false tablature=true
-						notes 4-5-6/3 ## | 5-4-2/3 2/2
-						</div> -->
+			<!-- <div class="vex-tabdiv" width=500 scale=1.0 editor="false" editor_height=100>
+							tabstave notation=false tablature=true
+							notes 4-5-6/3 ## | 5-4-2/3 2/2
+						 </div> -->
 
 </body>
 
