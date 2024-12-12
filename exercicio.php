@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <?php
+
 header('Content-Type: text/html; charset=utf-8');
 session_start();
 
@@ -33,51 +34,71 @@ if (!isset($_SESSION['AlunoId'])) {
 			display: none;
 		}
 	</style>
+
+
 	<script type="text/javascript">
-		// Função escolha para capturar a escolha do usuário
+		// Atualiza o valor do campo oculto quando uma opção é selecionada
 		function escolha() {
-			var nnn = getRadioValor('res'); // Obtém o valor da opção selecionada
-			document.getElementById('inf').value = nnn; // Atualiza o valor do campo oculto com a escolha
+			var valorSelecionado = getRadioValor('res');
+			document.getElementById('inf').value = valorSelecionado; // Atualiza o campo oculto
 		}
 
-		// Função para obter o valor do radio selecionado
+		// Obtém o valor do radio selecionado
 		function getRadioValor(name) {
-			var rads = document.getElementsByName(name); // Busca todos os radios com o nome "res"
-			for (var i = 0; i < rads.length; i++) {
-				if (rads[i].checked) {
-					return rads[i].value; // Retorna o valor da opção selecionada
+			var radios = document.getElementsByName(name); // Busca todos os radios com o nome especificado
+			for (var i = 0; i < radios.length; i++) {
+				if (radios[i].checked) {
+					return radios[i].value; // Retorna o valor da opção selecionada
 				}
 			}
-			return null; // Caso nenhuma opção seja selecionada, retorna null
+			return ""; // Retorna vazio se nenhuma opção for selecionada
 		}
 
-		let idExercicio = $('#exe').val();
-		let resposta = $('#inf').val();
-
-
-		if (!idExercicio || !resposta) {
-			alert("Por favor, selecione uma resposta e tente novamente.")
-			return false;
-		}
-
+		// Função chamada ao clicar no botão de "Responder"
 		function finaliza() {
-			console.log('Função finaliza chamada');
+			var idExercicio = document.getElementById('exe').value;
+			var resposta = document.getElementById('inf').value;
+
+			if (!resposta) {
+				alert("Por favor, selecione uma resposta antes de enviar.");
+				return;
+			}
+
+			console.log("Enviando dados:", {
+				id_exercicios: idExercicio,
+				resposta: resposta
+			});
+
 			$.ajax({
 				type: "POST",
 				url: "valida_exercicio.php",
 				data: {
-					id_exercicios: $('#exe').val(),
-					resposta: $('#inf').val()
+					id_exercicios: idExercicio,
+					resposta: resposta
 				},
 				success: function(data) {
-					console.log(data); // Exibe a resposta do servidor
+					console.log("Resposta do servidor:", data);
+					try {
+						var response = JSON.parse(data);
+						if (response.status === "success") {
+							document.getElementById('resolucao').innerHTML = "Resposta enviada com sucesso!";
+							document.getElementById('questao').style.display = 'none';
+						} else {
+							alert("Erro: " + response.message);
+						}
+					} catch (e) {
+						console.error("Erro ao processar a resposta:", e, data);
+						alert("Erro inesperado. Tente novamente.");
+					}
 				},
-				error: function() {
+				error: function(xhr, status, error) {
+					console.error("Erro na requisição:", error);
 					alert("Erro ao enviar a resposta. Tente novamente.");
 				}
 			});
 		}
 	</script>
+
 </head>
 
 <body>
