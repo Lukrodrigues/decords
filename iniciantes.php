@@ -15,7 +15,7 @@ if (!isset($_SESSION['AlunoEmail']) || !isset($_SESSION['AlunoSenha'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Decords Música e Teoria">
     <meta name="" content="Luciano Moraes Rodrigues">
-    <link rel="icon" href="img/favicon.ico">
+    <link rel="icon" href="img/favicon-96x96.png">
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
     <link href="css/signin.css" rel="stylesheet">

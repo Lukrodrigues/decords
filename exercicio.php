@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <?php
 
-header('Content-Type: text/html; charset=utf-8');
+header('Content-Type: text/html;application/json;charset=utf-8');
 session_start();
-
 // Verificar se o usuário está autenticado
 if (!isset($_SESSION['AlunoId'])) {
 	header("Location: index.php");
+	echo json_encode(['status' => 'error', 'message' => 'Usuário não autenticado.']);
 	exit;
 }
 ?>
@@ -17,7 +17,7 @@ if (!isset($_SESSION['AlunoId'])) {
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title>Decords Musica e Teoria</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="icon" href="img/favicon-96x96.png">
+	<link href="img/favicon-96x96.png" rel="icon">
 	<link href="css/bootstrap.min.css" rel="stylesheet">
 	<link href="css/bootstrap-theme.min.css" rel="stylesheet">
 	<link href="css/theme.css" rel="stylesheet">
@@ -68,7 +68,7 @@ if (!isset($_SESSION['AlunoId'])) {
 				id_exercicios: idExercicio,
 				resposta: resposta
 			});
-
+			/*
 			$.ajax({
 				type: "POST",
 				url: "valida_exercicio.php",
@@ -81,14 +81,95 @@ if (!isset($_SESSION['AlunoId'])) {
 					try {
 						var response = JSON.parse(data);
 						if (response.status === "success") {
-							document.getElementById('resolucao').innerHTML = "Resposta enviada com sucesso!";
-							document.getElementById('questao').style.display = 'none';
+							document.getElementById('resposta').innerHTML = "Resposta enviada com sucesso!";
+							document.getElementById('pergunta').style.display = 'none';
 						} else {
-							alert("Erro: " + response.message);
+							alert("Erro: " + data.message);
 						}
 					} catch (e) {
 						console.error("Erro ao processar a resposta:", e, data);
 						alert("Erro inesperado. Tente novamente.");
+					}
+				},
+
+				error: function(xhr, status, error) {
+					console.error("Erro na requisição:", error);
+					alert("Erro ao enviar a resposta. Tente novamente.");
+				}
+			});
+				*/
+			/*
+			$.ajax({
+				type: "POST",
+				url: "valida_exercicio.php",
+				data: {
+					id_exercicios: idExercicio,
+					resposta: resposta
+				},
+				dataType: "json",
+				success: function(response) {
+					console.log("Resposta do servidor:", response);
+
+					var respostaElement = document.getElementById('resposta');
+					var perguntaElement = document.getElementById('pergunta');
+
+					if (response.status === "success") {
+						if (respostaElement) {
+							respostaElement.innerHTML = "Resposta enviada com sucesso!";
+						} else {
+							console.error("Elemento com ID 'resposta' não encontrado.");
+						}
+
+						if (perguntaElement) {
+							perguntaElement.style.display = 'none';
+						} else {
+							console.error("Elemento com ID 'pergunta' não encontrado.");
+						}
+					} else {
+						alert("Erro: " + response.message);
+					}
+				},
+				error: function(xhr, status, error) {
+					console.error("Erro na requisição:", error);
+					alert("Erro ao enviar a resposta. Tente novamente.");
+				}
+			}); */
+
+
+			$.ajax({
+				type: "POST",
+				url: "valida_exercicio.php",
+				data: {
+					id_exercicios: idExercicio,
+					resposta: resposta
+				},
+				dataType: "json",
+				success: function(response) {
+					console.log("Resposta do servidor:", response);
+
+					// Garantir que o elemento 'resposta' exista
+					var respostaElement = document.getElementById('resposta');
+					if (!respostaElement) {
+						console.warn("Elemento com ID 'resposta' não encontrado. Criando elemento dinamicamente.");
+						respostaElement = document.createElement('div');
+						respostaElement.id = 'resposta';
+						document.body.appendChild(respostaElement); // Adicione no lugar apropriado
+					}
+
+					// Garantir que o elemento 'pergunta' exista
+					var perguntaElement = document.getElementById('pergunta');
+					if (!perguntaElement) {
+						console.warn("Elemento com ID 'pergunta' não encontrado.");
+					}
+
+					// Manipular os elementos encontrados ou criados
+					if (response.status === "success") {
+						respostaElement.innerHTML = "Resposta enviada com sucesso!";
+						if (perguntaElement) {
+							perguntaElement.style.display = 'none';
+						}
+					} else {
+						alert("Erro: " + response.message);
 					}
 				},
 				error: function(xhr, status, error) {
@@ -96,6 +177,8 @@ if (!isset($_SESSION['AlunoId'])) {
 					alert("Erro ao enviar a resposta. Tente novamente.");
 				}
 			});
+
+
 		}
 	</script>
 
