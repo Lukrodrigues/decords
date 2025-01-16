@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <?php
 
-header('Content-Type: text/html;application/json;charset=utf-8');
+header('Content-Type: text/html; charset=utf-8');
 session_start();
 // Verificar se o usuário está autenticado
 if (!isset($_SESSION['AlunoId'])) {
@@ -59,83 +59,13 @@ if (!isset($_SESSION['AlunoId'])) {
 			var idExercicio = document.getElementById('exe').value;
 			var resposta = document.getElementById('inf').value;
 
+
+
 			if (!resposta) {
 				alert("Por favor, selecione uma resposta antes de enviar.");
 				return;
 			}
-
-			console.log("Enviando dados:", {
-				id_exercicios: idExercicio,
-				resposta: resposta
-			});
 			/*
-			$.ajax({
-				type: "POST",
-				url: "valida_exercicio.php",
-				data: {
-					id_exercicios: idExercicio,
-					resposta: resposta
-				},
-				success: function(data) {
-					console.log("Resposta do servidor:", data);
-					try {
-						var response = JSON.parse(data);
-						if (response.status === "success") {
-							document.getElementById('resposta').innerHTML = "Resposta enviada com sucesso!";
-							document.getElementById('pergunta').style.display = 'none';
-						} else {
-							alert("Erro: " + data.message);
-						}
-					} catch (e) {
-						console.error("Erro ao processar a resposta:", e, data);
-						alert("Erro inesperado. Tente novamente.");
-					}
-				},
-
-				error: function(xhr, status, error) {
-					console.error("Erro na requisição:", error);
-					alert("Erro ao enviar a resposta. Tente novamente.");
-				}
-			});
-				*/
-			/*
-			$.ajax({
-				type: "POST",
-				url: "valida_exercicio.php",
-				data: {
-					id_exercicios: idExercicio,
-					resposta: resposta
-				},
-				dataType: "json",
-				success: function(response) {
-					console.log("Resposta do servidor:", response);
-
-					var respostaElement = document.getElementById('resposta');
-					var perguntaElement = document.getElementById('pergunta');
-
-					if (response.status === "success") {
-						if (respostaElement) {
-							respostaElement.innerHTML = "Resposta enviada com sucesso!";
-						} else {
-							console.error("Elemento com ID 'resposta' não encontrado.");
-						}
-
-						if (perguntaElement) {
-							perguntaElement.style.display = 'none';
-						} else {
-							console.error("Elemento com ID 'pergunta' não encontrado.");
-						}
-					} else {
-						alert("Erro: " + response.message);
-					}
-				},
-				error: function(xhr, status, error) {
-					console.error("Erro na requisição:", error);
-					alert("Erro ao enviar a resposta. Tente novamente.");
-				}
-			}); */
-
-
 			$.ajax({
 				type: "POST",
 				url: "valida_exercicio.php",
@@ -177,7 +107,75 @@ if (!isset($_SESSION['AlunoId'])) {
 					alert("Erro ao enviar a resposta. Tente novamente.");
 				}
 			});
+			*/
+			$.ajax({
+				type: "POST",
+				url: "valida_exercicio.php",
+				data: {
+					id_exercicios: idExercicio,
+					resposta: resposta
+				},
+				dataType: "json",
+				success: function(response) {
+					console.log("Resposta do servidor:", response);
 
+					// Local onde os elementos devem ser adicionados
+					/*	var container = document.getElementById('container');
+						if (!container) {
+							console.warn("Elemento com ID 'container' não encontrado. Criando elemento dinamicamente.");
+							container = document.createElement('div');
+							container.id = 'container';
+							document.body.appendChild(container); // Adiciona ao final do body
+						}
+						*/
+					// Garantir que o elemento 'resposta' exista
+					var respostaElement = document.getElementById('resposta');
+					if (!respostaElement) {
+						console.warn("Elemento com ID 'resposta' não encontrado. Criando elemento dinamicamente.");
+						respostaElement = document.createElement('div');
+						respostaElement.id = 'resposta';
+
+						// Adicione no local apropriado
+						var mainContent = document.querySelector('.theme-showcase'); // Seletor correto para o contexto
+						if (mainContent) {
+							mainContent.appendChild(respostaElement);
+						} else {
+							document.body.appendChild(respostaElement); // Adiciona ao body como último recurso
+						}
+					}
+
+
+					// Garantir que o elemento 'pergunta' exista
+					/*var perguntaElement = document.getElementById('pergunta');
+					if (!perguntaElement) {
+						console.warn("Elemento com ID 'pergunta' não encontrado. Criando elemento dinamicamente.");
+						perguntaElement = document.createElement('div');
+						perguntaElement.id = 'pergunta';
+						perguntaElement.innerHTML = "<p>Pergunta não definida no DOM.</p>";
+						container.appendChild(perguntaElement); // Adiciona dentro do contêiner
+					}*/
+					var perguntaElement = document.getElementById('pergunta'); // Verifique se o ID correto é usado
+					if (!perguntaElement) {
+						console.error("Elemento com ID 'questao' não encontrado. Verifique o código HTML/PHP.");
+					} else {
+						// Manipular o elemento encontrado
+						perguntaElement.style.display = 'none';
+					}
+					// Manipular os elementos encontrados ou criados
+					if (response.status === "success") {
+						respostaElement.innerHTML = "Resposta enviada com sucesso!";
+						if (perguntaElement) {
+							perguntaElement.style.display = 'none';
+						}
+					} else {
+						respostaElement.innerHTML = "Erro: " + response.message;
+					}
+				},
+				error: function(xhr, status, error) {
+					console.error("Erro na requisição:", error);
+					alert("Erro ao enviar a resposta. Tente novamente.");
+				}
+			});
 
 		}
 	</script>
@@ -199,6 +197,7 @@ if (!isset($_SESSION['AlunoId'])) {
 			<div class="form-horizontal">
 				<?php
 				// Obter o ID do exercício
+
 				$idExercicio = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 				$idAluno = $_SESSION['AlunoId'];
 
@@ -218,49 +217,32 @@ if (!isset($_SESSION['AlunoId'])) {
 
 				if ($result->num_rows > 0) {
 					$exercicio = $result->fetch_assoc();
-					echo '
-                        <div id="questao">
-                            <div class="form-group">
-                                <label>Enunciado:</label>
-                                <textarea readonly class="form-control" rows="3">' . htmlspecialchars($exercicio['pergunta'], ENT_QUOTES, 'UTF-8') . '</textarea>
-                                <div class="vex-tabdiv" width=500 scale=1.0 editor="false" editor_height=100>
-                                    ' . htmlspecialchars($exercicio['tablatura'], ENT_QUOTES, 'UTF-8') . '
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label>Opções:</label>
-                                <div class="radio">
-                                    <label>
-                                        <input type="radio" name="res" value="a" onclick="escolha()">a - ' . htmlspecialchars($exercicio['a'], ENT_QUOTES, 'UTF-8') . '
-                                    </label>
-                                </div>
-                                <div class="radio">
-                                    <label>
-                                        <input type="radio" name="res" value="b" onclick="escolha()">b - ' . htmlspecialchars($exercicio['b'], ENT_QUOTES, 'UTF-8') . '
-                                    </label>
-                                </div>
-                                <div class="radio">
-                                    <label>
-                                        <input type="radio" name="res" value="c" onclick="escolha()">c - ' . htmlspecialchars($exercicio['c'], ENT_QUOTES, 'UTF-8') . '
-                                    </label>
-                                </div>
-                                <div class="radio">
-                                    <label>
-                                        <input type="radio" name="res" value="d" onclick="escolha()">d - ' . htmlspecialchars($exercicio['d'], ENT_QUOTES, 'UTF-8') . '
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="form-actions">
-                                <button id="envio" type="button" class="btn btn-primary" onclick="finaliza()">Responder</button>
-                                <button class="btn btn-warning">Dica: ' . htmlspecialchars($exercicio['dica'], ENT_QUOTES, 'UTF-8') . '</button>
-                            </div>
-                        </div>
-                        <input type="hidden" id="inf" value="">
-                        <input type="hidden" id="resp" value="' . htmlspecialchars($exercicio['resposta'], ENT_QUOTES, 'UTF-8') . '">
-                        <input type="hidden" id="usr" value="' . htmlspecialchars($idAluno, ENT_QUOTES, 'UTF-8') . '">
-                        <input type="hidden" id="exe" value="' . htmlspecialchars($idExercicio, ENT_QUOTES, 'UTF-8') . '">
-                        <div id="resolucao"></div>
-                    ';
+				?>
+					<div id="pergunta">
+						<div class="form-group">
+							<label>Enunciado:</label>
+							<textarea readonly class="form-control" rows="3"><?php echo htmlspecialchars($exercicio['pergunta'], ENT_QUOTES, 'UTF-8'); ?></textarea>
+						</div>
+						<div class="form-group">
+							<label>Opções:</label>
+							<?php foreach (['a', 'b', 'c', 'd'] as $opcao): ?>
+								<div class="radio">
+									<label>
+										<input type="radio" name="res" value="<?php echo $opcao; ?>" onclick="escolha()">
+										<?php echo $opcao . ' - ' . htmlspecialchars($exercicio[$opcao], ENT_QUOTES, 'UTF-8'); ?>
+									</label>
+								</div>
+							<?php endforeach; ?>
+						</div>
+						<div class="form-actions">
+							<button id="envio" type="button" class="btn btn-primary" onclick="finaliza()">Responder</button>
+							<button class="btn btn-warning">Dica: <?php echo htmlspecialchars($exercicio['dica'], ENT_QUOTES, 'UTF-8'); ?></button>
+						</div>
+					</div>
+					<input type="hidden" id="inf" value="">
+					<input type="hidden" id="exe" value="<?php echo htmlspecialchars($idExercicio, ENT_QUOTES, 'UTF-8'); ?>">
+					<div id="resposta"></div>
+				<?php
 				} else {
 					echo "<div class='alert alert-danger'>Exercício não encontrado.</div>";
 				}
