@@ -1,5 +1,8 @@
 <?php
+// inicial.php
 session_start();
+$_SESSION['acertos'] = $_SESSION['acertos'] ?? 0;
+$_SESSION['total'] = $_SESSION['total'] ?? 0;
 
 // Limpa qualquer saída anterior e define o cabeçalho como JSON
 ob_clean();
@@ -76,6 +79,12 @@ try {
 	$resultado = strtolower(trim($resposta)) === strtolower(trim($respostaCorreta)) ? 1 : 2;
 	$mensagem = $resultado === 1 ? 'Resposta correta! Parabéns!' : 'Resposta incorreta. Tente novamente.';
 
+	// Atualiza as sessões de desempenho
+	$_SESSION['total']++;
+	if ($resultado === 1) {
+		$_SESSION['acertos']++;
+	}
+
 	// Atualiza ou insere o status do exercício
 	$sqlVerifica = "SELECT id FROM alunos_exercicios WHERE id_usuario = ? AND id_exercicios = ?";
 	$stmtVerifica = $conn->prepare($sqlVerifica);
@@ -101,7 +110,12 @@ try {
 	// Resposta final
 	$response = [
 		'status' => 'success',
-		'message' => $mensagem
+		'message' => $mensagem,
+		'performance' => [
+			'acertos' => $_SESSION['acertos'],
+			'total' => $_SESSION['total'],
+			'percentual' => round(($_SESSION['acertos'] / $_SESSION['total']) * 100, 2)
+		]
 	];
 } catch (Exception $e) {
 	$response = [

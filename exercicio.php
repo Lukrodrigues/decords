@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <?php
-
 header('Content-Type: text/html; charset=utf-8');
 session_start();
+
 // Verificar se o usuário está autenticado
 if (!isset($_SESSION['AlunoId'])) {
 	header("Location: index.php");
@@ -23,49 +23,46 @@ if (!isset($_SESSION['AlunoId'])) {
 	<link href="css/theme.css" rel="stylesheet">
 	<script src="js/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
-
-	<!-- Support partitura -->
-	<script src="js/partitura/vexflow-min.js"></script>
-	<script src="js/partitura/underscore-min.js"></script>
-	<script src="js/partitura/tabdiv-min.js"></script>
-	<!-- Support partitura -->
 	<style>
 		#continua {
 			display: none;
 		}
+
+		.certo {
+			background-color: green;
+			color: white;
+		}
+
+		.errado {
+			background-color: red;
+			color: white;
+		}
 	</style>
-
-
 	<script type="text/javascript">
-		// Atualiza o valor do campo oculto quando uma opção é selecionada
 		function escolha() {
 			var valorSelecionado = getRadioValor('res');
-			document.getElementById('inf').value = valorSelecionado; // Atualiza o campo oculto
+			document.getElementById('inf').value = valorSelecionado;
 		}
 
-		// Obtém o valor do radio selecionado
 		function getRadioValor(name) {
-			var radios = document.getElementsByName(name); // Busca todos os radios com o nome especificado
+			var radios = document.getElementsByName(name);
 			for (var i = 0; i < radios.length; i++) {
 				if (radios[i].checked) {
-					return radios[i].value; // Retorna o valor da opção selecionada
+					return radios[i].value;
 				}
 			}
-			return ""; // Retorna vazio se nenhuma opção for selecionada
+			return "";
 		}
 
-		// Função chamada ao clicar no botão de "Responder"
 		function finaliza() {
 			var idExercicio = document.getElementById('exe').value;
 			var resposta = document.getElementById('inf').value;
-
-
 
 			if (!resposta) {
 				alert("Por favor, selecione uma resposta antes de enviar.");
 				return;
 			}
-			/*
+
 			$.ajax({
 				type: "POST",
 				url: "valida_exercicio.php",
@@ -75,111 +72,29 @@ if (!isset($_SESSION['AlunoId'])) {
 				},
 				dataType: "json",
 				success: function(response) {
-					console.log("Resposta do servidor:", response);
-
-					// Garantir que o elemento 'resposta' exista
 					var respostaElement = document.getElementById('resposta');
 					if (!respostaElement) {
-						console.warn("Elemento com ID 'resposta' não encontrado. Criando elemento dinamicamente.");
 						respostaElement = document.createElement('div');
 						respostaElement.id = 'resposta';
-						document.body.appendChild(respostaElement); // Adicione no lugar apropriado
+						document.body.appendChild(respostaElement);
 					}
 
-					// Garantir que o elemento 'pergunta' exista
-					var perguntaElement = document.getElementById('pergunta');
-					if (!perguntaElement) {
-						console.warn("Elemento com ID 'pergunta' não encontrado.");
-					}
-
-					// Manipular os elementos encontrados ou criados
 					if (response.status === "success") {
 						respostaElement.innerHTML = "Resposta enviada com sucesso!";
-						if (perguntaElement) {
-							perguntaElement.style.display = 'none';
-						}
-					} else {
-						alert("Erro: " + response.message);
-					}
-				},
-				error: function(xhr, status, error) {
-					console.error("Erro na requisição:", error);
-					alert("Erro ao enviar a resposta. Tente novamente.");
-				}
-			});
-			*/
-			$.ajax({
-				type: "POST",
-				url: "valida_exercicio.php",
-				data: {
-					id_exercicios: idExercicio,
-					resposta: resposta
-				},
-				dataType: "json",
-				success: function(response) {
-					console.log("Resposta do servidor:", response);
-
-					// Local onde os elementos devem ser adicionados
-					/*	var container = document.getElementById('container');
-						if (!container) {
-							console.warn("Elemento com ID 'container' não encontrado. Criando elemento dinamicamente.");
-							container = document.createElement('div');
-							container.id = 'container';
-							document.body.appendChild(container); // Adiciona ao final do body
-						}
-						*/
-					// Garantir que o elemento 'resposta' exista
-					var respostaElement = document.getElementById('resposta');
-					if (!respostaElement) {
-						console.warn("Elemento com ID 'resposta' não encontrado. Criando elemento dinamicamente.");
-						respostaElement = document.createElement('div');
-						respostaElement.id = 'resposta';
-
-						// Adicione no local apropriado
-						var mainContent = document.querySelector('.theme-showcase'); // Seletor correto para o contexto
-						if (mainContent) {
-							mainContent.appendChild(respostaElement);
-						} else {
-							document.body.appendChild(respostaElement); // Adiciona ao body como último recurso
-						}
-					}
-
-
-					// Garantir que o elemento 'pergunta' exista
-					/*var perguntaElement = document.getElementById('pergunta');
-					if (!perguntaElement) {
-						console.warn("Elemento com ID 'pergunta' não encontrado. Criando elemento dinamicamente.");
-						perguntaElement = document.createElement('div');
-						perguntaElement.id = 'pergunta';
-						perguntaElement.innerHTML = "<p>Pergunta não definida no DOM.</p>";
-						container.appendChild(perguntaElement); // Adiciona dentro do contêiner
-					}*/
-					var perguntaElement = document.getElementById('pergunta'); // Verifique se o ID correto é usado
-					if (!perguntaElement) {
-						console.error("Elemento com ID 'questao' não encontrado. Verifique o código HTML/PHP.");
-					} else {
-						// Manipular o elemento encontrado
-						perguntaElement.style.display = 'none';
-					}
-					// Manipular os elementos encontrados ou criados
-					if (response.status === "success") {
-						respostaElement.innerHTML = "Resposta enviada com sucesso!";
-						if (perguntaElement) {
-							perguntaElement.style.display = 'none';
-						}
+						respostaElement.classList.add(response.resultado === "certo" ? "certo" : "errado");
+						setTimeout(() => {
+							window.location.href = "exercicio.php?id=" + response.proximo_id;
+						}, 2000);
 					} else {
 						respostaElement.innerHTML = "Erro: " + response.message;
 					}
 				},
 				error: function(xhr, status, error) {
-					console.error("Erro na requisição:", error);
 					alert("Erro ao enviar a resposta. Tente novamente.");
 				}
 			});
-
 		}
 	</script>
-
 </head>
 
 <body>
@@ -196,8 +111,6 @@ if (!isset($_SESSION['AlunoId'])) {
 		<div class="box-content">
 			<div class="form-horizontal">
 				<?php
-				// Obter o ID do exercício
-
 				$idExercicio = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 				$idAluno = $_SESSION['AlunoId'];
 
@@ -208,8 +121,7 @@ if (!isset($_SESSION['AlunoId'])) {
 
 				include_once("conexao.php");
 
-				// Buscar o exercício
-				$sql = "SELECT pergunta, tablatura, dica, a, b, c, d, resposta FROM exercicios WHERE id = ?";
+				$sql = "SELECT id, pergunta, tablatura, dica, a, b, c, d, resposta FROM exercicios WHERE id = ?";
 				$stmt = $conn->prepare($sql);
 				$stmt->bind_param("i", $idExercicio);
 				$stmt->execute();
