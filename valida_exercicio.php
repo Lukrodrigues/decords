@@ -1,5 +1,5 @@
 <?php
-// inicial.php
+// Inicializa a sessão
 session_start();
 $_SESSION['acertos'] = $_SESSION['acertos'] ?? 0;
 $_SESSION['total'] = $_SESSION['total'] ?? 0;
@@ -42,11 +42,7 @@ try {
 	if (!$idExercicio || !$resposta) {
 		$response = [
 			'status' => 'error',
-			'message' => 'Dados inválidos fornecidos.',
-			'debug' => [
-				'id_exercicios' => $idExercicio,
-				'resposta' => $resposta
-			]
+			'message' => 'Dados inválidos fornecidos.'
 		];
 		echo json_encode($response);
 		exit;
@@ -77,7 +73,7 @@ try {
 
 	// Determina o resultado
 	$resultado = strtolower(trim($resposta)) === strtolower(trim($respostaCorreta)) ? 1 : 2;
-	$mensagem = $resultado === 1 ? 'Resposta correta! Parabéns!' : 'Resposta incorreta. Tente novamente.';
+	$mensagem = $resultado === 1 ? 'Resposta correta! Parabéns!' : 'Resposta incorreta. Não desista!';
 
 	// Atualiza as sessões de desempenho
 	$_SESSION['total']++;
@@ -94,29 +90,52 @@ try {
 
 	if ($stmtVerifica->num_rows > 0) {
 		$sql = "UPDATE alunos_exercicios SET resultado = ?, status = 1 WHERE id_usuario = ? AND id_exercicios = ?";
+		$stmt = $conn->prepare($sql);
+		$stmt->bind_param("iii", $resultado, $idUsuario, $idExercicio);
 	} else {
 		$sql = "INSERT INTO alunos_exercicios (id_usuario, id_exercicios, resultado, status) VALUES (?, ?, ?, 1)";
+		$stmt = $conn->prepare($sql);
+		$stmt->bind_param("iii", $idUsuario, $idExercicio, $resultado);
 	}
 	$stmtVerifica->close();
 
-	$stmt = $conn->prepare($sql);
-	if ($stmt->bind_param("iii", $resultado, $idUsuario, $idExercicio)) {
+	if ($stmt) {
 		$stmt->execute();
 		$stmt->close();
 	} else {
 		throw new Exception('Erro ao preparar consulta.');
 	}
 
-	// Resposta final
-	$response = [
-		'status' => 'success',
-		'message' => $mensagem,
-		'performance' => [
-			'acertos' => $_SESSION['acertos'],
-			'total' => $_SESSION['total'],
-			'percentual' => round(($_SESSION['acertos'] / $_SESSION['total']) * 100, 2)
-		]
-	];
+	// Verifica se concluiu o nível
+	$percentual = round(($_SESSION['acertos'] / $_SESSION['total']) * 100, 2);
+	if ($_SESSION['total'] === 10) { // Supondo 5 perguntas no nível
+		if ($percentual >= 60) {
+			$response = [
+				'status' => 'success',
+				'message' => 'Parabéns! Você concluiu o nível com sucesso.',
+				'redirect' => 'intermediarios.php'
+			];
+		} else {
+			// Reseta progresso
+			$_SESSION['acertos'] = 0;
+			$_SESSION['total'] = 0;
+			$response = [
+				'status' => 'retry',
+				'message' => 'Tente novamente o nível. Você não atingiu o percentual desejado.',
+				'reset' => true
+			];
+		}
+	} else {
+		$response = [
+			'status' => 'success',
+			'message' => $mensagem,
+			'performance' => [
+				'acertos' => $_SESSION['acertos'],
+				'total' => $_SESSION['total'],
+				'percentual' => $percentual
+			]
+		];
+	}
 } catch (Exception $e) {
 	$response = [
 		'status' => 'error',

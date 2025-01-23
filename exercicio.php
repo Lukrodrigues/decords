@@ -1,170 +1,194 @@
-<!DOCTYPE html>
 <?php
-header('Content-Type: text/html; charset=utf-8');
 session_start();
-
-// Verificar se o usuário está autenticado
-if (!isset($_SESSION['AlunoId'])) {
+if (!isset($_SESSION['AlunoEmail']) || !isset($_SESSION['AlunoSenha'])) {
 	header("Location: index.php");
-	echo json_encode(['status' => 'error', 'message' => 'Usuário não autenticado.']);
 	exit;
 }
+
+if (!isset($_GET['id']) || !filter_var($_GET['id'], FILTER_VALIDATE_INT)) {
+	header("Location: iniciantes.php");
+	exit;
+}
+
+include_once("conexao.php");
+
+$idExercicio = intval($_GET['id']);
+
+// Consulta o exercício e suas opções diretamente da tabela `exercicios`
+$sqlExercicio = "
+    SELECT pergunta, resposta, a, b, c, d, dica, nivel 
+    FROM exercicios 
+    WHERE id = ?";
+$stmtExercicio = $conn->prepare($sqlExercicio);
+$stmtExercicio->bind_param("i", $idExercicio);
+$stmtExercicio->execute();
+$result = $stmtExercicio->get_result();
+
+$exercicio = $result->fetch_assoc();
+$stmtExercicio->close();
+
+if (!$exercicio) {
+	header("Location: iniciantes.php");
+	exit;
+}
+
+$pergunta = $exercicio['pergunta'];
+$dica = $exercicio['dica'];
+$nivel = $exercicio['nivel'];
+$opcoes = [
+	'a' => $exercicio['a'],
+	'b' => $exercicio['b'],
+	'c' => $exercicio['c'],
+	'd' => $exercicio['d']
+];
 ?>
+
+<!DOCTYPE html>
 <html lang="pt-br">
 
 <head>
-	<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Decords Musica e Teoria</title>
+	<title>Responder Exercício</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link href="img/favicon-96x96.png" rel="icon">
+	<meta name="description" content="Decords Música e Teoria">
+	<link rel="icon" href="img/favicon-96x96.png">
 	<link href="css/bootstrap.min.css" rel="stylesheet">
-	<link href="css/bootstrap-theme.min.css" rel="stylesheet">
-	<link href="css/theme.css" rel="stylesheet">
+	<link href="css/style.css" rel="stylesheet">
 	<script src="js/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 	<style>
-		#continua {
-			display: none;
+		body {
+			background-color: #f8f9fa;
 		}
 
-		.certo {
-			background-color: green;
-			color: white;
+		.card {
+			margin-top: 30px;
+			border: none;
+			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 		}
 
-		.errado {
-			background-color: red;
-			color: white;
+		.btn-primary {
+			background-color: #007bff;
+			border-color: #007bff;
+		}
+
+		.btn-primary:hover {
+			background-color: #0056b3;
+			border-color: #004085;
+		}
+
+		#feedback {
+			margin-top: 20px;
+		}
+
+		.form-check-label {
+			font-size: 1.2em;
+			margin-left: 10px;
 		}
 	</style>
-	<script type="text/javascript">
-		function escolha() {
-			var valorSelecionado = getRadioValor('res');
-			document.getElementById('inf').value = valorSelecionado;
-		}
-
-		function getRadioValor(name) {
-			var radios = document.getElementsByName(name);
-			for (var i = 0; i < radios.length; i++) {
-				if (radios[i].checked) {
-					return radios[i].value;
-				}
-			}
-			return "";
-		}
-
-		function finaliza() {
-			var idExercicio = document.getElementById('exe').value;
-			var resposta = document.getElementById('inf').value;
-
-			if (!resposta) {
-				alert("Por favor, selecione uma resposta antes de enviar.");
-				return;
-			}
-
-			$.ajax({
-				type: "POST",
-				url: "valida_exercicio.php",
-				data: {
-					id_exercicios: idExercicio,
-					resposta: resposta
-				},
-				dataType: "json",
-				success: function(response) {
-					var respostaElement = document.getElementById('resposta');
-					if (!respostaElement) {
-						respostaElement = document.createElement('div');
-						respostaElement.id = 'resposta';
-						document.body.appendChild(respostaElement);
-					}
-
-					if (response.status === "success") {
-						respostaElement.innerHTML = "Resposta enviada com sucesso!";
-						respostaElement.classList.add(response.resultado === "certo" ? "certo" : "errado");
-						setTimeout(() => {
-							window.location.href = "exercicio.php?id=" + response.proximo_id;
-						}, 2000);
-					} else {
-						respostaElement.innerHTML = "Erro: " + response.message;
-					}
-				},
-				error: function(xhr, status, error) {
-					alert("Erro ao enviar a resposta. Tente novamente.");
-				}
-			});
-		}
-	</script>
 </head>
 
 <body>
-	<nav class="navbar navbar-inverse navbar-fixed-top">
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 		<div class="container">
-			<a class="navbar-brand" href="iniciantes.php">Voltar</a>
+			<a class="navbar-brand" href="index.php">Decords Música</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarNav">
+				<ul class="navbar-nav ml-auto">
+					<li class="nav-item">
+						<a class="nav-link" href="Login.php">Sair</a>
+					</li>
+				</ul>
+			</div>
 		</div>
 	</nav>
 
-	<div class="container theme-showcase" style="margin-top: 70px;" role="main">
-		<div class="page-header">
-			<h1>Exercício:</h1>
-		</div>
-		<div class="box-content">
-			<div class="form-horizontal">
-				<?php
-				$idExercicio = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
-				$idAluno = $_SESSION['AlunoId'];
+	<div class="container">
+		<div class="card">
+			<div class="card-body">
+				<h1 class="card-title text-center">Responder Exercício</h1>
+				<hr>
 
-				if (!$idExercicio) {
-					echo "<div class='alert alert-danger'>Exercício inválido.</div>";
-					exit;
-				}
+				<form id="formExercicio" method="POST">
+					<div class="form-group">
+						<h4 class="card-text">Pergunta:</h4>
+						<p class="lead"><strong><?php echo htmlspecialchars($pergunta, ENT_QUOTES, 'UTF-8'); ?></strong></p>
+					</div>
 
-				include_once("conexao.php");
-
-				$sql = "SELECT id, pergunta, tablatura, dica, a, b, c, d, resposta FROM exercicios WHERE id = ?";
-				$stmt = $conn->prepare($sql);
-				$stmt->bind_param("i", $idExercicio);
-				$stmt->execute();
-				$result = $stmt->get_result();
-
-				if ($result->num_rows > 0) {
-					$exercicio = $result->fetch_assoc();
-				?>
-					<div id="pergunta">
-						<div class="form-group">
-							<label>Enunciado:</label>
-							<textarea readonly class="form-control" rows="3"><?php echo htmlspecialchars($exercicio['pergunta'], ENT_QUOTES, 'UTF-8'); ?></textarea>
-						</div>
-						<div class="form-group">
-							<label>Opções:</label>
-							<?php foreach (['a', 'b', 'c', 'd'] as $opcao): ?>
-								<div class="radio">
-									<label>
-										<input type="radio" name="res" value="<?php echo $opcao; ?>" onclick="escolha()">
-										<?php echo $opcao . ' - ' . htmlspecialchars($exercicio[$opcao], ENT_QUOTES, 'UTF-8'); ?>
+					<div class="form-group">
+						<h5 class="card-text">Escolha uma opção:</h5>
+						<div id="opcoes">
+							<?php foreach ($opcoes as $letra => $descricao) : ?>
+								<div class="form-check">
+									<input
+										class="form-check-input"
+										type="radio"
+										name="resposta"
+										id="opcao-<?php echo $letra; ?>"
+										value="<?php echo $letra; ?>"
+										required>
+									<label class="form-check-label" for="opcao-<?php echo $letra; ?>">
+										<?php echo htmlspecialchars($descricao, ENT_QUOTES, 'UTF-8'); ?>
 									</label>
 								</div>
 							<?php endforeach; ?>
 						</div>
-						<div class="form-actions">
-							<button id="envio" type="button" class="btn btn-primary" onclick="finaliza()">Responder</button>
-							<button class="btn btn-warning">Dica: <?php echo htmlspecialchars($exercicio['dica'], ENT_QUOTES, 'UTF-8'); ?></button>
-						</div>
 					</div>
-					<input type="hidden" id="inf" value="">
-					<input type="hidden" id="exe" value="<?php echo htmlspecialchars($idExercicio, ENT_QUOTES, 'UTF-8'); ?>">
-					<div id="resposta"></div>
-				<?php
-				} else {
-					echo "<div class='alert alert-danger'>Exercício não encontrado.</div>";
-				}
 
-				$stmt->close();
-				$conn->close();
-				?>
+					<div class="form-group">
+						<h6><strong>Dica:</strong></h6>
+						<p class="text-muted"><?php echo htmlspecialchars($dica, ENT_QUOTES, 'UTF-8'); ?></p>
+					</div>
+
+					<input type="hidden" id="id_exercicios" name="id_exercicios" value="<?php echo $idExercicio; ?>">
+					<button type="submit" class="btn btn-primary btn-lg btn-block">Enviar Resposta</button>
+				</form>
+
+				<div id="feedback" class="alert alert-dismissible" style="display: none;"></div>
 			</div>
 		</div>
 	</div>
+
+	<script>
+		$(document).ready(function() {
+			$('#formExercicio').on('submit', function(e) {
+				e.preventDefault();
+
+				$.ajax({
+					url: 'valida_exercicio.php',
+					type: 'POST',
+					data: $(this).serialize(),
+					dataType: 'json',
+					success: function(response) {
+						const feedback = $('#feedback');
+						feedback.removeClass('alert-success alert-danger alert-warning');
+						feedback.addClass(response.status === 'success' ? 'alert-success' : 'alert-danger');
+						feedback.text(response.message).fadeIn();
+
+						if (response.status === 'success') {
+							if (response.performance.percentual >= 60) {
+								feedback.append("<p><strong>Parabéns!</strong> Você concluiu o nível com sucesso. Redirecionando...</p>");
+								setTimeout(() => {
+									window.location.href = 'intermediarios.php';
+								}, 3000);
+							} else {
+								feedback.append("<p><strong>Tente novamente!</strong> Você não alcançou a meta para passar. Redefinindo o nível...</p>");
+								setTimeout(() => {
+									window.location.reload();
+								}, 3000);
+							}
+						}
+					},
+					error: function() {
+						alert('Ocorreu um erro inesperado. Por favor, tente novamente.');
+					}
+				});
+			});
+		});
+	</script>
 </body>
 
 </html>
