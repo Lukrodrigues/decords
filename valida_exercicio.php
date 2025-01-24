@@ -1,149 +1,97 @@
 <?php
-// Inicializa a sessão
 session_start();
-$_SESSION['acertos'] = $_SESSION['acertos'] ?? 0;
-$_SESSION['total'] = $_SESSION['total'] ?? 0;
+include_once("conexao.php");
 
-// Limpa qualquer saída anterior e define o cabeçalho como JSON
-ob_clean();
 header('Content-Type: application/json');
 
-// Array de resposta padrão
-$response = [];
-
-try {
-	// Verifica se o usuário está autenticado
-	if (!isset($_SESSION['AlunoId'])) {
-		$response = [
-			'status' => 'error',
-			'message' => 'Usuário não autenticado.'
-		];
-		echo json_encode($response);
-		exit;
-	}
-
-	// Verifica o método HTTP
-	if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-		$response = [
-			'status' => 'error',
-			'message' => 'Método inválido. Apenas POST é permitido.'
-		];
-		echo json_encode($response);
-		exit;
-	}
-
-	// Inclui a conexão com o banco de dados
-	include_once("conexao.php");
-
-	// Validação dos dados recebidos
-	$idExercicio = isset($_POST['id_exercicios']) ? intval($_POST['id_exercicios']) : null;
-	$resposta = isset($_POST['resposta']) ? trim($_POST['resposta']) : null;
-
-	if (!$idExercicio || !$resposta) {
-		$response = [
-			'status' => 'error',
-			'message' => 'Dados inválidos fornecidos.'
-		];
-		echo json_encode($response);
-		exit;
-	}
-
-	// Conexão com o banco e lógica de validação
-	$idUsuario = intval($_SESSION['AlunoId']);
-
-	// Verifica se o exercício existe
-	$sqlExercicio = "SELECT resposta FROM exercicios WHERE id = ?";
-	$stmtExercicio = $conn->prepare($sqlExercicio);
-	$stmtExercicio->bind_param("i", $idExercicio);
-	$stmtExercicio->execute();
-	$stmtExercicio->store_result();
-
-	if ($stmtExercicio->num_rows === 0) {
-		$response = [
-			'status' => 'error',
-			'message' => 'Exercício não encontrado.'
-		];
-		echo json_encode($response);
-		exit;
-	}
-
-	$stmtExercicio->bind_result($respostaCorreta);
-	$stmtExercicio->fetch();
-	$stmtExercicio->close();
-
-	// Determina o resultado
-	$resultado = strtolower(trim($resposta)) === strtolower(trim($respostaCorreta)) ? 1 : 2;
-	$mensagem = $resultado === 1 ? 'Resposta correta! Parabéns!' : 'Resposta incorreta. Não desista!';
-
-	// Atualiza as sessões de desempenho
-	$_SESSION['total']++;
-	if ($resultado === 1) {
-		$_SESSION['acertos']++;
-	}
-
-	// Atualiza ou insere o status do exercício
-	$sqlVerifica = "SELECT id FROM alunos_exercicios WHERE id_usuario = ? AND id_exercicios = ?";
-	$stmtVerifica = $conn->prepare($sqlVerifica);
-	$stmtVerifica->bind_param("ii", $idUsuario, $idExercicio);
-	$stmtVerifica->execute();
-	$stmtVerifica->store_result();
-
-	if ($stmtVerifica->num_rows > 0) {
-		$sql = "UPDATE alunos_exercicios SET resultado = ?, status = 1 WHERE id_usuario = ? AND id_exercicios = ?";
-		$stmt = $conn->prepare($sql);
-		$stmt->bind_param("iii", $resultado, $idUsuario, $idExercicio);
-	} else {
-		$sql = "INSERT INTO alunos_exercicios (id_usuario, id_exercicios, resultado, status) VALUES (?, ?, ?, 1)";
-		$stmt = $conn->prepare($sql);
-		$stmt->bind_param("iii", $idUsuario, $idExercicio, $resultado);
-	}
-	$stmtVerifica->close();
-
-	if ($stmt) {
-		$stmt->execute();
-		$stmt->close();
-	} else {
-		throw new Exception('Erro ao preparar consulta.');
-	}
-
-	// Verifica se concluiu o nível
-	$percentual = round(($_SESSION['acertos'] / $_SESSION['total']) * 100, 2);
-	if ($_SESSION['total'] === 10) { // Supondo 5 perguntas no nível
-		if ($percentual >= 60) {
-			$response = [
-				'status' => 'success',
-				'message' => 'Parabéns! Você concluiu o nível com sucesso.',
-				'redirect' => 'intermediarios.php'
-			];
-		} else {
-			// Reseta progresso
-			$_SESSION['acertos'] = 0;
-			$_SESSION['total'] = 0;
-			$response = [
-				'status' => 'retry',
-				'message' => 'Tente novamente o nível. Você não atingiu o percentual desejado.',
-				'reset' => true
-			];
-		}
-	} else {
-		$response = [
-			'status' => 'success',
-			'message' => $mensagem,
-			'performance' => [
-				'acertos' => $_SESSION['acertos'],
-				'total' => $_SESSION['total'],
-				'percentual' => $percentual
-			]
-		];
-	}
-} catch (Exception $e) {
-	$response = [
+// Verifica se os dados necessários foram enviados
+if (!isset($_POST['id_exercicios'], $_POST['resposta'])) {
+	echo json_encode([
 		'status' => 'error',
-		'message' => 'Erro interno.',
-		'debug' => $e->getMessage()
-	];
+		'message' => 'Dados inválidos ou incompletos.'
+	]);
+	exit;
 }
 
-// Envia a resposta JSON
-echo json_encode($response);
-exit;
+// Captura os dados
+$idExercicio = intval($_POST['id_exercicios']);
+$respostaAluno = $_POST['resposta'];
+$alunoId = $_SESSION['AlunoId'] ?? null;
+$nivelAtual = $_SESSION['AlunoNivel'] ?? 1;
+
+// Verifica se o aluno está logado
+if (!$alunoId) {
+	echo json_encode([
+		'status' => 'error',
+		'message' => 'Você não está logado.'
+	]);
+	exit;
+}
+
+// Consulta a resposta correta
+$sqlResposta = "SELECT resposta FROM exercicios WHERE id = ?";
+$stmtResposta = $conn->prepare($sqlResposta);
+$stmtResposta->bind_param("i", $idExercicio);
+$stmtResposta->execute();
+$result = $stmtResposta->get_result();
+$respostaCorreta = $result->fetch_assoc()['resposta'];
+$stmtResposta->close();
+
+if (!$respostaCorreta) {
+	echo json_encode([
+		'status' => 'error',
+		'message' => 'Exercício não encontrado.'
+	]);
+	exit;
+}
+
+// Verifica a resposta e registra no banco
+$resultado = ($respostaAluno === $respostaCorreta) ? 1 : 2;
+$sqlRegistro = "
+    INSERT INTO alunos_exercicios (id_usuario, id_exercicios, resultado, status)
+    VALUES (?, ?, ?, 1)
+    ON DUPLICATE KEY UPDATE resultado = VALUES(resultado), status = 1";
+$stmtRegistro = $conn->prepare($sqlRegistro);
+$stmtRegistro->bind_param("iii", $alunoId, $idExercicio, $resultado);
+$stmtRegistro->execute();
+$stmtRegistro->close();
+
+// Calcula o desempenho do aluno no nível atual
+$sqlDesempenho = "
+    SELECT COUNT(*) AS total,
+           SUM(CASE WHEN resultado = 1 THEN 1 ELSE 0 END) AS acertos
+    FROM alunos_exercicios ae
+    INNER JOIN exercicios e ON ae.id_exercicios = e.id
+    WHERE ae.id_usuario = ? AND e.nivel = ? AND ae.status = 1";
+$stmtDesempenho = $conn->prepare($sqlDesempenho);
+$stmtDesempenho->bind_param("ii", $alunoId, $nivelAtual);
+$stmtDesempenho->execute();
+$stmtDesempenho->bind_result($totalExercicios, $totalAcertos);
+$stmtDesempenho->fetch();
+$stmtDesempenho->close();
+
+// Calcula percentual de acertos
+$percentualAcertos = ($totalExercicios > 0) ? ($totalAcertos / $totalExercicios) * 100 : 0;
+
+// Verifica se o aluno concluiu o nível
+if ($totalExercicios > 0 && $percentualAcertos >= 60) {
+	// Atualiza o nível do aluno para o próximo
+	$_SESSION['AlunoNivel'] = $nivelAtual + 1;
+
+	echo json_encode([
+		'status' => 'success',
+		'message' => 'Parabéns! Você atingiu a pontuação necessária e avançará para o próximo nível!',
+		'redirect' => 'intermediarios.php' // Define o redirecionamento
+	]);
+} else if ($totalExercicios > 0) {
+	// Mostra mensagem de desempenho insuficiente
+	echo json_encode([
+		'status' => 'error',
+		'message' => 'Infelizmente, você não atingiu a pontuação necessária para avançar para o próximo nível.'
+	]);
+} else {
+	echo json_encode([
+		'status' => 'error',
+		'message' => 'Nenhum exercício encontrado no nível atual.'
+	]);
+}

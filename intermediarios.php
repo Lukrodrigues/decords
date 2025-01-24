@@ -1,159 +1,159 @@
 <!DOCTYPE html>
 <?php
-header('Content-Type: text/html; charset=utf-8');
- 	session_start();
-	if (!isset ($_SESSION['AlunoEmail'])and !isset ($_SESSION['AlunoSenha'])){
-	echo "é necessario login";
-	header ("Location: index.php");
-	exit;
-	}
+session_start();
+if (!isset($_SESSION['AlunoEmail']) || !isset($_SESSION['AlunoSenha'])) {
+    header("Location: index.php");
+    exit;
+}
+
+if (isset($_GET['logout'])) {
+    session_destroy();
+    header("Location: login.php");
+    exit;
+}
+
+include_once("conexao.php");
+
+$aluno = filter_var($_SESSION['AlunoId'], FILTER_VALIDATE_INT);
+$nivel = $_SESSION['AlunoNivel'] ?? 1;
+
+// Consultar desempenho geral no nível atual
+$sqlDesempenho = "
+    SELECT COUNT(*) AS total,
+           SUM(CASE WHEN resultado = 1 THEN 1 ELSE 0 END) AS acertos
+    FROM alunos_exercicios ae
+    INNER JOIN exercicios e ON ae.id_exercicios = e.id
+    WHERE ae.id_usuario = ? AND e.nivel = ? AND ae.status = 1";
+$stmtDesempenho = $conn->prepare($sqlDesempenho);
+$stmtDesempenho->bind_param("ii", $aluno, $nivel);
+$stmtDesempenho->execute();
+$stmtDesempenho->bind_result($total, $acertos);
+$stmtDesempenho->fetch();
+$stmtDesempenho->close();
+
+if ($total > 0) {
+    $percentualAcertos = ($acertos / $total) * 100;
+
+    // Redireciona para intermediarios.php se atingir 60% ou mais
+    if ($total === 10 && $percentualAcertos >= 60) {
+        header("Location: Intermediarios.php");
+        exit;
+    }
+
+    // Exibir mensagens de desempenho
+    $desempenhoMsg = "<div class='alert alert-info'>
+                        <strong>Total de Exercícios:</strong> $total<br>
+                        <strong>Acertos:</strong> $acertos<br>
+                        <strong>Percentual de Acertos:</strong> " . round($percentualAcertos, 2) . "%
+                      </div>";
+
+    if ($total === 10 && $percentualAcertos < 60) {
+        $desempenhoMsg .= "<div class='alert alert-warning'>Você precisa de pelo menos 60% de acertos para avançar. Progresso reiniciado!</div>";
+        $sqlReset = "DELETE FROM alunos_exercicios WHERE id_usuario = ? AND id_exercicios IN (SELECT id FROM exercicios WHERE nivel = ?)";
+        $stmtReset = $conn->prepare($sqlReset);
+        $stmtReset->bind_param("ii", $aluno, $nivel);
+        $stmtReset->execute();
+        $stmtReset->close();
+    }
+} else {
+    $desempenhoMsg = "<div class='alert alert-warning'>Nenhum exercício concluído neste nível ainda.</div>";
+}
+
 ?>
 <html lang="pt-br">
-				<head>
-							<meta http-equiv="Content-Type" content="text/html; charset=utf-8/>
-							<meta http-equiv="X-UA-Compatible" content="IE=edge">
-							<title>Decords Musica e Teoria</title>
-							<meta name="viewport" content="width=device-width, initial-scale=1.0">  
-							<meta name="description" content="Decords Música e Teoria">
-							<meta name="" content="Luciano Moraes Rodrigues">
-							<link rel="icon" href="img/favicon.ico"> 
-							<link href="css/bootstrap.min.css" rel="stylesheet">
-							<link href="css/style.css" rel="stylesheet">
-							<link href="css/signin.css" rel="stylesheet">
-							<link href="css/tabdiv.css" media="screen" rel="Stylesheet" type="text/css" />
-							<script src="js/jquery.min.js"></script>
-							<script src="js/bootstrap.min.js"></script>
-							<script src="js/ie-emulation-modes-warning.js"></script> 
-							
-										 <!-- Support partitura -->
-					  <script src="js/partitura/vexflow-min.js"></script>
-					  <script src="js/partitura/underscore-min.js"></script>
-					  <script src="js/partitura/jquery.js"></script>
-					  <script src="js/partitura/tabdiv-min.js"></script>
-						<!-- Support partitura -->
-				</head>
-	<body>
-			<nav class="navbar navbar-inverse navbar-fixed-top">
-				<div class="container">
-				<div class="row">
-					<div class="navbar-header">
-						<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> 
-							<span class="sr-only">Toggle navigation</span> 
-						</button> 
 
-						<a class="navbar-brand" href="index.php"><img id="logo" src="img/foto22.jpg" width="100" height="30"></a>
-			</div>
-			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-				<ul class="nav navbar-nav">
-					<li class="dropdown"><a class="dropdown-toggle" href="#" data-toggle="dropdown">Tutorial <b class="caret"></b></a>
-					<ul class="dropdown-menu">
-					<li><a href="tutorial-01.php">Tutorial-01</a></li>
-					<li class="divider"></li>
-					<li><a href="tutorial_02.php">Tutorial-02</a></li>
-					<li class="divider"></li>
-				</ul>
-					<li class="dropdown"><a class="dropdown-toggle" href="#" data-toggle="dropdown">Exercicios <b class="caret"></b></a>
-						<ul class="dropdown-menu">
-							<li><a href="iniciantes.php">Iniciantes</a></li>
-							<li class="divider"></li>
-							<li><a href="intermediarios.php">Intermediarios</a></li>
-							<li class="divider"></li>
-							<li><a href="avancados.php">Avancados</a></li>
-							<li class="divider"></li>
-						</ul>
-						<li class="active"><a href="login.php">Sair</a></li>
-							</li>
-						</ul>
-					</div>
-				</div>
-			</nav>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Decords Música e Teoria</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Decords Música e Teoria">
+    <link rel="icon" href="img/favicon-96x96.png">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/signin.css" rel="stylesheet">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
 
-	
-	
-	
-	                 <div class="col-lg-12">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                        </div>
-                        <!-- /.panel-heading -->
-                        <div class="panel-body">
-                            <div class="table-responsive">
-                                <table class="table-responsive">
-                                    <thead>
-                                        <tr>
-                                            <th>numeração</th>
-                                            <th>Pergunta</th>
-                                            <th>Concluído</th>
-                                            <th>Resultado</th>
-											<th>Ações</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
+    <!-- Support partitura -->
+    <script src="js/partitura/vexflow-min.js"></script>
+    <script src="js/partitura/underscore-min.js"></script>
+    <script src="js/partitura/jquery.js"></script>
+    <script src="js/partitura/tabdiv-min.js"></script>
+    <!-- Support partitura -->
+</head>
 
-									
-<?php
-header('Content-Type: text/html; charset=utf-8');
-$aluno=$_SESSION['AlunoId'];
-$nivell=$_SESSION['AlunoNivel'];
-if($nivell>=2){
-include_once("conexao.php");
-$numeracao=1;
-						$sql = "SELECT id, pergunta FROM exercicios WHERE nivel=2";
-						$queryResult = mysql_query($sql) or die(mysql_error());
-						while ($row = mysql_fetch_array($queryResult)) {
-						$ident = $row['id'];
-						$pergunta = $row['pergunta'];
-						$botao="Fazer";
-						$botaocor="btn btn-warning"; 
-				        $link="exercicio.php?id=".$ident;
-						
-						$sql4 = "SELECT resultado, status FROM alunos_exercicios where id_usuario='$aluno' and id_exercicios='$ident'";
-						$queryResult4 = mysql_query($sql4) or die(mysql_error());
-						$row4 = mysql_fetch_row($queryResult4);
-						$resultado = $row4[0];
-						$status = $row4[1];
-						
-						if($status==0){	$status="Não";} else{$status="Sim"; $link="#"; $botao="Concluído"; $botaocor="btn btn-success"; }
-						
-						if($resultado==1){$resultado="Acertou";} else if($resultado==2) {$resultado="Errou";} else if($resultado==0) {$resultado="--";}
-						
-                                      echo'<tr>
-                                            <td>'.$numeracao.'</td>
-                                            <td>'.$pergunta.'</td>
-                                            <td>'.$status.'</td>
-                                            <td>'.$resultado.'</td>
-											<td><a href="'.$link.'"><button type="button" class="'.$botaocor.'">'.$botao.'</button>
-											</td>	
-                                        </tr>';
-										
-										
-						$numeracao++;
-						}
+<body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.php">Decords Música</a>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="?logout=true">Sair</a></li>
+            </ul>
+        </div>
+    </nav>
 
-}else{
-	
-	if($nivell==1){$msg = "iniciante"; $linkk = "iniciantes.php";}else if ($nivell==2){$msg = "intermediario"; $linkk = "intermediarios.php";}
-	
-echo "<META HTTP-EQUIV=REFRESH CONTENT='0; URL=".$linkk."'>
-	   <script type=\"text/javascript\">
-	   alert(\"Você não terminou o nível ".$msg." para avançar.\") 
-	   </script>";
-}
-									
-									  mysql_query("SET NAMES 'utf-8'");
-									  mysql_query("SET character_set_connection=utf-8");
-									  mysql_query("SET character_set_clent=utf-8");
-									  mysql_query("SET character_set_results=utf-8");
-						
-?>
+    <div class="container" style="margin-top: 80px;">
+        <h1 class="text-center">Desempenho e Exercícios</h1>
+        <hr>
 
-									
-                                    </tbody>
-                                </table>
-                            </div>
-                            <!-- /.table-responsive -->
-                        </div>
-                        <!-- /.panel-body -->
-                    </div>
-	</body>
-	
+        <!-- Mensagens de desempenho -->
+        <?= $desempenhoMsg; ?>
+
+        <h2>Exercícios Disponíveis</h2>
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Pergunta</th>
+                        <th>Concluído</th>
+                        <th>Resultado</th>
+                        <th>Ação</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    $sqlExercicios = "
+                        SELECT e.id, e.pergunta, ae.resultado, ae.status
+                        FROM exercicios e
+                        LEFT JOIN alunos_exercicios ae ON e.id = ae.id_exercicios AND ae.id_usuario = ?
+                        WHERE e.nivel = ?";
+                    $stmtExercicios = $conn->prepare($sqlExercicios);
+                    $stmtExercicios->bind_param("ii", $aluno, $nivel);
+                    $stmtExercicios->execute();
+                    $resultExercicios = $stmtExercicios->get_result();
+
+                    $contador = 1;
+                    while ($exercicio = $resultExercicios->fetch_assoc()) {
+                        $idExercicio = $exercicio['id'];
+                        $pergunta = htmlspecialchars($exercicio['pergunta'], ENT_QUOTES, 'UTF-8');
+                        $status = $exercicio['status'];
+                        $resultado = $exercicio['resultado'];
+
+                        $statusTexto = $status === 1 ? "Sim" : "Não";
+                        $resultadoTexto = $resultado === 1 ? "Acertou" : ($resultado === 2 ? "Errou" : "--");
+                        $acaoTexto = $status === 1 ? ($resultado === 1 ? "Acertou" : "Errou") : "Fazer";
+                        $acaoCor = $status === 1 ? ($resultado === 1 ? "btn-success" : "btn-danger") : "btn-warning";
+                        $acaoLink = $status === 1 ? "#" : "exercicio.php?id=$idExercicio";
+
+                        echo "<tr>
+                                <td>{$contador}</td>
+                                <td>{$pergunta}</td>
+                                <td>{$statusTexto}</td>
+                                <td>{$resultadoTexto}</td>
+                                <td><a href='{$acaoLink}' class='btn {$acaoCor}'>{$acaoTexto}</a></td>
+                              </tr>";
+
+                        $contador++;
+                    }
+                    $stmtExercicios->close();
+                    $conn->close();
+                    ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+
+</html>

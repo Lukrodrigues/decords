@@ -36,7 +36,7 @@ if ($total > 0) {
 
     // Redireciona para intermediarios.php se atingir 60% ou mais
     if ($total === 10 && $percentualAcertos >= 60) {
-        header("Location: intermediarios.php");
+        header("Location: Intermediarios.php");
         exit;
     }
 

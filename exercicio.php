@@ -14,7 +14,7 @@ include_once("conexao.php");
 
 $idExercicio = intval($_GET['id']);
 
-// Consulta o exercício e suas opções diretamente da tabela `exercicios`
+// Consulta o exercício
 $sqlExercicio = "
     SELECT pergunta, resposta, a, b, c, d, dica, nivel 
     FROM exercicios 
@@ -51,7 +51,6 @@ $opcoes = [
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title>Responder Exercício</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="description" content="Decords Música e Teoria">
 	<link rel="icon" href="img/favicon-96x96.png">
 	<link href="css/bootstrap.min.css" rel="stylesheet">
 	<link href="css/style.css" rel="stylesheet">
@@ -86,29 +85,26 @@ $opcoes = [
 			font-size: 1.2em;
 			margin-left: 10px;
 		}
+
+		.btn-dica {
+			margin-top: 10px;
+		}
 	</style>
 </head>
 
 <body>
-	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+	<nav class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container">
 			<a class="navbar-brand" href="index.php">Decords Música</a>
-			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
-				<span class="navbar-toggler-icon"></span>
-			</button>
-			<div class="collapse navbar-collapse" id="navbarNav">
-				<ul class="navbar-nav ml-auto">
-					<li class="nav-item">
-						<a class="nav-link" href="Login.php">Sair</a>
-					</li>
-				</ul>
-			</div>
+			<ul class="nav navbar-nav navbar-right">
+				<li><a href="?logout=true">Sair</a></li>
+			</ul>
 		</div>
 	</nav>
 
 	<div class="container">
 		<div class="card">
-			<div class="card-body">
+			<div class="card-body"></br>
 				<h1 class="card-title text-center">Responder Exercício</h1>
 				<hr>
 
@@ -139,8 +135,8 @@ $opcoes = [
 					</div>
 
 					<div class="form-group">
-						<h6><strong>Dica:</strong></h6>
-						<p class="text-muted"><?php echo htmlspecialchars($dica, ENT_QUOTES, 'UTF-8'); ?></p>
+						<h5><strong>Caso de dúvida DICA abaixo:</strong></h5>
+						<a href="tutorial-01.php" class="btn btn-info btn-dica">Abrir Tutorial-01</a>
 					</div>
 
 					<input type="hidden" id="id_exercicios" name="id_exercicios" value="<?php echo $idExercicio; ?>">
@@ -164,13 +160,20 @@ $opcoes = [
 					dataType: 'json',
 					success: function(response) {
 						const feedback = $('#feedback');
-						feedback.removeClass('alert-success alert-danger alert-warning');
-						feedback.addClass(response.status === 'success' ? 'alert-success' : 'alert-danger');
-						feedback.text(response.message).fadeIn();
+						feedback.removeClass('alert-success alert-danger').hide();
 
-						setTimeout(() => {
-							window.location.href = 'iniciantes.php';
-						}, 3000);
+						if (response.status === 'success') {
+							feedback.addClass('alert-success').text(response.message).fadeIn();
+
+							// Redireciona para o próximo nível após 2 segundos
+							if (response.redirect) {
+								setTimeout(() => {
+									window.location.href = response.redirect;
+								}, 2000);
+							}
+						} else if (response.status === 'error') {
+							feedback.addClass('alert-danger').text(response.message).fadeIn();
+						}
 					},
 					error: function() {
 						alert('Ocorreu um erro inesperado. Por favor, tente novamente.');
@@ -179,6 +182,9 @@ $opcoes = [
 			});
 		});
 	</script>
+
+
+
 </body>
 
 </html>
