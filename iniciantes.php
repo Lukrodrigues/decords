@@ -5,6 +5,60 @@ if (!isset($_SESSION['AlunoEmail']) || !isset($_SESSION['AlunoSenha'])) {
     header("Location: index.php");
     exit;
 }
+
+if (isset($_GET['logout'])) {
+    session_destroy();
+    header("Location: login.php");
+    exit;
+}
+
+include_once("conexao.php");
+
+$aluno = filter_var($_SESSION['AlunoId'], FILTER_VALIDATE_INT);
+$nivel = $_SESSION['AlunoNivel'] ?? 1;
+
+// Consultar desempenho geral no nível atual
+$sqlDesempenho = "
+    SELECT COUNT(*) AS total,
+           SUM(CASE WHEN resultado = 1 THEN 1 ELSE 0 END) AS acertos
+    FROM alunos_exercicios ae
+    INNER JOIN exercicios e ON ae.id_exercicios = e.id
+    WHERE ae.id_usuario = ? AND e.nivel = ? AND ae.status = 1";
+$stmtDesempenho = $conn->prepare($sqlDesempenho);
+$stmtDesempenho->bind_param("ii", $aluno, $nivel);
+$stmtDesempenho->execute();
+$stmtDesempenho->bind_result($total, $acertos);
+$stmtDesempenho->fetch();
+$stmtDesempenho->close();
+
+if ($total > 0) {
+    $percentualAcertos = ($acertos / $total) * 100;
+
+    // Redireciona para intermediarios.php se atingir 60% ou mais
+    if ($total === 10 && $percentualAcertos >= 60) {
+        header("Location: intermediarios.php");
+        exit;
+    }
+
+    // Exibir mensagens de desempenho
+    $desempenhoMsg = "<div class='alert alert-info'>
+                        <strong>Total de Exercícios:</strong> $total<br>
+                        <strong>Acertos:</strong> $acertos<br>
+                        <strong>Percentual de Acertos:</strong> " . round($percentualAcertos, 2) . "%
+                      </div>";
+
+    if ($total === 10 && $percentualAcertos < 60) {
+        $desempenhoMsg .= "<div class='alert alert-warning'>Você precisa de pelo menos 60% de acertos para avançar. Progresso reiniciado!</div>";
+        $sqlReset = "DELETE FROM alunos_exercicios WHERE id_usuario = ? AND id_exercicios IN (SELECT id FROM exercicios WHERE nivel = ?)";
+        $stmtReset = $conn->prepare($sqlReset);
+        $stmtReset->bind_param("ii", $aluno, $nivel);
+        $stmtReset->execute();
+        $stmtReset->close();
+    }
+} else {
+    $desempenhoMsg = "<div class='alert alert-warning'>Nenhum exercício concluído neste nível ainda.</div>";
+}
+
 ?>
 <html lang="pt-br">
 
@@ -27,7 +81,6 @@ if (!isset($_SESSION['AlunoEmail']) || !isset($_SESSION['AlunoSenha'])) {
     <script src="js/partitura/jquery.js"></script>
     <script src="js/partitura/tabdiv-min.js"></script>
     <!-- Support partitura -->
-
 </head>
 
 <body>
@@ -35,7 +88,7 @@ if (!isset($_SESSION['AlunoEmail']) || !isset($_SESSION['AlunoSenha'])) {
         <div class="container">
             <a class="navbar-brand" href="index.php">Decords Música</a>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="logout.php">Sair</a></li>
+                <li><a href="?logout=true">Sair</a></li>
             </ul>
         </div>
     </nav>
@@ -44,43 +97,8 @@ if (!isset($_SESSION['AlunoEmail']) || !isset($_SESSION['AlunoSenha'])) {
         <h1 class="text-center">Desempenho e Exercícios</h1>
         <hr>
 
-        <?php
-        include_once("conexao.php");
-
-        $aluno = filter_var($_SESSION['AlunoId'], FILTER_VALIDATE_INT);
-        $nivel = $_SESSION['AlunoNivel'] ?? 1;
-
-        // Consultar desempenho geral no nível atual
-        $sqlDesempenho = "
-            SELECT COUNT(*) AS total,
-                   SUM(CASE WHEN resultado = 1 THEN 1 ELSE 0 END) AS acertos
-            FROM alunos_exercicios ae
-            INNER JOIN exercicios e ON ae.id_exercicios = e.id
-            WHERE ae.id_usuario = ? AND e.nivel = ? AND ae.status = 1";
-        $stmtDesempenho = $conn->prepare($sqlDesempenho);
-        $stmtDesempenho->bind_param("ii", $aluno, $nivel);
-        $stmtDesempenho->execute();
-        $stmtDesempenho->bind_result($total, $acertos);
-        $stmtDesempenho->fetch();
-        $stmtDesempenho->close();
-
-        if ($total > 0) {
-            $percentualAcertos = ($acertos / $total) * 100;
-            echo "<div class='alert alert-info'>
-                    <strong>Total de Exercícios:</strong> $total<br>
-                    <strong>Acertos:</strong> $acertos<br>
-                    <strong>Percentual de Acertos:</strong> " . round($percentualAcertos, 2) . "%
-                  </div>";
-
-            if ($percentualAcertos >= 60) {
-                echo "<div class='alert alert-success'>Parabéns! Você pode avançar para o próximo nível.</div>";
-            } else {
-                echo "<div class='alert alert-warning'>Você precisa de pelo menos 60% de acertos para avançar.</div>";
-            }
-        } else {
-            echo "<div class='alert alert-warning'>Nenhum exercício concluído neste nível ainda.</div>";
-        }
-        ?>
+        <!-- Mensagens de desempenho -->
+        <?= $desempenhoMsg; ?>
 
         <h2>Exercícios Disponíveis</h2>
         <div class="table-responsive">

@@ -168,19 +168,9 @@ $opcoes = [
 						feedback.addClass(response.status === 'success' ? 'alert-success' : 'alert-danger');
 						feedback.text(response.message).fadeIn();
 
-						if (response.status === 'success') {
-							if (response.performance.percentual >= 60) {
-								feedback.append("<p><strong>Parabéns!</strong> Você concluiu o nível com sucesso. Redirecionando...</p>");
-								setTimeout(() => {
-									window.location.href = 'intermediarios.php';
-								}, 3000);
-							} else {
-								feedback.append("<p><strong>Tente novamente!</strong> Você não alcançou a meta para passar. Redefinindo o nível...</p>");
-								setTimeout(() => {
-									window.location.reload();
-								}, 3000);
-							}
-						}
+						setTimeout(() => {
+							window.location.href = 'iniciantes.php';
+						}, 3000);
 					},
 					error: function() {
 						alert('Ocorreu um erro inesperado. Por favor, tente novamente.');
