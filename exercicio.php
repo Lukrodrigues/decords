@@ -47,15 +47,11 @@ $opcoes = [
 <html lang="pt-br">
 
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Responder Exercício</title>
+	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="icon" href="img/favicon-96x96.png">
-	<link href="css/bootstrap.min.css" rel="stylesheet">
-	<link href="css/style.css" rel="stylesheet">
+	<title>Responder Exercício</title>
+	<link rel="stylesheet" href="css/bootstrap.min.css">
 	<script src="js/jquery.min.js"></script>
-	<script src="js/bootstrap.min.js"></script>
 	<style>
 		body {
 			background-color: #f8f9fa;
@@ -77,15 +73,6 @@ $opcoes = [
 			border-color: #004085;
 		}
 
-		#feedback {
-			margin-top: 20px;
-		}
-
-		.form-check-label {
-			font-size: 1.2em;
-			margin-left: 10px;
-		}
-
 		.btn-dica {
 			margin-top: 10px;
 		}
@@ -93,18 +80,25 @@ $opcoes = [
 </head>
 
 <body>
-	<nav class="navbar navbar-inverse navbar-fixed-top">
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 		<div class="container">
 			<a class="navbar-brand" href="index.php">Decords Música</a>
-			<ul class="nav navbar-nav navbar-right">
-				<li><a href="?logout=true">Sair</a></li>
-			</ul>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarNav">
+				<ul class="navbar-nav ml-auto">
+					<li class="nav-item">
+						<a class="nav-link" href="Login.php">Sair</a>
+					</li>
+				</ul>
+			</div>
 		</div>
 	</nav>
 
 	<div class="container">
 		<div class="card">
-			<div class="card-body"></br>
+			<div class="card-body">
 				<h1 class="card-title text-center">Responder Exercício</h1>
 				<hr>
 
@@ -135,8 +129,8 @@ $opcoes = [
 					</div>
 
 					<div class="form-group">
-						<h5><strong>Caso de dúvida DICA abaixo:</strong></h5>
-						<a href="tutorial-01.php" class="btn btn-info btn-dica">Abrir Tutorial-01</a>
+						<h6><strong>Dica: Caso dúvida clique abaixo</strong></h6>
+						<a href="tutorial-01.php" class="btn btn-info btn-dica">Abrir Tutorial</a>
 					</div>
 
 					<input type="hidden" id="id_exercicios" name="id_exercicios" value="<?php echo $idExercicio; ?>">
@@ -160,20 +154,14 @@ $opcoes = [
 					dataType: 'json',
 					success: function(response) {
 						const feedback = $('#feedback');
-						feedback.removeClass('alert-success alert-danger').hide();
+						feedback.removeClass('alert-success alert-danger');
+						feedback.addClass(response.status === 'success' ? 'alert-success' : 'alert-danger');
+						feedback.text(response.message).fadeIn();
 
-						if (response.status === 'success') {
-							feedback.addClass('alert-success').text(response.message).fadeIn();
-
-							// Redireciona para o próximo nível após 2 segundos
-							if (response.redirect) {
-								setTimeout(() => {
-									window.location.href = response.redirect;
-								}, 2000);
-							}
-						} else if (response.status === 'error') {
-							feedback.addClass('alert-danger').text(response.message).fadeIn();
-						}
+						// Redireciona automaticamente para a página de iniciantes
+						setTimeout(() => {
+							window.location.href = 'iniciantes.php';
+						}, 2000); // Tempo de 2 segundos antes do redirecionamento
 					},
 					error: function() {
 						alert('Ocorreu um erro inesperado. Por favor, tente novamente.');
@@ -182,9 +170,6 @@ $opcoes = [
 			});
 		});
 	</script>
-
-
-
 </body>
 
 </html>

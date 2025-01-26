@@ -56,6 +56,18 @@ $stmtRegistro->bind_param("iii", $alunoId, $idExercicio, $resultado);
 $stmtRegistro->execute();
 $stmtRegistro->close();
 
+// Consulta a quantidade total de exercícios no nível atual
+$sqlTotalExercicios = "
+    SELECT COUNT(*) AS total
+    FROM exercicios
+    WHERE nivel = ?";
+$stmtTotal = $conn->prepare($sqlTotalExercicios);
+$stmtTotal->bind_param("i", $nivelAtual);
+$stmtTotal->execute();
+$stmtTotal->bind_result($totalExerciciosNivel);
+$stmtTotal->fetch();
+$stmtTotal->close();
+
 // Calcula o desempenho do aluno no nível atual
 $sqlDesempenho = "
     SELECT COUNT(*) AS total,
@@ -66,32 +78,34 @@ $sqlDesempenho = "
 $stmtDesempenho = $conn->prepare($sqlDesempenho);
 $stmtDesempenho->bind_param("ii", $alunoId, $nivelAtual);
 $stmtDesempenho->execute();
-$stmtDesempenho->bind_result($totalExercicios, $totalAcertos);
+$stmtDesempenho->bind_result($totalRespondidos, $totalAcertos);
 $stmtDesempenho->fetch();
 $stmtDesempenho->close();
 
-// Calcula percentual de acertos
-$percentualAcertos = ($totalExercicios > 0) ? ($totalAcertos / $totalExercicios) * 100 : 0;
+// Calcula o percentual de acertos
+$percentualAcertos = ($totalRespondidos > 0) ? ($totalAcertos / $totalExerciciosNivel) * 100 : 0;
 
-// Verifica se o aluno concluiu o nível
-if ($totalExercicios > 0 && $percentualAcertos >= 60) {
-	// Atualiza o nível do aluno para o próximo
-	$_SESSION['AlunoNivel'] = $nivelAtual + 1;
+// Verifica se o aluno respondeu todos os exercícios do nível
+if ($totalRespondidos >= $totalExerciciosNivel) {
+	if ($percentualAcertos >= 60) {
+		// Aluno atingiu 60% ou mais de acertos e concluiu o nível
+		$_SESSION['AlunoNivel'] = $nivelAtual + 1;
 
+		echo json_encode([
+			'status' => 'success',
+			'message' => 'Parabéns! Você concluiu o nível atual com sucesso e avançará para o próximo nível!'
+		]);
+	} else {
+		// Aluno respondeu todos os exercícios, mas não atingiu 60% de acertos
+		echo json_encode([
+			'status' => 'error',
+			'message' => 'Você concluiu o nível atual, mas não atingiu a pontuação mínima de 60% para avançar. Tente novamente!'
+		]);
+	}
+} else {
+	// Aluno ainda não concluiu todos os exercícios do nível
 	echo json_encode([
 		'status' => 'success',
-		'message' => 'Parabéns! Você atingiu a pontuação necessária e avançará para o próximo nível!',
-		'redirect' => 'intermediarios.php' // Define o redirecionamento
-	]);
-} else if ($totalExercicios > 0) {
-	// Mostra mensagem de desempenho insuficiente
-	echo json_encode([
-		'status' => 'error',
-		'message' => 'Infelizmente, você não atingiu a pontuação necessária para avançar para o próximo nível.'
-	]);
-} else {
-	echo json_encode([
-		'status' => 'error',
-		'message' => 'Nenhum exercício encontrado no nível atual.'
+		'message' => 'Resposta registrada com sucesso! Continue respondendo os exercícios para concluir o nível.'
 	]);
 }
