@@ -91,15 +91,22 @@ if ($totalRespondidos >= $totalExerciciosNivel) {
 		// Aluno atingiu 60% ou mais de acertos e concluiu o nível
 		$_SESSION['AlunoNivel'] = $nivelAtual + 1;
 
+		// Define a próxima página com base no nível atual
+		$proximaPagina = ($nivelAtual == 1) ? "intermediarios.php" : ($nivelAtual == 2 ? "avancados.php" : "parabens.php");
+
 		echo json_encode([
 			'status' => 'success',
-			'message' => 'Parabéns! Você concluiu o nível atual com sucesso e avançará para o próximo nível!'
+			'message' => 'Parabéns! Você concluiu o nível atual com sucesso e avançará para o próximo nível!',
+			'redirect' => $proximaPagina
 		]);
 	} else {
 		// Aluno respondeu todos os exercícios, mas não atingiu 60% de acertos
+		$paginaAtual = ($nivelAtual == 1) ? "iniciantes.php" : ($nivelAtual == 2 ? "intermediarios.php" : "avancados.php");
+
 		echo json_encode([
 			'status' => 'error',
-			'message' => 'Você concluiu o nível atual, mas não atingiu a pontuação mínima de 60% para avançar. Tente novamente!'
+			'message' => 'Você concluiu o nível atual, mas não atingiu a pontuação mínima de 60% para avançar. Tente novamente!',
+			'redirect' => $paginaAtual
 		]);
 	}
 } else {

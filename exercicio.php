@@ -77,9 +77,29 @@ $opcoes = [
 			margin-top: 10px;
 		}
 	</style>
+	<nav style="background-color: black; padding: 10px;">
+		<ul style="list-style: none; display: flex; margin: 0; padding: 0;">
+			<li style="margin-right: 15px;">
+				<a href="decords.php" style="color: white; text-decoration: none;"
+					onmouseover="this.style.color='black'"
+					onmouseout="this.style.color='white'">Decords</a>
+			</li>
+			<li style="margin-right: 15px;">
+				<a href="musica.php" style="color: white; text-decoration: none;"
+					onmouseover="this.style.color='black'"
+					onmouseout="this.style.color='white'">Música</a>
+			</li>
+			<li>
+				<a href="logout.php" style="color: white; text-decoration: none;"
+					onmouseover="this.style.color='black'"
+					onmouseout="this.style.color='white'">Sair</a>
+			</li>
+		</ul>
+	</nav>
+
 </head>
 
-<body>
+<body><!--
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 		<div class="container">
 			<a class="navbar-brand" href="index.php">Decords Música</a>
@@ -95,7 +115,7 @@ $opcoes = [
 			</div>
 		</div>
 	</nav>
-
+	-->
 	<div class="container">
 		<div class="card">
 			<div class="card-body">

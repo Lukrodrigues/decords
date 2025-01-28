@@ -14,11 +14,12 @@ $aluno = $_SESSION['AlunoId'];
 $nivelAtual = 2; // Nível dos exercícios da página
 $numeracao = 1;
 
-// Verifica as perguntas do nível atual
+// Obtém as perguntas do nível atual
 $sql = "SELECT id, pergunta FROM exercicios WHERE nivel = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $nivelAtual);
 $stmt->execute();
+$stmt->store_result();
 $stmt->bind_result($idExercicio, $pergunta);
 
 // Cabeçalho HTML
@@ -27,6 +28,31 @@ $stmt->bind_result($idExercicio, $pergunta);
 <html lang="pt-br">
 
 <head>
+    <nav style="background-color: black; padding: 10px;">
+        <ul style="list-style: none; display: flex; margin: 0; padding: 0;">
+            <li style="margin-right: 15px;">
+                <a href="iniciantes.php" style="color: white; text-decoration: none;"
+                    onmouseover="this.style.color='black'"
+                    onmouseout="this.style.color='white'">Iniciantes</a>
+            </li>
+            <li style="margin-right: 15px;">
+                <a href="intermediarios.php" style="color: white; text-decoration: none;"
+                    onmouseover="this.style.color='black'"
+                    onmouseout="this.style.color='white'">Intermediários</a>
+            </li>
+            <li style="margin-right: 15px;">
+                <a href="avancados.php" style="color: white; text-decoration: none;"
+                    onmouseover="this.style.color='black'"
+                    onmouseout="this.style.color='white'">Avançados</a>
+            </li>
+            <li>
+                <a href="logout.php" style="color: white; text-decoration: none;"
+                    onmouseover="this.style.color='black'"
+                    onmouseout="this.style.color='white'">Sair</a>
+            </li>
+        </ul>
+    </nav>
+
     <meta charset="UTF-8">
     <title>Intermediários</title>
     <link rel="stylesheet" href="css/bootstrap.min.css">
@@ -48,14 +74,14 @@ $stmt->bind_result($idExercicio, $pergunta);
             <tbody>
                 <?php
                 while ($stmt->fetch()) {
-                    // Verifica o status da resposta do aluno
+                    // Consulta o status da resposta do aluno
                     $sqlStatus = "SELECT resultado, status FROM alunos_exercicios WHERE id_usuario = ? AND id_exercicios = ?";
                     $stmtStatus = $conn->prepare($sqlStatus);
                     $stmtStatus->bind_param("ii", $aluno, $idExercicio);
                     $stmtStatus->execute();
+                    $stmtStatus->store_result();
                     $stmtStatus->bind_result($resultado, $status);
                     $stmtStatus->fetch();
-                    $stmtStatus->close();
 
                     $resultadoTexto = $resultado == 1 ? "Acertou" : ($resultado == 2 ? "Errou" : "--");
                     $statusTexto = $status == 1 ? "Sim" : "Não";
@@ -71,6 +97,7 @@ $stmt->bind_result($idExercicio, $pergunta);
                     <td><a href='{$linkAcao}' class='btn {$botaoCor}'>{$botaoTexto}</a></td>
                   </tr>";
                     $numeracao++;
+                    $stmtStatus->close(); // Fecha o statement do status
                 }
                 ?>
             </tbody>
@@ -80,5 +107,6 @@ $stmt->bind_result($idExercicio, $pergunta);
 
 </html>
 <?php
-$stmt->close();
+$stmt->close(); // Fecha o statement das perguntas
+$conn->close(); // Fecha a conexão com o banco de dados
 ?>
