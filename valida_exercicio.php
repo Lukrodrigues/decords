@@ -85,14 +85,15 @@ $stmtDesempenho->close();
 // Calcula o percentual de acertos
 $percentualAcertos = ($totalRespondidos > 0) ? ($totalAcertos / $totalExerciciosNivel) * 100 : 0;
 
+// Define a URL correta com base no nível do aluno
+$paginaAtual = ($nivelAtual == 1) ? "iniciantes.php" : (($nivelAtual == 2) ? "intermediarios.php" : "avancados.php");
+$proximaPagina = ($nivelAtual == 1) ? "intermediarios.php" : (($nivelAtual == 2) ? "avancados.php" : "parabens.php");
+
 // Verifica se o aluno respondeu todos os exercícios do nível
 if ($totalRespondidos >= $totalExerciciosNivel) {
 	if ($percentualAcertos >= 60) {
 		// Aluno atingiu 60% ou mais de acertos e concluiu o nível
 		$_SESSION['AlunoNivel'] = $nivelAtual + 1;
-
-		// Define a próxima página com base no nível atual
-		$proximaPagina = ($nivelAtual == 1) ? "intermediarios.php" : ($nivelAtual == 2 ? "avancados.php" : "parabens.php");
 
 		echo json_encode([
 			'status' => 'success',
@@ -101,8 +102,6 @@ if ($totalRespondidos >= $totalExerciciosNivel) {
 		]);
 	} else {
 		// Aluno respondeu todos os exercícios, mas não atingiu 60% de acertos
-		$paginaAtual = ($nivelAtual == 1) ? "iniciantes.php" : ($nivelAtual == 2 ? "intermediarios.php" : "avancados.php");
-
 		echo json_encode([
 			'status' => 'error',
 			'message' => 'Você concluiu o nível atual, mas não atingiu a pontuação mínima de 60% para avançar. Tente novamente!',
@@ -113,6 +112,7 @@ if ($totalRespondidos >= $totalExerciciosNivel) {
 	// Aluno ainda não concluiu todos os exercícios do nível
 	echo json_encode([
 		'status' => 'success',
-		'message' => 'Resposta registrada com sucesso! Continue respondendo os exercícios para concluir o nível.'
+		'message' => 'Resposta registrada com sucesso! Continue respondendo os exercícios para concluir o nível.',
+		'redirect' => $paginaAtual // Corrigi aqui para manter na página certa
 	]);
 }

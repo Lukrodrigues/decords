@@ -77,87 +77,61 @@ $opcoes = [
 			margin-top: 10px;
 		}
 	</style>
-	<nav style="background-color: black; padding: 10px;">
-		<ul style="list-style: none; display: flex; margin: 0; padding: 0;">
-			<li style="margin-right: 15px;">
-				<a href="decords.php" style="color: white; text-decoration: none;"
-					onmouseover="this.style.color='black'"
-					onmouseout="this.style.color='white'">Decords</a>
-			</li>
-			<li style="margin-right: 15px;">
-				<a href="musica.php" style="color: white; text-decoration: none;"
-					onmouseover="this.style.color='black'"
-					onmouseout="this.style.color='white'">Música</a>
-			</li>
-			<li>
-				<a href="logout.php" style="color: white; text-decoration: none;"
-					onmouseover="this.style.color='black'"
-					onmouseout="this.style.color='white'">Sair</a>
-			</li>
-		</ul>
+	<nav class="navbar navbar-inverse navbar-fixed-top">
+		<div class="container">
+			<a class="navbar-brand" href="index.php">Decords Música</a>
+			<ul class="nav navbar-nav navbar-right">
+				<li><a href="?logout=true">Sair</a></li>
+			</ul>
+		</div>
 	</nav>
+
 
 </head>
 
-<body><!--
-	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-		<div class="container">
-			<a class="navbar-brand" href="index.php">Decords Música</a>
-			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
-				<span class="navbar-toggler-icon"></span>
-			</button>
-			<div class="collapse navbar-collapse" id="navbarNav">
-				<ul class="navbar-nav ml-auto">
-					<li class="nav-item">
-						<a class="nav-link" href="Login.php">Sair</a>
-					</li>
-				</ul>
-			</div>
-		</div>
-	</nav>
-	-->
+<body>
 	<div class="container">
 		<div class="card">
-			<div class="card-body">
-				<h1 class="card-title text-center">Responder Exercício</h1>
-				<hr>
+			<div class="card-body"></br>
+				<h2 class="card-title text-center">Responder Exercício</h4>
+					<hr>
 
-				<form id="formExercicio" method="POST">
-					<div class="form-group">
-						<h4 class="card-text">Pergunta:</h4>
-						<p class="lead"><strong><?php echo htmlspecialchars($pergunta, ENT_QUOTES, 'UTF-8'); ?></strong></p>
-					</div>
-
-					<div class="form-group">
-						<h5 class="card-text">Escolha uma opção:</h5>
-						<div id="opcoes">
-							<?php foreach ($opcoes as $letra => $descricao) : ?>
-								<div class="form-check">
-									<input
-										class="form-check-input"
-										type="radio"
-										name="resposta"
-										id="opcao-<?php echo $letra; ?>"
-										value="<?php echo $letra; ?>"
-										required>
-									<label class="form-check-label" for="opcao-<?php echo $letra; ?>">
-										<?php echo htmlspecialchars($descricao, ENT_QUOTES, 'UTF-8'); ?>
-									</label>
-								</div>
-							<?php endforeach; ?>
+					<form id="formExercicio" method="POST">
+						<div class="form-group">
+							<h4 class="card-text">Pergunta:</h4>
+							<p class="lead"><strong><?php echo htmlspecialchars($pergunta, ENT_QUOTES, 'UTF-8'); ?></strong></p>
 						</div>
-					</div>
 
-					<div class="form-group">
-						<h6><strong>Dica: Caso dúvida clique abaixo</strong></h6>
-						<a href="tutorial-01.php" class="btn btn-info btn-dica">Abrir Tutorial</a>
-					</div>
+						<div class="form-group">
+							<h5 class="card-text">Escolha uma opção:</h5>
+							<div id="opcoes">
+								<?php foreach ($opcoes as $letra => $descricao) : ?>
+									<div class="form-check">
+										<input
+											class="form-check-input"
+											type="radio"
+											name="resposta"
+											id="opcao-<?php echo $letra; ?>"
+											value="<?php echo $letra; ?>"
+											required>
+										<label class="form-check-label" for="opcao-<?php echo $letra; ?>">
+											<?php echo htmlspecialchars($descricao, ENT_QUOTES, 'UTF-8'); ?>
+										</label>
+									</div>
+								<?php endforeach; ?>
+							</div>
+						</div>
 
-					<input type="hidden" id="id_exercicios" name="id_exercicios" value="<?php echo $idExercicio; ?>">
-					<button type="submit" class="btn btn-primary btn-lg btn-block">Enviar Resposta</button>
-				</form>
+						<div class="form-group">
+							<h6><strong>Dica: Caso dúvida clique abaixo</strong></h6>
+							<a href="tutorial-01.php" class="btn btn-info btn-dica">Abrir Tutorial</a>
+						</div>
 
-				<div id="feedback" class="alert alert-dismissible" style="display: none;"></div>
+						<input type="hidden" id="id_exercicios" name="id_exercicios" value="<?php echo $idExercicio; ?>">
+						<button type="submit" class="btn btn-primary btn-lg btn-block">Enviar Resposta</button>
+					</form>
+
+					<div id="feedback" class="alert alert-dismissible" style="display: none;"></div>
 			</div>
 		</div>
 	</div>
@@ -173,23 +147,29 @@ $opcoes = [
 					data: $(this).serialize(),
 					dataType: 'json',
 					success: function(response) {
+						console.log(response); // Debugging no console
 						const feedback = $('#feedback');
-						feedback.removeClass('alert-success alert-danger');
-						feedback.addClass(response.status === 'success' ? 'alert-success' : 'alert-danger');
-						feedback.text(response.message).fadeIn();
+						feedback.removeClass('alert-success alert-danger')
+							.addClass(response.status === 'success' ? 'alert-success' : 'alert-danger')
+							.text(response.message)
+							.fadeIn();
 
-						// Redireciona automaticamente para a página de iniciantes
-						setTimeout(() => {
-							window.location.href = 'iniciantes.php';
-						}, 2000); // Tempo de 2 segundos antes do redirecionamento
+						// Se houver redirecionamento, aguardar 2s antes de seguir
+						if (response.redirect) {
+							setTimeout(() => {
+								window.location.href = response.redirect;
+							}, 2000);
+						}
 					},
-					error: function() {
+					error: function(xhr) {
+						console.log(xhr.responseText); // Depuração de erro no console
 						alert('Ocorreu um erro inesperado. Por favor, tente novamente.');
 					}
 				});
 			});
 		});
 	</script>
+
 </body>
 
 </html>
