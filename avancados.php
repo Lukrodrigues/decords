@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <?php
 session_start();
 if (!isset($_SESSION['AlunoEmail']) || !isset($_SESSION['AlunoSenha'])) {
@@ -5,18 +6,12 @@ if (!isset($_SESSION['AlunoEmail']) || !isset($_SESSION['AlunoSenha'])) {
 	exit;
 }
 
-if (isset($_GET['logout'])) {
-	session_destroy();
-	header("Location: login.php");
-	exit;
-}
-
 include_once("conexao.php");
 
 $aluno = filter_var($_SESSION['AlunoId'], FILTER_VALIDATE_INT);
-$nivel = 3; // Definindo o nível avançado
+$nivel = 3; // Nível avançado
 
-// Verificar desempenho
+// Consultar desempenho geral no nível atual
 $sqlDesempenho = "
     SELECT COUNT(*) AS total,
            SUM(CASE WHEN resultado = 1 THEN 1 ELSE 0 END) AS acertos
@@ -33,33 +28,39 @@ $stmtDesempenho->close();
 if ($total > 0) {
 	$percentualAcertos = ($acertos / $total) * 100;
 
-	// Exibir mensagens de desempenho
+	if ($total === 10 && $percentualAcertos >= 60) {
+		echo "<script>alert('Parabéns! Você concluiu todos os níveis e está apto para iniciar a tocar violão.'); window.location.href='login.php';</script>";
+		exit;
+	}
+
 	$desempenhoMsg = "<div class='alert alert-info'>
                         <strong>Total de Exercícios:</strong> $total<br>
                         <strong>Acertos:</strong> $acertos<br>
                         <strong>Percentual de Acertos:</strong> " . round($percentualAcertos, 2) . "%
                       </div>";
+
+	if ($total === 10 && $percentualAcertos < 60) {
+		$desempenhoMsg .= "<div class='alert alert-warning'>Você precisa de pelo menos 60% de acertos para avançar. Progresso reiniciado!</div>";
+		$sqlReset = "DELETE FROM alunos_exercicios WHERE id_usuario = ? AND id_exercicios IN (SELECT id FROM exercicios WHERE nivel = ?)";
+		$stmtReset = $conn->prepare($sqlReset);
+		$stmtReset->bind_param("ii", $aluno, $nivel);
+		$stmtReset->execute();
+		$stmtReset->close();
+	}
 } else {
 	$desempenhoMsg = "<div class='alert alert-warning'>Nenhum exercício concluído neste nível ainda.</div>";
 }
 ?>
-<!DOCTYPE html>
 <html lang="pt-br">
 
 <head>
 	<meta charset="utf-8">
-	<title>Exercícios Avançados - Decords Música</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="stylesheet" href="css/bootstrap.min.css">
-	<link rel="stylesheet" href="css/style.css">
+	<title>Decords Música e Teoria - Avançado</title>
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<link href="css/style.css" rel="stylesheet">
 	<script src="js/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
-	<!-- Support partitura -->
-	<script src="js/partitura/vexflow-min.js"></script>
-	<script src="js/partitura/underscore-min.js"></script>
-	<script src="js/partitura/jquery.js"></script>
-	<script src="js/partitura/tabdiv-min.js"></script>
-	<!-- Support partitura -->
 </head>
 
 <body>
@@ -72,7 +73,7 @@ if ($total > 0) {
 		</div>
 	</nav>
 	<div class="container" style="margin-top: 80px;">
-		<h1 class="text-center">Exercícios Avançados</h1>
+		<h1 class="text-center">Desempenho e Exercícios - Avançado</h1>
 		<hr>
 		<?= $desempenhoMsg; ?>
 		<h2>Exercícios Disponíveis</h2>
@@ -119,6 +120,7 @@ if ($total > 0) {
                                 <td>{$resultadoTexto}</td>
                                 <td><a href='{$acaoLink}' class='btn {$acaoCor}'>{$acaoTexto}</a></td>
                               </tr>";
+
 						$contador++;
 					}
 					$stmtExercicios->close();

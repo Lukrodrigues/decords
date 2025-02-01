@@ -4,49 +4,52 @@ include_once("conexao.php");
 
 header('Content-Type: application/json');
 
-// Verifica se os dados necessários foram enviados
+// Verifica se os dados foram enviados corretamente
 if (!isset($_POST['id_exercicios'], $_POST['resposta'])) {
 	echo json_encode([
 		'status' => 'error',
+		'resultado' => 'erro',
 		'message' => 'Dados inválidos ou incompletos.'
 	]);
 	exit;
 }
 
-// Captura os dados
 $idExercicio = intval($_POST['id_exercicios']);
-$respostaAluno = $_POST['resposta'];
+$respostaAluno = trim($_POST['resposta']);
 $alunoId = $_SESSION['AlunoId'] ?? null;
 $nivelAtual = $_SESSION['AlunoNivel'] ?? 1;
 
-// Verifica se o aluno está logado
 if (!$alunoId) {
 	echo json_encode([
 		'status' => 'error',
+		'resultado' => 'erro',
 		'message' => 'Você não está logado.'
 	]);
 	exit;
 }
 
-// Consulta a resposta correta
+// Busca a resposta correta no banco de dados
 $sqlResposta = "SELECT resposta FROM exercicios WHERE id = ?";
-$stmtResposta = $conn->prepare($sqlResposta);
-$stmtResposta->bind_param("i", $idExercicio);
-$stmtResposta->execute();
-$result = $stmtResposta->get_result();
+$stmt = $conn->prepare($sqlResposta);
+$stmt->bind_param("i", $idExercicio);
+$stmt->execute();
+$result = $stmt->get_result();
 $respostaCorreta = $result->fetch_assoc()['resposta'];
-$stmtResposta->close();
+$stmt->close();
 
 if (!$respostaCorreta) {
 	echo json_encode([
 		'status' => 'error',
+		'resultado' => 'erro',
 		'message' => 'Exercício não encontrado.'
 	]);
 	exit;
 }
 
-// Verifica a resposta e registra no banco
+// Verifica se a resposta do aluno está correta
 $resultado = ($respostaAluno === $respostaCorreta) ? 1 : 2;
+
+// Registra a resposta no banco de dados
 $sqlRegistro = "
     INSERT INTO alunos_exercicios (id_usuario, id_exercicios, resultado, status)
     VALUES (?, ?, ?, 1)
@@ -56,11 +59,8 @@ $stmtRegistro->bind_param("iii", $alunoId, $idExercicio, $resultado);
 $stmtRegistro->execute();
 $stmtRegistro->close();
 
-// Consulta a quantidade total de exercícios no nível atual
-$sqlTotalExercicios = "
-    SELECT COUNT(*) AS total
-    FROM exercicios
-    WHERE nivel = ?";
+// Consulta o total de exercícios do nível
+$sqlTotalExercicios = "SELECT COUNT(*) AS total FROM exercicios WHERE nivel = ?";
 $stmtTotal = $conn->prepare($sqlTotalExercicios);
 $stmtTotal->bind_param("i", $nivelAtual);
 $stmtTotal->execute();
@@ -68,7 +68,7 @@ $stmtTotal->bind_result($totalExerciciosNivel);
 $stmtTotal->fetch();
 $stmtTotal->close();
 
-// Calcula o desempenho do aluno no nível atual
+// Conta os acertos do aluno
 $sqlDesempenho = "
     SELECT COUNT(*) AS total,
            SUM(CASE WHEN resultado = 1 THEN 1 ELSE 0 END) AS acertos
@@ -85,34 +85,32 @@ $stmtDesempenho->close();
 // Calcula o percentual de acertos
 $percentualAcertos = ($totalRespondidos > 0) ? ($totalAcertos / $totalExerciciosNivel) * 100 : 0;
 
-// Define a URL correta com base no nível do aluno
 $paginaAtual = ($nivelAtual == 1) ? "iniciantes.php" : (($nivelAtual == 2) ? "intermediarios.php" : "avancados.php");
 $proximaPagina = ($nivelAtual == 1) ? "intermediarios.php" : (($nivelAtual == 2) ? "avancados.php" : "parabens.php");
 
-// Verifica se o aluno respondeu todos os exercícios do nível
+// Verifica se o aluno respondeu tudo
 if ($totalRespondidos >= $totalExerciciosNivel) {
 	if ($percentualAcertos >= 60) {
-		// Aluno atingiu 60% ou mais de acertos e concluiu o nível
 		$_SESSION['AlunoNivel'] = $nivelAtual + 1;
-
 		echo json_encode([
 			'status' => 'success',
-			'message' => 'Parabéns! Você concluiu o nível atual com sucesso e avançará para o próximo nível!',
+			'resultado' => 'acerto',
+			'message' => 'Parabéns! Você avançou para o próximo nível!',
 			'redirect' => $proximaPagina
 		]);
 	} else {
-		// Aluno respondeu todos os exercícios, mas não atingiu 60% de acertos
 		echo json_encode([
 			'status' => 'error',
-			'message' => 'Você concluiu o nível atual, mas não atingiu a pontuação mínima de 60% para avançar. Tente novamente!',
+			'resultado' => 'erro',
+			'message' => 'Você precisa de pelo menos 60% de acertos para avançar. Tente novamente!',
 			'redirect' => $paginaAtual
 		]);
 	}
 } else {
-	// Aluno ainda não concluiu todos os exercícios do nível
 	echo json_encode([
 		'status' => 'success',
-		'message' => 'Resposta registrada com sucesso! Continue respondendo os exercícios para concluir o nível.',
-		'redirect' => $paginaAtual // Corrigi aqui para manter na página certa
+		'resultado' => ($resultado === 1) ? 'acerto' : 'erro',
+		'message' => ($resultado === 1) ? 'Resposta correta! Continue assim.' : 'Resposta errada. Tente novamente!',
+		'redirect' => $paginaAtual
 	]);
 }
