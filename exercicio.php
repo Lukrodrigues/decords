@@ -16,7 +16,7 @@ $idExercicio = intval($_GET['id']);
 
 // Consulta o exercício
 $sqlExercicio = "
-    SELECT pergunta, resposta, a, b, c, d, dica, nivel 
+    SELECT pergunta, tablatura, resposta, a, b, c, d, dica, nivel 
     FROM exercicios 
     WHERE id = ?";
 $stmtExercicio = $conn->prepare($sqlExercicio);
@@ -33,6 +33,7 @@ if (!$exercicio) {
 }
 
 $pergunta = $exercicio['pergunta'];
+$tablatura = $exercicio['tablatura'];
 $dica = $exercicio['dica'];
 $nivel = $exercicio['nivel'];
 $opcoes = [
@@ -76,6 +77,21 @@ $opcoes = [
 		.btn-dica {
 			margin-top: 10px;
 		}
+
+		.form-check {
+			margin-bottom: 10px;
+		}
+
+		.btn-submit {
+			margin-top: 20px;
+			padding: 10px 20px;
+			font-size: 16px;
+		}
+
+		.tablatura-container {
+			margin-top: 20px;
+			margin-bottom: 20px;
+		}
 	</style>
 	<nav class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container">
@@ -85,56 +101,61 @@ $opcoes = [
 			</ul>
 		</div>
 	</nav>
-
-
 </head>
 
 <body>
 	<div class="container">
 		<div class="card">
 			<div class="card-body"></br>
-				<h2 class="card-title text-center">Responder Exercício</h4>
-					<hr>
+				<h2 class="card-title text-center">Responder Exercício</h2>
+				<hr>
 
-					<form id="formExercicio" method="POST">
-						<div class="form-group">
-							<h4 class="card-text">Pergunta:</h4>
-							<p class="lead"><strong><?php echo htmlspecialchars($pergunta, ENT_QUOTES, 'UTF-8'); ?></strong></p>
-						</div>
+				<form id="formExercicio" method="POST">
+					<div class="form-group">
+						<h4 class="card-text">Pergunta:</h4>
+						<p class="lead"><strong><?php echo htmlspecialchars($pergunta, ENT_QUOTES, 'UTF-8'); ?></strong></p>
+					</div>
 
-						<div class="form-group">
-							<h5 class="card-text">Escolha uma opção:</h5>
-							<div id="opcoes">
-								<?php foreach ($opcoes as $letra => $descricao) : ?>
-									<div class="form-check">
-										<input
-											class="form-check-input"
-											type="radio"
-											name="resposta"
-											id="opcao-<?php echo $letra; ?>"
-											value="<?php echo $letra; ?>"
-											required>
-										<label class="form-check-label" for="opcao-<?php echo $letra; ?>">
-											<?php echo htmlspecialchars($descricao, ENT_QUOTES, 'UTF-8'); ?>
-										</label>
-									</div>
-								<?php endforeach; ?>
+					<?php if (!empty($tablatura)) : ?>
+						<div class="tablatura-container">
+							<div class="vex-tabdiv" width=500 scale=1.0 editor="false" editor_height=100>
+								<?php echo $tablatura; ?>
 							</div>
 						</div>
+					<?php endif; ?>
 
-						<div class="form-group">
-							<h6><strong>Dica: Caso dúvida clique abaixo</strong></h6>
-							<a href="tutorial-01.php" class="btn btn-info btn-dica">Abrir Tutorial</a>
+					<div class="form-group">
+						<h5 class="card-text">Escolha uma opção:</h5>
+						<div id="opcoes">
+							<?php foreach ($opcoes as $letra => $descricao) : ?>
+								<div class="form-check">
+									<input class="form-check-input" type="radio" name="resposta" id="opcao-<?php echo $letra; ?>" value="<?php echo $letra; ?>" required>
+									<label class="form-check-label" for="opcao-<?php echo $letra; ?>">
+										<?php echo htmlspecialchars($descricao, ENT_QUOTES, 'UTF-8'); ?>
+									</label>
+								</div>
+							<?php endforeach; ?>
 						</div>
+					</div>
 
-						<input type="hidden" id="id_exercicios" name="id_exercicios" value="<?php echo $idExercicio; ?>">
-						<button type="submit" class="btn btn-primary btn-lg btn-block">Enviar Resposta</button>
-					</form>
+					<div class="form-group">
+						<h6><strong>Dica: Caso dúvida clique abaixo</strong></h6>
+						<a href="tutorial-01.php" class="btn btn-info btn-dica">Abrir Tutorial</a>
+					</div>
 
-					<div id="feedback" class="alert alert-dismissible" style="display: none;"></div>
+					<input type="hidden" id="id_exercicios" name="id_exercicios" value="<?php echo $idExercicio; ?>">
+					<button type="submit" class="btn btn-primary btn-submit btn-block">Enviar Resposta</button>
+				</form>
+
+				<div id="feedback" class="alert alert-dismissible" style="display: none;"></div>
 			</div>
 		</div>
 	</div>
+
+	<!-- Scripts de suporte -->
+	<script src="js/partitura/vexflow-min.js"></script>
+	<script src="js/partitura/underscore-min.js"></script>
+	<script src="js/partitura/tabdiv-min.js"></script>
 
 	<script>
 		$(document).ready(function() {
@@ -147,7 +168,6 @@ $opcoes = [
 					data: $(this).serialize(),
 					dataType: 'json',
 					success: function(response) {
-						console.log(response); // Debugging no console
 						const feedback = $('#feedback');
 						feedback.removeClass('alert-success alert-danger')
 							.addClass(response.status === 'success' ? 'alert-success' : 'alert-danger')
@@ -169,7 +189,6 @@ $opcoes = [
 			});
 		});
 	</script>
-
 </body>
 
 </html>
