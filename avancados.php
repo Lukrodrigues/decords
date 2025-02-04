@@ -73,7 +73,7 @@ if ($total > 0) {
 		</div>
 	</nav>
 	<div class="container" style="margin-top: 80px;">
-		<h1 class="text-center">Desempenho e Exercícios - Avançado</h1>
+		<h1 class="text-center">Exercícios Avançados</h1>
 		<hr>
 		<?= $desempenhoMsg; ?>
 		<h2>Exercícios Disponíveis</h2>

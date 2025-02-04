@@ -16,7 +16,7 @@ session_start();
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="description" content="Decords Música e Teoria">
 	<meta name="" content="Luciano Moraes Rodrigues">
-	<link rel="icon" href="img/favicon.ico">
+	<link rel="icon" href="img/favicon-96x96.png">
 	<link href="css/bootstrap.min.css" rel="stylesheet">
 	<!--<link href="css/styles.css" rel="stylesheet">-->
 	<link href="css/map.css" rel="stylesheet">
@@ -86,7 +86,8 @@ session_start();
 
 	<div id="container">
 		<div class="one_half">
-			<h1>Sua opinião é importante para nós, comente sobre o site, exercícios e projeto:</h1></br> </br>
+			<h1><strong>
+					<div style="text-align:center">A sua opinião é importante para nós.<strong></h1></br> </br>
 		</div>
 	</div>
 

@@ -94,7 +94,7 @@ if ($total > 0) {
     </nav>
 
     <div class="container" style="margin-top: 80px;">
-        <h1 class="text-center">Desempenho e Exercícios</h1>
+        <h1 class="text-center">Exercícios Iniciantes</h1>
         <hr>
 
         <!-- Mensagens de desempenho -->
