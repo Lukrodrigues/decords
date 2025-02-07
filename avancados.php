@@ -5,11 +5,18 @@ if (!isset($_SESSION['AlunoEmail']) || !isset($_SESSION['AlunoSenha'])) {
 	header("Location: index.php");
 	exit;
 }
-
+/*
+// Redirecionar se não concluiu o intermediarios  
+if ($_SESSION['nivel_concluido'] !== 'intermediarios') {
+	header("Location: " . ($_SESSION['nivel_concluido'] === 'iniciantes' ? 'intermediarios.php' : 'iniciantes.php'));
+	exit;
+}
+*/
 include_once("conexao.php");
 
 $aluno = filter_var($_SESSION['AlunoId'], FILTER_VALIDATE_INT);
 $nivel = 3; // Nível avançado
+
 
 // Consultar desempenho geral no nível atual
 $sqlDesempenho = "

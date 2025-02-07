@@ -12,6 +12,13 @@ if (isset($_GET['logout'])) {
     exit;
 }
 
+// Redirecionar se já concluiu o nível iniciante  
+/*if ($_SESSION['nivel_concluido'] !== 'nenhum') {
+    header("Location: " . ($_SESSION['nivel_concluido'] === 'iniciantes' ? 'intermediarios.php' : 'avancados.php'));
+    exit;
+}
+*/
+
 include_once("conexao.php");
 
 $aluno = filter_var($_SESSION['AlunoId'], FILTER_VALIDATE_INT);

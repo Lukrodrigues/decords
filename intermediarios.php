@@ -11,7 +11,12 @@ if (isset($_GET['logout'])) {
     header("Location: login.php");
     exit;
 }
-
+/*
+if ($_SESSION['nivel_concluido'] !== 'iniciantes') {
+    header("Location: " . ($_SESSION['nivel_concluido'] === 'nenhum' ? 'iniciantes.php' : 'avancados.php'));
+    exit;
+}
+*/
 include_once("conexao.php");
 
 $aluno = filter_var($_SESSION['AlunoId'], FILTER_VALIDATE_INT);
