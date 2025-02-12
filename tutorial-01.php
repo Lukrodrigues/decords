@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <?php
 session_start();
 if (!isset($_SESSION['AlunoEmail']) || !isset($_SESSION['AlunoSenha']) || !isset($_SESSION['AlunoNivel'])) {

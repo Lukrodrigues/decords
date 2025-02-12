@@ -97,7 +97,7 @@ if ($totalRespondidos >= $totalExerciciosNivel) {
 		if ($nivelAtual == 3) {
 			// Nível avançado concluído com sucesso: redireciona para login.php
 			echo json_encode([
-				'status' => 'success',
+				'status' => 'sucess',
 				'resultado' => 'acerto',
 				'message' => 'Parabéns! Você concluiu todos os níveis e está apto a iniciar a tocar violão.',
 				'redirect' => 'login.php'
@@ -123,10 +123,19 @@ if ($totalRespondidos >= $totalExerciciosNivel) {
 	}
 } else {
 	// Se ainda não concluiu todos os exercícios, retorna mensagem informativa
-	echo json_encode([
-		'status' => 'success',
-		'resultado' => ($resultado === 1) ? 'acerto' : 'erro',
-		'message' => ($resultado === 1) ? 'Resposta correta! Continue respondendo os exercícios.' : 'Resposta incorreta. Tente novamente!',
-		'redirect' => $paginaAtual
-	]);
+	if ($resultado === 1) {
+		echo json_encode([
+			'status' => 'success',
+			'resultado' => 'acerto',
+			'message' => 'Resposta correta! Continue respondendo os exercícios.',
+			'redirect' => $paginaAtual
+		]);
+	} else {
+		echo json_encode([
+			'status' => 'danger',
+			'resultado' => 'erro',
+			'message' => 'Resposta incorreta. Tente novamente!',
+			'redirect' => $paginaAtual
+		]);
+	}
 }

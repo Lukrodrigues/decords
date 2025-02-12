@@ -91,7 +91,7 @@ if ($total > 0) {
         <div class="container">
             <a class="navbar-brand" href="index.php">Decords Música</a>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="?logout=true">Sair</a></li>
+                <li><a href="login.php">Sair</a></li>
             </ul>
         </div>
     </nav>
