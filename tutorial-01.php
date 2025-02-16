@@ -1,37 +1,21 @@
 <?php
 session_start();
-
-// Verifica se o usuário está logado
-if (!isset($_SESSION['AlunoEmail']) || !isset($_SESSION['AlunoSenha'])) {
+if (!isset($_SESSION['AlunoEmail']) || !isset($_SESSION['AlunoSenha']) || !isset($_SESSION['AlunoNivel'])) {
 	echo "É necessário login.";
 	header("Location: index.php");
 	exit;
 }
 
-// Inicializa as variáveis de sessão, caso não existam
-if (!isset($_SESSION['concluiu_iniciantes'])) {
-	$_SESSION['concluiu_iniciantes'] = false;
-	$_SESSION['aproveitamento_iniciantes'] = 0;
-}
-if (!isset($_SESSION['concluiu_intermediarios'])) {
-	$_SESSION['concluiu_intermediarios'] = false;
-	$_SESSION['aproveitamento_intermediarios'] = 0;
-}
+// Suponha que o nível do aluno esteja definido numericamente na sessão:
+// 1 = Iniciante, 2 = Intermediário, 3 = Avançado
+$nivelAtual = intval($_SESSION['AlunoNivel']);
 
-// Função para determinar o estado do link
-function estadoLink($nivel)
-{
-	switch ($nivel) {
-		case 'iniciantes':
-			return ($_SESSION['concluiu_iniciantes'] && $_SESSION['aproveitamento_iniciantes'] >= 60) ? 'disabled' : '';
-		case 'intermediarios':
-			return ($_SESSION['concluiu_iniciantes'] && $_SESSION['aproveitamento_iniciantes'] >= 60) ? '' : 'disabled';
-		case 'avancados':
-			return ($_SESSION['concluiu_intermediarios'] && $_SESSION['aproveitamento_intermediarios'] >= 60) ? '' : 'disabled';
-		default:
-			return 'disabled';
-	}
-}
+// Definindo os links de cada nível
+$menuItens = [
+	'Iniciantes'      => ['link' => 'iniciantes.php', 'nivel' => 1],
+	'Intermediários'  => ['link' => 'intermediarios.php', 'nivel' => 2],
+	'Avançados'       => ['link' => 'avancados.php', 'nivel' => 3],
+];
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -46,44 +30,76 @@ function estadoLink($nivel)
 </head>
 
 <body>
-	<nav class="navbar navbar-inverse" role="navigation">
-		<div class="container">
-			<div class="row">
-				<div class="navbar-header">
-					<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-						<span class="sr-only">Toggle navigation</span>
-					</button>
-					<a class="navbar-brand" href="index.php"><img id="logo" src="img/foto22.jpg" width="100" height="30"></a>
-				</div>
-				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-					<ul class="nav navbar-nav">
-						<li class="dropdown">
-							<a class="dropdown-toggle" href="#" data-toggle="dropdown">Tutorial <b class="caret"></b></a>
-							<ul class="dropdown-menu">
-								<li><a href="tutorial-01.php">Tutorial-01</a></li>
-								<li class="divider"></li>
-								<li><a href="tutorial_02.php">Tutorial-02</a></li>
-								<li class="divider"></li>
-							</ul>
-						</li>
-						<li class="dropdown">
-							<a class="dropdown-toggle" href="#" data-toggle="dropdown">Exercícios <b class="caret"></b></a>
-							<ul class="dropdown-menu">
-								<li class="<?php echo estadoLink('iniciantes'); ?>"><a href="iniciantes.php">Iniciantes</a></li>
-								<li class="divider"></li>
-								<li class="<?php echo estadoLink('intermediarios'); ?>"><a href="intermediarios.php">Intermediários</a></li>
-								<li class="divider"></li>
-								<li class="<?php echo estadoLink('avancados'); ?>"><a href="avancados.php">Avançados</a></li>
-								<li class="divider"></li>
-							</ul>
-						</li>
-						<li class="active"><a href="login.php">Sair</a></li>
-					</ul>
+
+	<body>
+		<nav class="navbar navbar-inverse navbar" role="navigation">
+			<div class="container">
+				<div class="row">
+					<div class="navbar-header">
+						<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+							<span class="sr-only">Toggle navigation</span>
+						</button>
+
+						<a class="navbar-brand" href="index.php"><img id="logo" src="img/foto22.jpg" width="100" height="30"></a>
+					</div>
+					<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+						<ul class="nav navbar-nav">
+							<li class="dropdown"><a class="dropdown-toggle" href="#" data-toggle="dropdown">Tutorial <b class="caret"></b></a>
+								<ul class="dropdown-menu">
+									<li><a href="tutorial-01.php">Tutorial-01</a></li>
+									<li class="divider"></li>
+									<li><a href="tutorial_02.php">Tutorial-02</a></li>
+									<li class="divider"></li>
+								</ul>
+							<li class="dropdown"><a class="dropdown-toggle" href="#" data-toggle="dropdown">Exercicios <b class="caret"></b></a>
+								<ul class="dropdown-menu">
+									<li><a href="iniciantes.php">Iniciantes</a></li>
+									<li class="divider"></li>
+									<li><a href="intermediarios.php">Intermediarios</a></li>
+									<li class="divider"></li>
+									<li><a href="avancados.php">Avancados</a></li>
+									<li class="divider"></li>
+								</ul>
+							<li class="active"><a href="login.php">Sair</a></li>
+							</li>
+						</ul>
+					</div>
 				</div>
 			</div>
-		</div>
-	</nav>
-</body>
+		</nav>
+
+		<!-- Dentro do dropdown "Exercicios" no tutorial-01.php -->
+		<ul class="dropdown-menu">
+			<?php
+			$nivel_concluido = $_SESSION['nivel_concluido'] ?? 'nenhum';
+
+			// Exibir "Iniciantes" apenas se nenhum nível foi concluído  
+			if ($nivel_concluido === 'nenhum'):
+			?>
+				<li><a href="iniciantes.php">Iniciantes</a></li>
+				<li class="divider"></li>
+			<?php
+			endif;
+
+			// Exibir "Intermediarios" se o aluno concluiu "iniciantes"  
+			if ($nivel_concluido === 'iniciantes'):
+			?>
+				<li><a href="intermediarios.php">Intermediarios</a></li>
+				<li class="divider"></li>
+			<?php
+			endif;
+
+			// Exibir "Avancados" se o aluno concluiu "intermediarios"  
+			if ($nivel_concluido === 'intermediarios'):
+			?>
+				<li><a href="avancados.php">Avancados</a></li>
+				<li class="divider"></li>
+			<?php
+			endif;
+			?>
+		</ul>
+
+</html>
 
 </html>
 

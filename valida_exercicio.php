@@ -127,7 +127,7 @@ if ($totalRespondidos >= $totalExerciciosNivel) {
 		echo json_encode([
 			'status' => 'success',
 			'resultado' => 'acerto',
-			'message' => 'Resposta correta! Parabéns continue o exercicios seguintes.',
+			'message' => 'Resposta correta! Parabéns continue os exercicios seguintes.',
 			'redirect' => $paginaAtual
 		]);
 	} else {

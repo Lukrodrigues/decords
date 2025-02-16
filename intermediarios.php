@@ -150,6 +150,8 @@ if ($total > 0) {
 
                         $contador++;
                     }
+                    $_SESSION['nivel_concluido'] = 'intermediarios';
+                    $_SESSION['AlunoNivel'] = 3;
                     $stmtExercicios->close();
                     $conn->close();
                     ?>
