@@ -122,8 +122,7 @@ if ($total > 0) {
                               </tr>";
                         $contador++;
                     }
-                    $_SESSION['nivel_concluido'] = 'iniciantes';
-                    $_SESSION['AlunoNivel'] = 2;
+
                     $stmtExercicios->close();
                     $conn->close();
                     ?>
