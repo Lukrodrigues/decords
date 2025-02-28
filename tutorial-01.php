@@ -1,22 +1,25 @@
 <?php
 session_start();
+
+// Verifica se o aluno está logado
 if (!isset($_SESSION['AlunoEmail']) || !isset($_SESSION['AlunoSenha']) || !isset($_SESSION['AlunoNivel'])) {
-	echo "É necessário login.";
+	echo "É necessário fazer login.";
 	header("Location: index.php");
 	exit;
 }
 
-// Suponha que o nível do aluno esteja definido numericamente na sessão:
-// 1 = Iniciante, 2 = Intermediário, 3 = Avançado
+// Nível atual do aluno
 $nivelAtual = intval($_SESSION['AlunoNivel']);
+$nivelConcluido = $_SESSION['nivel_concluido'] ?? false; // Indica se o nível atual foi concluído
 
-// Definindo os links de cada nível
+// Links dos níveis
 $menuItens = [
 	'Iniciantes'      => ['link' => 'iniciantes.php', 'nivel' => 1],
 	'Intermediários'  => ['link' => 'intermediarios.php', 'nivel' => 2],
 	'Avançados'       => ['link' => 'avancados.php', 'nivel' => 3],
 ];
 ?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -30,76 +33,48 @@ $menuItens = [
 </head>
 
 <body>
-
-	<body>
-		<nav class="navbar navbar-inverse navbar" role="navigation">
-			<div class="container">
-				<div class="row">
-					<div class="navbar-header">
-						<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-							<span class="sr-only">Toggle navigation</span>
-						</button>
-
-						<a class="navbar-brand" href="index.php"><img id="logo" src="img/foto22.jpg" width="100" height="30"></a>
-					</div>
-					<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-						<ul class="nav navbar-nav">
-							<li class="dropdown"><a class="dropdown-toggle" href="#" data-toggle="dropdown">Tutorial <b class="caret"></b></a>
-								<ul class="dropdown-menu">
-									<li><a href="tutorial-01.php">Tutorial-01</a></li>
+	<nav class="navbar navbar-inverse navbar" role="navigation">
+		<div class="container">
+			<div class="row">
+				<div class="navbar-header">
+					<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+						<span class="sr-only">Toggle navigation</span>
+					</button>
+					<a class="navbar-brand" href="index.php"><img id="logo" src="img/foto22.jpg" width="100" height="30"></a>
+				</div>
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+					<ul class="nav navbar-nav">
+						<li class="dropdown">
+							<a class="dropdown-toggle" href="#" data-toggle="dropdown">Tutorial <b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li><a href="tutorial-01.php">Tutorial-01</a></li>
+								<li class="divider"></li>
+								<li><a href="tutorial_02.php">Tutorial-02</a></li>
+								<li class="divider"></li>
+							</ul>
+						</li>
+						<li class="dropdown">
+							<a class="dropdown-toggle" href="#" data-toggle="dropdown">Exercícios <b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<?php foreach ($menuItens as $nome => $dados): ?>
+									<?php if ($dados['nivel'] < $nivelAtual || ($dados['nivel'] == $nivelAtual && $nivelConcluido)): ?>
+										<li><a href="#" style="color: gray;"><?= $nome ?> - Concluído ✅</a></li>
+									<?php elseif ($dados['nivel'] == $nivelAtual): ?>
+										<li><a href="<?= $dados['link'] ?>"><?= $nome ?> - Em andamento 🚀</a></li>
+									<?php else: ?>
+										<li><a href="#" style="color: gray;"><?= $nome ?> - Bloqueado 🔒</a></li>
+									<?php endif; ?>
 									<li class="divider"></li>
-									<li><a href="tutorial_02.php">Tutorial-02</a></li>
-									<li class="divider"></li>
-								</ul>
-							<li class="dropdown"><a class="dropdown-toggle" href="#" data-toggle="dropdown">Exercicios <b class="caret"></b></a>
-								<ul class="dropdown-menu">
-									<li><a href="iniciantes.php">Iniciantes</a></li>
-									<li class="divider"></li>
-									<li><a href="intermediarios.php">Intermediarios</a></li>
-									<li class="divider"></li>
-									<li><a href="avancados.php">Avancados</a></li>
-									<li class="divider"></li>
-								</ul>
-							<li class="active"><a href="login.php">Sair</a></li>
-							</li>
-						</ul>
-					</div>
+								<?php endforeach; ?>
+							</ul>
+						</li>
+						<li class="active"><a href="login.php">Sair</a></li>
+					</ul>
 				</div>
 			</div>
-		</nav>
-
-		<!-- Dentro do dropdown "Exercicios" no tutorial-01.php -->
-		<ul class="dropdown-menu">
-			<?php
-			$nivel_concluido = $_SESSION['nivel_concluido'] ?? 'nenhum';
-
-			// Exibir "Iniciantes" apenas se nenhum nível foi concluído  
-			if ($nivel_concluido === 'nenhum'):
-			?>
-				<li><a href="iniciantes.php">Iniciantes</a></li>
-				<li class="divider"></li>
-			<?php
-			endif;
-
-			// Exibir "Intermediarios" se o aluno concluiu "iniciantes"  
-			if ($nivel_concluido === 'iniciantes'):
-			?>
-				<li><a href="intermediarios.php">Intermediarios</a></li>
-				<li class="divider"></li>
-			<?php
-			endif;
-
-			// Exibir "Avancados" se o aluno concluiu "intermediarios"  
-			if ($nivel_concluido === 'intermediarios'):
-			?>
-				<li><a href="avancados.php">Avancados</a></li>
-				<li class="divider"></li>
-			<?php
-			endif;
-			?>
-		</ul>
-
-</html>
+		</div>
+	</nav>
+</body>
 
 </html>
 
