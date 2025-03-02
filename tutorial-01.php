@@ -1,9 +1,7 @@
 <?php
 session_start();
-
-// Verifica se o aluno está logado
 if (!isset($_SESSION['AlunoEmail']) || !isset($_SESSION['AlunoSenha']) || !isset($_SESSION['AlunoNivel'])) {
-	echo "É necessário fazer login.";
+	echo "É necessário login.";
 	header("Location: index.php");
 	exit;
 }
@@ -14,9 +12,9 @@ $nivelConcluido = $_SESSION['nivel_concluido'] ?? false; // Indica se o nível a
 
 // Links dos níveis
 $menuItens = [
-	'Iniciantes'      => ['link' => 'iniciantes.php', 'nivel' => 1],
-	'Intermediários'  => ['link' => 'intermediarios.php', 'nivel' => 2],
-	'Avançados'       => ['link' => 'avancados.php', 'nivel' => 3],
+	'Iniciantes' => ['link' => 'iniciantes.php', 'nivel' => 1],
+	'Intermediários' => ['link' => 'intermediarios.php', 'nivel' => 2],
+	'Avançados' => ['link' => 'avancados.php', 'nivel' => 3],
 ];
 ?>
 
@@ -74,6 +72,12 @@ $menuItens = [
 			</div>
 		</div>
 	</nav>
+	<div class="container">
+		<h1>Bem-vindo ao Tutorial 01</h1>
+		<p>Você está logado como: <?= $_SESSION['AlunoEmail'] ?></p>
+		<p>Nível atual: <?= $nivelAtual ?></p>
+		<p>Status do nível: <?= $nivelConcluido ? 'Concluído' : 'Em andamento' ?></p>
+	</div>
 </body>
 
 </html>

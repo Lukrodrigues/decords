@@ -1,48 +1,65 @@
 ﻿<?php
+header('Content-Type: application/json; charset=utf-8');
 session_start();
-require_once "conexao.php"; // Garante que a conexão está inclusa corretamente
+require_once "conexao.php";
 
-// Verifica se a requisição é POST
-if ($_SERVER["REQUEST_METHOD"] !== "POST") {
-	http_response_code(405);
-	exit("Método não permitido.");
+function sendResponse($status, $message, $httpCode = 200)
+{
+	http_response_code($httpCode);
+	echo json_encode(['status' => $status, 'message' => $message]);
+	exit;
 }
 
-// Captura e sanitiza os dados de entrada
-$email = filter_var(trim($_POST['email'] ?? ''), FILTER_SANITIZE_EMAIL);
+if ($_SERVER["REQUEST_METHOD"] !== "POST") {
+	sendResponse('error', 'Método não permitido.', 405);
+}
+
+$email = trim($_POST['email'] ?? '');
 $senha = $_POST['senha'] ?? '';
 
-// Verifica se os campos não estão vazios
 if (empty($email) || empty($senha)) {
-	$_SESSION['loginErro'] = "Preencha todos os campos.";
-	header("Location: login.php");
-	exit();
+	sendResponse('error', 'E-mail e senha são obrigatórios.', 400);
 }
 
-// Prepara a consulta ao banco de dados
-$stmt = $conn->prepare("SELECT id, nome, email, senha, nivel FROM alunos WHERE email = ? LIMIT 1");
-$stmt->bind_param("s", $email);
-$stmt->execute();
-$result = $stmt->get_result();
-$aluno = $result->fetch_assoc();
-$stmt->close();
+try {
+	// Busca o usuário no banco de dados
+	$stmt = $conn->prepare("SELECT id, nome, senha FROM alunos WHERE email = ?");
+	if (!$stmt) {
+		throw new Exception("Erro ao preparar consulta.");
+	}
 
-// Verifica se encontrou o usuário e se a senha está correta
-if (!$aluno || !password_verify($senha, $aluno['senha'])) {
-	$_SESSION['loginErro'] = "E-mail ou senha inválidos.";
-	header("Location: login.php");
-	exit();
+	$stmt->bind_param("s", $email);
+	$stmt->execute();
+	$stmt->store_result();
+
+	if ($stmt->num_rows === 0) {
+		$stmt->close();
+		sendResponse('error', 'E-mail ou senha incorretos.', 401);
+	}
+
+	$stmt->bind_result($id, $nome, $senha_hash);
+	$stmt->fetch();
+	$stmt->close();
+
+	// Verifica a senha
+	if (password_verify($senha, $senha_hash)) {
+		// Login bem-sucedido
+		$_SESSION['AlunoId'] = $id;
+		$_SESSION['AlunoNome'] = $nome;
+		$_SESSION['AlunoEmail'] = $email;
+
+		sendResponse('success', 'Login realizado com sucesso!');
+	} else {
+		sendResponse('error', 'E-mail ou senha incorretos.', 401);
+	}
+} catch (Exception $ex) {
+	error_log("Erro no login: " . $ex->getMessage());
+	sendResponse('error', 'Erro interno, tente novamente.', 500);
+} finally {
+	if (isset($stmt)) {
+		$stmt->close();
+	}
+	if (isset($conn)) {
+		$conn->close();
+	}
 }
-
-// Garante uma nova sessão segura
-session_regenerate_id(true);
-
-// Armazena os dados do aluno na sessão
-$_SESSION['AlunoId'] = $aluno['id'];
-$_SESSION['AlunoEmail'] = $aluno['email'];
-$_SESSION['AlunoNome'] = $aluno['nome'];
-$_SESSION['AlunoNivel'] = $aluno['nivel'];
-
-// Redireciona para a página inicial
-header("Location: tutorial-01.php");
-exit();
