@@ -1,65 +1,61 @@
 ﻿<?php
-header('Content-Type: application/json; charset=utf-8');
 session_start();
-require_once "conexao.php";
 
-function sendResponse($status, $message, $httpCode = 200)
-{
-	http_response_code($httpCode);
-	echo json_encode(['status' => $status, 'message' => $message]);
-	exit;
-}
+// Verifica se os dados foram enviados via POST
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+	// Sanitização dos dados de entrada
+	$email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
+	$senha = $_POST['senha']; // Não sanitizar senhas (serão verificadas via hash)
 
-if ($_SERVER["REQUEST_METHOD"] !== "POST") {
-	sendResponse('error', 'Método não permitido.', 405);
-}
+	// Inclui o arquivo de conexão
+	include_once("conexao.php");
 
-$email = trim($_POST['email'] ?? '');
-$senha = $_POST['senha'] ?? '';
+	// Prepara a consulta SQL com prepared statements
+	$sql = "SELECT id, email, senha, nome, nivel FROM alunos WHERE email = ? LIMIT 1";
+	$stmt = $conn->prepare($sql);
 
-if (empty($email) || empty($senha)) {
-	sendResponse('error', 'E-mail e senha são obrigatórios.', 400);
-}
+	if ($stmt) {
+		// Vincula os parâmetros e executa
+		$stmt->bind_param("s", $email);
+		$stmt->execute();
+		$result = $stmt->get_result();
 
-try {
-	// Busca o usuário no banco de dados
-	$stmt = $conn->prepare("SELECT id, nome, senha FROM alunos WHERE email = ?");
-	if (!$stmt) {
-		throw new Exception("Erro ao preparar consulta.");
-	}
+		// Verifica se encontrou um registro
+		if ($result->num_rows === 1) {
+			$resultado = $result->fetch_assoc();
 
-	$stmt->bind_param("s", $email);
-	$stmt->execute();
-	$stmt->store_result();
+			// Verifica a senha usando hash (supondo que a senha está armazenada com password_hash)
+			if (password_verify($senha, $resultado['senha'])) {
+				// Define as variáveis de sessão
+				$_SESSION['AlunoId'] = $resultado['id'];
+				$_SESSION['AlunoEmail'] = $resultado['email'];
+				$_SESSION['AlunoNome'] = $resultado['nome'];
+				$_SESSION['AlunoNivel'] = $resultado['nivel'];
 
-	if ($stmt->num_rows === 0) {
+				// Redireciona para a página de tutorial
+				header("Location: tutorial-01.php");
+				exit();
+			} else {
+				$_SESSION['loginErro'] = "Senha incorreta!";
+				header("Location: Login.php");
+				exit();
+			}
+		} else {
+			$_SESSION['loginErro'] = "Usuário não encontrado!";
+			header("Location: Login.php");
+			exit();
+		}
+
 		$stmt->close();
-		sendResponse('error', 'E-mail ou senha incorretos.', 401);
-	}
-
-	$stmt->bind_result($id, $nome, $senha_hash);
-	$stmt->fetch();
-	$stmt->close();
-
-	// Verifica a senha
-	if (password_verify($senha, $senha_hash)) {
-		// Login bem-sucedido
-		$_SESSION['AlunoId'] = $id;
-		$_SESSION['AlunoNome'] = $nome;
-		$_SESSION['AlunoEmail'] = $email;
-
-		sendResponse('success', 'Login realizado com sucesso!');
 	} else {
-		sendResponse('error', 'E-mail ou senha incorretos.', 401);
+		$_SESSION['loginErro'] = "Erro no sistema. Tente novamente.";
+		header("Location: Login.php");
+		exit();
 	}
-} catch (Exception $ex) {
-	error_log("Erro no login: " . $ex->getMessage());
-	sendResponse('error', 'Erro interno, tente novamente.', 500);
-} finally {
-	if (isset($stmt)) {
-		$stmt->close();
-	}
-	if (isset($conn)) {
-		$conn->close();
-	}
+
+	$conn->close();
+} else {
+	// Se não for POST, redireciona para o login
+	header("Location: Login.php");
+	exit();
 }

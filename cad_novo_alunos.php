@@ -1,62 +1,96 @@
 <?php
-header('Content-Type: text/html; charset=utf-8');
+
+declare(strict_types=1);
+
+header('Content-Type: application/json');
 session_start();
 
-// Verifica o token CSRF
-if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
-  die("Erro de segurança: Token CSRF inválido.");
-}
-
-include_once("conexao.php");
-
-// Recebe os dados do formulário
-$nome = $_POST['nome'];
-$email = $_POST['email'];
-$senha = $_POST['senha'];
-$senha2 = $_POST['senha2'];
-$cadastro_data = date("Y-m-d");
-
-// Validações básicas
-if (empty($nome) || empty($email) || empty($senha) || empty($senha2)) {
-  die("Todos os campos são obrigatórios.");
-}
-
-if ($senha !== $senha2) {
-  die("As senhas não coincidem.");
-}
-
-// Verifica se o e-mail já está cadastrado
-$query = "SELECT id FROM alunos WHERE email = ?";
-$stmt = $conn->prepare($query);
-$stmt->bind_param("s", $email);
-$stmt->execute();
-$stmt->store_result();
-
-if ($stmt->num_rows > 0) {
-  die("E-mail já cadastrado.");
-}
-
-// Hash da senha
-$senhaHash = password_hash($senha, PASSWORD_DEFAULT);
-
-// Insere o novo usuário no banco de dados
 try {
-  $sql = "INSERT INTO alunos (nome, email, senha, cadastro_data) VALUES (?, ?, ?, ?)";
-  $stmt = $conn->prepare($sql);
-  $stmt->bind_param("ssss", $nome, $email, $senhaHash, $cadastro_data);
-
-  if ($stmt->execute()) {
-    // Retorna uma mensagem de sucesso
-    echo "Usuário cadastrado com sucesso.";
-  } else {
-    // Retorna uma mensagem de erro
-    echo "Erro ao cadastrar usuário.";
+  // Garante que a sessão está ativa
+  if (session_status() !== PHP_SESSION_ACTIVE) {
+    throw new RuntimeException("Falha ao iniciar a sessão", 500);
   }
-} catch (Exception $ex) {
-  // Retorna uma mensagem de erro
-  echo "Erro ao cadastrar usuário.";
-}
 
-// Fecha a conexão com o banco de dados
-$stmt->close();
-$conn->close();
+  // Verificação do método HTTP
+  if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    throw new RuntimeException("Método inválido", 405);
+  }
+
+  // Leitura dos dados enviados
+  $input = json_decode(file_get_contents('php://input'), true, 512, JSON_THROW_ON_ERROR);
+
+  // Debug: Verificar se o token está vindo corretamente
+  if (!isset($_SESSION['csrf_token'], $input['csrf_token'])) {
+    throw new RuntimeException("Token de segurança não enviado", 403);
+  }
+
+  // Comparação segura do token CSRF
+  if (!hash_equals($_SESSION['csrf_token'], $input['csrf_token'])) {
+    throw new RuntimeException("Token de segurança inválido", 403);
+  }
+
+  // Validação dos campos obrigatórios
+  $required = ['nome', 'email', 'senha', 'senha2'];
+  foreach ($required as $field) {
+    if (empty($input[$field])) {
+      throw new RuntimeException("Campo {$field} é obrigatório", 400);
+    }
+  }
+
+  if ($input['senha'] !== $input['senha2']) {
+    throw new RuntimeException("As senhas não coincidem", 400);
+  }
+
+  // Conexão com o banco de dados
+  require 'conexao.php';
+
+  // Verificar se o email já está cadastrado
+  $stmt = $conn->prepare("SELECT id FROM alunos WHERE email = ? LIMIT 1");
+  $stmt->bind_param('s', $input['email']);
+  $stmt->execute();
+  $result = $stmt->get_result();
+
+  if ($result->num_rows > 0) {
+    throw new RuntimeException("Email já cadastrado", 409);
+  }
+
+  // Criar hash seguro da senha
+  $senhaHash = password_hash($input['senha'], PASSWORD_ARGON2ID);
+
+  // Iniciar transação para inserir os dados com segurança
+  $conn->begin_transaction();
+
+  try {
+    $stmt = $conn->prepare("INSERT INTO alunos (nome, email, senha) VALUES (?, ?, ?)");
+    $stmt->bind_param('sss', $input['nome'], $input['email'], $senhaHash);
+
+    if (!$stmt->execute()) {
+      throw new RuntimeException("Erro ao inserir no banco de dados", 500);
+    }
+
+    $conn->commit();
+
+    // Resposta de sucesso com redirecionamento
+    echo json_encode([
+      'success' => true,
+      'message' => 'Aluno cadastrado com sucesso!',
+      'redirect' => 'login.php'
+    ]);
+    exit;
+  } catch (Exception $e) {
+    $conn->rollback();
+    throw new RuntimeException("Erro na transação: " . $e->getMessage(), 500);
+  }
+} catch (RuntimeException $e) {
+  http_response_code($e->getCode() ?: 500);
+  echo json_encode([
+    'success' => false,
+    'message' => $e->getMessage()
+  ]);
+} catch (Throwable $e) {
+  http_response_code(500);
+  echo json_encode([
+    'success' => false,
+    'message' => 'Erro interno do servidor'
+  ]);
+}

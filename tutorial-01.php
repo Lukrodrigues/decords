@@ -1,9 +1,9 @@
 <?php
 session_start();
-if (!isset($_SESSION['AlunoEmail']) || !isset($_SESSION['AlunoSenha']) || !isset($_SESSION['AlunoNivel'])) {
-	echo "É necessário login.";
-	header("Location: index.php");
-	exit;
+
+if (!isset($_SESSION['AlunoId'])) {
+	header("Location: Login.php"); // Redireciona se não estiver logado
+	exit();
 }
 
 // Nível atual do aluno
