@@ -1,141 +1,121 @@
 <?php
 session_start();
-include_once("conexao.php");
-
 header('Content-Type: application/json');
+// Habilita relatório de erros rigoroso
+error_reporting(E_ALL);
+ini_set('display_errors', 0);
+ini_set('log_errors', 1);
+ini_set('error_log', __DIR__ . '/php_errors.log');
 
-// Verifica se os dados necessários foram enviados
-if (!isset($_POST['id_exercicios'], $_POST['resposta'])) {
-	echo json_encode([
-		'status' => 'error',
-		'resultado' => 'erro',
-		'message' => 'Dados inválidos ou incompletos.'
-	]);
-	exit;
-}
+// Controle de buffer de saída
+if (ob_get_level()) ob_end_clean();
+ob_start();
 
-// Captura os dados
-$idExercicio = intval($_POST['id_exercicios']);
-$respostaAluno = trim($_POST['resposta']);
-$alunoId = $_SESSION['AlunoId'] ?? null;
-$nivelAtual = $_SESSION['AlunoNivel'] ?? 1;
+try {
+	// Verificação de autenticação
+	if (!isset($_SESSION['aluno_logado']) || $_SESSION['aluno_logado'] !== true) {
+		throw new Exception('Acesso não autorizado', 401);
+	}
 
-// Verifica se o aluno está logado
-if (!$alunoId) {
-	echo json_encode([
-		'status' => 'error',
-		'resultado' => 'erro',
-		'message' => 'Você não está logado.'
-	]);
-	exit;
-}
+	// Validação do método HTTP
+	if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+		throw new Exception('Método não permitido', 405);
+	}
 
-// Consulta a resposta correta
-$sqlResposta = "SELECT resposta FROM exercicios WHERE id = ?";
-$stmt = $conn->prepare($sqlResposta);
-$stmt->bind_param("i", $idExercicio);
-$stmt->execute();
-$result = $stmt->get_result();
-$respostaCorreta = $result->fetch_assoc()['resposta'];
-$stmt->close();
+	// Verificação dos campos obrigatórios
+	if (!isset($_POST['id_exercicios'], $_POST['resposta'])) {
+		throw new Exception('Dados incompletos', 400);
+	}
 
-if (!$respostaCorreta) {
-	echo json_encode([
-		'status' => 'error',
-		'resultado' => 'erro',
-		'message' => 'Exercício não encontrado.'
-	]);
-	exit;
-}
+	// Conexão com banco de dados
+	require_once 'conexao.php';
 
-// Verifica se a resposta está correta (comparação exata; ajuste se necessário para case-insensitive)
-$resultado = (strcasecmp($respostaAluno, $respostaCorreta) === 0) ? 1 : 2;
+	// Sanitização dos dados
+	$alunoId = (int)$_SESSION['aluno_id'];
+	$exercicioId = (int)$_POST['id_exercicios'];
+	$resposta = mb_strtolower(trim($_POST['resposta']), 'UTF-8');
 
-// Registra ou atualiza a resposta do aluno no banco
-$sqlRegistro = "
-    INSERT INTO alunos_exercicios (id_usuario, id_exercicios, resultado, status)
-    VALUES (?, ?, ?, 1)
-    ON DUPLICATE KEY UPDATE resultado = VALUES(resultado), status = 1";
-$stmtRegistro = $conn->prepare($sqlRegistro);
-$stmtRegistro->bind_param("iii", $alunoId, $idExercicio, $resultado);
-$stmtRegistro->execute();
-$stmtRegistro->close();
+	// Consulta ao exercício
+	$stmtExercicio = $conn->prepare("SELECT resposta, nivel FROM exercicios WHERE id = ? LIMIT 1");
+	$stmtExercicio->bind_param("i", $exercicioId);
 
-// Consulta o total de exercícios do nível atual
-$sqlTotalExercicios = "SELECT COUNT(*) AS total FROM exercicios WHERE nivel = ?";
-$stmtTotal = $conn->prepare($sqlTotalExercicios);
-$stmtTotal->bind_param("i", $nivelAtual);
-$stmtTotal->execute();
-$stmtTotal->bind_result($totalExerciciosNivel);
-$stmtTotal->fetch();
-$stmtTotal->close();
+	if (!$stmtExercicio->execute()) {
+		throw new Exception('Erro na consulta do exercício', 500);
+	}
 
-// Consulta o desempenho do aluno no nível atual
-$sqlDesempenho = "
-    SELECT COUNT(*) AS total,
-           SUM(CASE WHEN resultado = 1 THEN 1 ELSE 0 END) AS acertos
-    FROM alunos_exercicios ae
-    INNER JOIN exercicios e ON ae.id_exercicios = e.id
-    WHERE ae.id_usuario = ? AND e.nivel = ? AND ae.status = 1";
-$stmtDesempenho = $conn->prepare($sqlDesempenho);
-$stmtDesempenho->bind_param("ii", $alunoId, $nivelAtual);
-$stmtDesempenho->execute();
-$stmtDesempenho->bind_result($totalRespondidos, $totalAcertos);
-$stmtDesempenho->fetch();
-$stmtDesempenho->close();
+	$resultExercicio = $stmtExercicio->get_result();
 
-// Calcula o percentual de acertos
-$percentualAcertos = ($totalRespondidos > 0) ? ($totalAcertos / $totalExerciciosNivel) * 100 : 0;
+	if ($resultExercicio->num_rows === 0) {
+		throw new Exception('Exercício não encontrado', 404);
+	}
 
-// Define as páginas para redirecionamento
-$paginaAtual = ($nivelAtual == 1) ? "iniciantes.php" : (($nivelAtual == 2) ? "intermediarios.php" : "avancados.php");
-$proximaPagina = ($nivelAtual == 1) ? "intermediarios.php" : (($nivelAtual == 2) ? "avancados.php" : "login.php");
+	$dadosExercicio = $resultExercicio->fetch_assoc();
 
-// Se o aluno respondeu todos os exercícios do nível:
-if ($totalRespondidos >= $totalExerciciosNivel) {
-	if ($percentualAcertos >= 60) {
-		if ($nivelAtual == 3) {
-			// Nível avançado concluído com sucesso: redireciona para login.php
-			echo json_encode([
-				'status' => 'success',
-				'resultado' => 'acerto',
-				'message' => 'Parabéns! Você concluiu todos os níveis e está apto a iniciar a tocar violão.',
-				'redirect' => 'login.php'
-			]);
-		} else {
-			// Avança para o próximo nível (para iniciantes e intermediários)
-			$_SESSION['AlunoNivel'] = $nivelAtual + 1;
-			echo json_encode([
-				'status' => 'success',
-				'resultado' => 'acerto',
-				'message' => 'Parabéns! Você concluiu o nível atual com sucesso e avançará para o próximo nível!',
-				'redirect' => $proximaPagina
-			]);
+	// Libera recursos imediatamente após o uso
+	$resultExercicio->free();
+	$stmtExercicio->close();
+
+	// Validação de nível
+	if ($dadosExercicio['nivel'] != $_SESSION['aluno_nivel']) {
+		throw new Exception('Nível incompatível', 403);
+	}
+
+	// Comparação de respostas
+	$respostaCorreta = mb_strtolower(trim($dadosExercicio['resposta']), 'UTF-8');
+	$acerto = ($resposta === $respostaCorreta) ? 1 : 0;
+
+	// Transação de banco de dados
+	$conn->begin_transaction();
+	$stmtUpdate = null;
+
+	try {
+		// Query de atualização
+		$sql = "INSERT INTO alunos_exercicios 
+                (id_usuario, id_exercicios, resultado, status) 
+                VALUES (?, ?, ?, 1)
+                ON DUPLICATE KEY UPDATE 
+                resultado = VALUES(resultado),
+                status = 1";
+
+		$stmtUpdate = $conn->prepare($sql);
+		$stmtUpdate->bind_param("iii", $alunoId, $exercicioId, $acerto);
+
+		if (!$stmtUpdate->execute()) {
+			throw new Exception('Falha ao registrar resposta', 500);
 		}
-	} else {
-		// Se não atingir 60%, exibe mensagem e permanece no mesmo nível (pode ser implementado reset se necessário)
+
+		$conn->commit();
+
+		// Resposta de sucesso
 		echo json_encode([
-			'status' => 'error',
-			'resultado' => 'erro',
-			'message' => 'Você concluiu o nível, mas não atingiu a pontuação mínima de 60% para avançar. Tente novamente!',
-			'redirect' => $paginaAtual
+			'success' => true,
+			'redirect' => "iniciantes.php?exercicio_id=$exercicioId&status=" . ($acerto ? 'acerto' : 'erro')
 		]);
+	} catch (Exception $e) {
+		$conn->rollback();
+		throw $e;
+	} finally {
+		// Fecha statement de atualização
+		if ($stmtUpdate !== null) $stmtUpdate->close();
 	}
-} else {
-	// Se ainda não concluiu todos os exercícios, retorna mensagem informativa
-	if ($resultado === 1) {
-		echo json_encode([
-			'status' => 'success',
-			'resultado' => 'acerto',
-			'message' => 'Resposta correta! Parabéns continue os exercicios seguintes.',
-			'redirect' => $paginaAtual
-		]);
-	} else {
-		echo json_encode([
-			'status' => 'danger',
-			'resultado' => 'erro',
-			'message' => 'Resposta incorreta. Não desista, tente novamente!',
-			'redirect' => $paginaAtual
-		]);
+} catch (Exception $e) {
+	// Log de erro detalhado
+	error_log(date('[Y-m-d H:i:s]') . " ERRO: " . $e->getMessage() . "\n", 3, "erros.log");
+
+	// Resposta de erro padronizada
+	http_response_code($e->getCode() ?: 500);
+	echo json_encode([
+		'success' => false,
+		'error' => $e->getMessage(),
+		'code' => $e->getCode()
+	]);
+} finally {
+	// Fecha conexão se existir
+	if (isset($conn) && $conn instanceof mysqli) {
+		$conn->close();
 	}
+
+	// Limpeza final do buffer
+	ob_end_flush();
+	exit;
 }

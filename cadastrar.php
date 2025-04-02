@@ -15,7 +15,10 @@ if (!isset($_SESSION['csrf_token'])) {
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title>Cadastro - Decords</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- Bootstrap CSS -->
 	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<!-- jQuery CDN -->
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<style>
 		.form-container {
 			margin: 4rem auto;
@@ -75,66 +78,63 @@ if (!isset($_SESSION['csrf_token'])) {
 		</div>
 	</div>
 	<script>
-		document.addEventListener("DOMContentLoaded", function() {
-			const form = document.getElementById("cadastroForm");
-			form.addEventListener("submit", async function(e) {
+		$(document).ready(function() {
+			$('#cadastroForm').submit(function(e) {
 				e.preventDefault();
-				const button = form.querySelector('button[type="submit"]');
-				const alertContainer = document.getElementById("alertContainer");
-				button.disabled = true;
-				button.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Cadastrando...';
-				try {
-					const formData = {
-						nome: form.nome.value.trim(),
-						email: form.email.value.trim(),
-						senha: form.senha.value,
-						senha2: form.senha2.value,
-						csrf_token: form.csrf_token.value
-					};
-					// Validação dos campos obrigatórios
-					if (!formData.nome || !formData.email || !formData.senha) {
-						throw new Error("Preencha todos os campos obrigatórios!");
-					}
-					if (formData.senha !== formData.senha2) {
-						throw new Error("As senhas não coincidem!");
-					}
-					// Requisição para o backend com inclusão dos cookies (sessão)
-					const response = await fetch("cad_novo_alunos.php", {
-						method: "POST",
-						headers: {
-							"Content-Type": "application/json"
-						},
-						credentials: "include",
-						body: JSON.stringify(formData)
-					});
-					if (!response.ok) {
-						throw new Error("Erro HTTP: " + response.status);
-					}
-					const data = await response.json();
-					console.log("Resposta do servidor:", data);
-					if (!data.success) {
-						throw new Error(data.message || "Erro no cadastro");
-					}
-					// Exibe a mensagem de sucesso e aguarda 3 segundos antes de redirecionar
-					alertContainer.innerHTML = `
-						<div class="alert alert-success alert-dismissible fade show">
-							✅ ${data.message} Redirecionando...
-						</div>
-					`;
-					setTimeout(() => {
-						window.location.href = data.redirect || "login.php";
-					}, 3000);
-				} catch (error) {
-					alertContainer.innerHTML = `
-						<div class="alert alert-danger alert-dismissible fade show">
-							❌ ${error.message}
-						</div>
-					`;
-					console.error("Erro:", error);
-				} finally {
-					button.disabled = false;
-					button.innerHTML = "Cadastrar";
+				var form = $(this);
+				var button = form.find('button[type="submit"]');
+				var alertContainer = $('#alertContainer');
+
+				button.prop('disabled', true).html('<span class="spinner-border spinner-border-sm"></span> Cadastrando...');
+
+				var formData = {
+					nome: form.find('input[name="nome"]').val().trim(),
+					email: form.find('input[name="email"]').val().trim(),
+					senha: form.find('input[name="senha"]').val(),
+					senha2: form.find('input[name="senha2"]').val(),
+					csrf_token: form.find('input[name="csrf_token"]').val()
+				};
+
+				// Valida campos obrigatórios
+				if (!formData.nome || !formData.email || !formData.senha) {
+					alertContainer.html('<div class="alert alert-danger">Preencha todos os campos obrigatórios!</div>');
+					button.prop('disabled', false).html('Cadastrar');
+					return;
 				}
+				if (formData.senha !== formData.senha2) {
+					alertContainer.html('<div class="alert alert-danger">As senhas não coincidem!</div>');
+					button.prop('disabled', false).html('Cadastrar');
+					return;
+				}
+
+				$.ajax({
+					url: 'cad_novo_alunos.php',
+					type: 'POST',
+					contentType: 'application/json',
+					data: JSON.stringify(formData),
+					dataType: 'json',
+					xhrFields: {
+						withCredentials: true
+					},
+					success: function(data) {
+						if (data.success) {
+							alertContainer.html('<div class="alert alert-success">✅ ' +
+								(data.message || "Aluno cadastrado com sucesso!") + ' Redirecionando...</div>');
+							// Redireciona para login.php após 2 segundos
+							setTimeout(function() {
+								window.location.href = data.redirect || 'login.php';
+							}, 2000);
+						} else {
+							alertContainer.html('<div class="alert alert-danger">❌ ' + data.message + '</div>');
+						}
+					},
+					error: function(xhr, status, error) {
+						alertContainer.html('<div class="alert alert-danger">❌ Erro: ' + error + '</div>');
+					},
+					complete: function() {
+						button.prop('disabled', false).html('Cadastrar');
+					}
+				});
 			});
 		});
 	</script>

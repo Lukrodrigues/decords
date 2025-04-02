@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <?php
 session_start();
-
+// Se o usuário já estiver logado, redireciona para tutorial-01.php
+if (isset($_SESSION['AlunoId'])) {
+	header("Location: tutorial-01.php");
+	exit;
+}
 ?>
-
 <html lang="pt-br">
 
 <head>
@@ -95,34 +98,37 @@ session_start();
 			<h2 class="form-signin-heading text-center">Área do Aluno</h2>
 
 			<label for="inputEmail" class="sr-only">Email</label>
-
 			<input type="text" name="email" class="form-control" placeholder="Email" required autofocus><br />
+
 			<label for="inputPassword" class="sr-only">Senha</label>
 			<input type="password" name="senha" class="form-control" placeholder="Senha" required>
+
 			<div class="checkbox">
 				<label>
 					<input type="checkbox" value="remember-me"> Lembra-me
 				</label>
 			</div>
-			<button class="btn btn-lg btn-primary btn-block" type="submit">Acessar</button><br />
-			<form class="btn btn-primary btn-lg text-center" method="POST" action="cadastrar.php">
-				<p>
-					<span style="color:red">
-						<label>*Caso você não tenha cadastro</label><br />
-					</span>
-					<a href="cadastrar.php" button type="button" class="btn btn-primary btn-lg text-center">Cadastrar</a>
-				</p>
-			</form>
 
-			<p class="text-center text-danger">
-				<?php
-				if (isset($_SESSION['loginErro'])) {
-					echo $_SESSION['loginErro'];
-					unset($_SESSION['loginErro']);
-					# code...
-				}
-				?>
-			</p>
+			<button class="btn btn-lg btn-primary btn-block" type="submit">Acessar</button><br />
+
+			<div class="text-center">
+				<span style="color:red">
+					<label>*Caso você não tenha cadastro</label><br />
+				</span>
+				<a href="cadastrar.php" class="btn btn-primary btn-lg">Cadastrar</a>
+			</div>
+		</form>
+	</div>
+
+	<p class="text-center text-danger">
+		<?php
+		if (isset($_SESSION['loginErro'])) {
+			echo $_SESSION['loginErro'];
+			unset($_SESSION['loginErro']);
+			# code...
+		}
+		?>
+	</p>
 
 
 	</div>

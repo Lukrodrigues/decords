@@ -1,46 +1,93 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
 session_start();
-if (!isset($_SESSION['AlunoEmail']) || !isset($_SESSION['AlunoSenha'])) {
-	header("Location: index.php");
+
+// Conexão com o banco de dados
+$servername = "localhost";
+$dbname = "decords_bd";
+$username = "root";
+$password = "";
+
+$conn = new mysqli($servername, $username, $password, $dbname);
+if ($conn->connect_error) {
+	die("Erro na conexão: " . $conn->connect_error);
+}
+
+// Verificação da sessão
+if (!isset($_SESSION['aluno_logado'])) {
+	$redirect = urlencode("exercicio.php?id=" . $_GET['id']);
+	header("Location: login_aluno.php?redirect=$redirect");
 	exit;
 }
 
-if (!isset($_GET['id']) || !filter_var($_GET['id'], FILTER_VALIDATE_INT)) {
-	header("Location: iniciantes.php");
+// Validação do ID do exercício
+$id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+if ($id <= 0 || !ctype_digit($_GET['id'] ?? '')) {
+	header("Location: tutorial-01.php");
 	exit;
 }
 
-include_once("conexao.php");
+// Processamento do POST
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+	header('Content-Type: application/json');
+	try {
+		if (!isset($_POST['id_exercicios'], $_POST['resposta'])) {
+			throw new Exception('Selecione uma resposta antes de enviar!');
+		}
 
-$idExercicio = intval($_GET['id']);
+		// Busca a resposta correta do banco
+		$stmt = $conn->prepare("SELECT resposta FROM exercicios WHERE id = ?");
+		$stmt->bind_param("i", $_POST['id_exercicios']);
+		$stmt->execute();
+		$result = $stmt->get_result();
+		$exercicio = $result->fetch_assoc();
+		/*
+		$respostaCorreta = $exercicio['resposta'];
+		$respostaUsuario = $_POST['resposta'];
+		$acertou = ($respostaUsuario === $respostaCorreta) ? 1 : 0;
+		*/
+		// Salva no banco de dados
+		$stmt = $conn->prepare("INSERT INTO alunos_exercicios 
+            (id_usuario, id_exercicios, status, resultado) 
+            VALUES (?, ?, 1, ?)
+            ON DUPLICATE KEY UPDATE 
+                status = 1, 
+                resultado = VALUES(resultado)");
 
-// Consulta o exercício
-$sqlExercicio = "
-    SELECT pergunta, tablatura, resposta, a, b, c, d, dica, nivel 
-    FROM exercicios 
-    WHERE id = ?";
-$stmtExercicio = $conn->prepare($sqlExercicio);
-$stmtExercicio->bind_param("i", $idExercicio);
-$stmtExercicio->execute();
-$result = $stmtExercicio->get_result();
+		$stmt->bind_param("iii", $_SESSION['aluno_id'], $_POST['id_exercicios'], $acertou);
+		$stmt->execute();
 
+		echo json_encode([
+			"success" => true,
+			"redirect" => $acertou ? "iniciantes.php" : "",
+			"acertou" => $acertou,
+			"message" => $acertou ? "✓ Resposta Correta!" : "✗ Resposta Incorreta!"
+		]);
+		exit;
+	} catch (Exception $e) {
+		http_response_code(500);
+		echo json_encode(['error' => $e->getMessage()]);
+		exit;
+	}
+}
+
+// Código para exibir o exercício
+$stmt = $conn->prepare("SELECT * FROM exercicios WHERE id = ?");
+$stmt->bind_param("i", $id);
+$stmt->execute();
+$result = $stmt->get_result();
 $exercicio = $result->fetch_assoc();
-$stmtExercicio->close();
 
-if (!$exercicio) {
-	header("Location: iniciantes.php");
-	exit;
-}
-
-$pergunta = $exercicio['pergunta'];
-$tablatura = $exercicio['tablatura'];
-$dica = $exercicio['dica'];
-$nivel = $exercicio['nivel'];
+// Sanitização
+$pergunta = htmlspecialchars($exercicio['pergunta']);
+$tablatura = htmlspecialchars($exercicio['tablatura']);
 $opcoes = [
-	'a' => $exercicio['a'],
-	'b' => $exercicio['b'],
-	'c' => $exercicio['c'],
-	'd' => $exercicio['d']
+	'a' => htmlspecialchars($exercicio['a']),
+	'b' => htmlspecialchars($exercicio['b']),
+	'c' => htmlspecialchars($exercicio['c']),
+	'd' => htmlspecialchars($exercicio['d'])
 ];
 ?>
 
@@ -52,7 +99,10 @@ $opcoes = [
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Responder Exercício</title>
 	<link rel="stylesheet" href="css/bootstrap.min.css">
-	<script src="js/jquery.min.js"></script>
+	<script src="js/partitura/vexflow-min.js"></script>
+	<script src="js/partitura/underscore-min.js"></script>
+	<script src="js/partitura/tabdiv-min.js"></script>
+
 	<style>
 		body {
 			background-color: #f8f9fa;
@@ -109,21 +159,18 @@ $opcoes = [
 			<div class="card-body"></br>
 				<h2 class="card-title text-center">Responder Exercício</h2>
 				<hr>
-
 				<form id="formExercicio" method="POST">
 					<div class="form-group">
 						<h4 class="card-text">Pergunta:</h4>
 						<p class="lead"><strong><?php echo htmlspecialchars($pergunta, ENT_QUOTES, 'UTF-8'); ?></strong></p>
 					</div>
-
 					<?php if (!empty($tablatura)) : ?>
 						<div class="tablatura-container">
-							<div class="vex-tabdiv" width=500 scale=1.0 editor="false" editor_height=100>
-								<?php echo $tablatura; ?>
-							</div>
+							<?php if (!empty($tablatura)): ?>
+								<?= $tablatura ?> <!-- Corrigido a exibição da tablatura -->
+							<?php endif; ?>
 						</div>
 					<?php endif; ?>
-
 					<div class="form-group">
 						<h5 class="card-text">Escolha uma opção:</h5>
 						<div id="opcoes">
@@ -137,7 +184,6 @@ $opcoes = [
 							<?php endforeach; ?>
 						</div>
 					</div>
-
 					<div class="form-group">
 						<h6><strong>Dica: Caso dúvida clique abaixo</strong></h6>
 						<a href="tutorial-01.php" class="btn btn-info btn-dica">Abrir Tutorial</a>
@@ -151,7 +197,15 @@ $opcoes = [
 			</div>
 		</div>
 	</div>
-
+	<?php if (isset($_GET['status'])): ?>
+		<div class="alert alert-<?= $_GET['status'] === 'acerto' ? 'success' : 'danger' ?> mt-4">
+			<?= $_GET['status'] === 'acerto'
+				? '✅ Resposta Correta!'
+				: '❌ Resposta Incorreta!'
+			?>
+		</div>
+		<div id="mensagem" style="display: none; color: red; padding: 20px;"></div>
+	<?php endif; ?>
 	<!-- Scripts de suporte -->
 	<script src="js/partitura/vexflow-min.js"></script>
 	<script src="js/partitura/underscore-min.js"></script>
@@ -163,27 +217,25 @@ $opcoes = [
 				e.preventDefault();
 
 				$.ajax({
-					url: 'valida_exercicio.php',
 					type: 'POST',
+					url: window.location.href,
 					data: $(this).serialize(),
 					dataType: 'json',
 					success: function(response) {
 						const feedback = $('#feedback');
-						feedback.removeClass('alert-success alert-danger')
-							.addClass(response.status === 'success' ? 'alert-success' : 'alert-danger')
-							.text(response.message)
+						feedback.html(response.message)
+							.removeClass('alert-success alert-danger')
+							.addClass(response.acertou ? 'alert-success' : 'alert-danger')
 							.fadeIn();
 
-						// Se houver redirecionamento, aguardar 2s antes de seguir
-						if (response.redirect) {
+						if (response.acertou && response.redirect) {
 							setTimeout(() => {
 								window.location.href = response.redirect;
-							}, 2000);
+							}, 1500);
 						}
 					},
 					error: function(xhr) {
-						console.log(xhr.responseText); // Depuração de erro no console
-						alert('Ocorreu um erro inesperado. Por favor, tente novamente.');
+						$('#feedback').html('Erro: ' + xhr.statusText).fadeIn();
 					}
 				});
 			});

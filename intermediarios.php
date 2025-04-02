@@ -1,8 +1,12 @@
 <!DOCTYPE html>
 <?php
 session_start();
-if (!isset($_SESSION['AlunoEmail']) || !isset($_SESSION['AlunoSenha'])) {
-    header("Location: index.php");
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+session_start();
+
+if (!isset($_SESSION['aluno_logado']) || $_SESSION['aluno_logado'] !== true) {
+    header("Location: login_aluno.php"); // Ou ajuste para login_aluno.php
     exit;
 }
 
@@ -11,24 +15,42 @@ if (isset($_GET['logout'])) {
     header("Location: login.php");
     exit;
 }
-/*
-if ($_SESSION['nivel_concluido'] !== 'iniciantes') {
-    header("Location: " . ($_SESSION['nivel_concluido'] === 'nenhum' ? 'iniciantes.php' : 'avancados.php'));
-    exit;
-}
-*/
+
 include_once("conexao.php");
 
 $aluno = filter_var($_SESSION['AlunoId'], FILTER_VALIDATE_INT);
-$nivel = 2; // Definindo o nível intermediário
+$nivel = 2; // Nível intermediário
 
-// Consultar desempenho geral no nível atual
-$sqlDesempenho = "
-    SELECT COUNT(*) AS total,
-           SUM(CASE WHEN resultado = 1 THEN 1 ELSE 0 END) AS acertos
-    FROM alunos_exercicios ae
-    INNER JOIN exercicios e ON ae.id_exercicios = e.id
-    WHERE ae.id_usuario = ? AND e.nivel = ? AND ae.status = 1";
+// Verifica se foi redirecionado do nível anterior (iniciantes)
+$prevMsg = "";
+if (isset($_GET['novo_nivel']) && $_GET['novo_nivel'] == 1) {
+    // Consulta desempenho no nível anterior (nivel=1)
+    $sqlPrev = "SELECT COUNT(*) AS total, 
+                       SUM(CASE WHEN resultado = 1 THEN 1 ELSE 0 END) AS acertos 
+                FROM alunos_exercicios ae 
+                INNER JOIN exercicios e ON ae.id_exercicios = e.id 
+                WHERE ae.id_usuario = ? AND e.nivel = 1";
+    $stmtPrev = $conn->prepare($sqlPrev);
+    $stmtPrev->bind_param("i", $aluno);
+    $stmtPrev->execute();
+    $stmtPrev->bind_result($prevTotal, $prevAcertos);
+    $stmtPrev->fetch();
+    $stmtPrev->close();
+
+    if ($prevTotal > 0) {
+        $prevPercentual = ($prevAcertos / $prevTotal) * 100;
+        $prevMsg = "<div class='alert alert-success'>
+                        Parabéns! Você atingiu " . round($prevPercentual, 2) . "% de acertos no nível iniciante.
+                    </div>";
+    }
+}
+
+// Consulta desempenho no nível atual (intermediário)
+$sqlDesempenho = "SELECT COUNT(*) AS total, 
+                         SUM(CASE WHEN resultado = 1 THEN 1 ELSE 0 END) AS acertos 
+                  FROM alunos_exercicios ae 
+                  INNER JOIN exercicios e ON ae.id_exercicios = e.id 
+                  WHERE ae.id_usuario = ? AND e.nivel = ? AND ae.status = 1";
 $stmtDesempenho = $conn->prepare($sqlDesempenho);
 $stmtDesempenho->bind_param("ii", $aluno, $nivel);
 $stmtDesempenho->execute();
@@ -36,16 +58,17 @@ $stmtDesempenho->bind_result($total, $acertos);
 $stmtDesempenho->fetch();
 $stmtDesempenho->close();
 
+$desempenhoMsg = "";
 if ($total > 0) {
     $percentualAcertos = ($acertos / $total) * 100;
 
-    // Redireciona para avançados.php se atingir 60% ou mais
+    // Redireciona se atingir 60% e adiciona parâmetro para o próximo nível
     if ($total === 10 && $percentualAcertos >= 60) {
-        header("Location: avancados.php");
+        header("Location: avancados.php?novo_nivel=2"); // Parâmetro corrigido
         exit;
     }
 
-    // Exibir mensagens de desempenho
+    // Mensagem de desempenho atual
     $desempenhoMsg = "<div class='alert alert-info'>
                         <strong>Total de Exercícios:</strong> $total<br>
                         <strong>Acertos:</strong> $acertos<br>
@@ -53,16 +76,26 @@ if ($total > 0) {
                       </div>";
 
     if ($total === 10 && $percentualAcertos < 60) {
-        $desempenhoMsg .= "<div class='alert alert-warning'>Você precisa de pelo menos 60% de acertos para avançar. Progresso reiniciado!</div>";
-        $sqlReset = "DELETE FROM alunos_exercicios WHERE id_usuario = ? AND id_exercicios IN (SELECT id FROM exercicios WHERE nivel = ?)";
+        $desempenhoMsg .= "<div class='alert alert-warning'>
+                            Você precisa de 60% de acertos para avançar. Progresso reiniciado!
+                           </div>";
+        // Reinicia os exercícios
+        $sqlReset = "DELETE FROM alunos_exercicios 
+                     WHERE id_usuario = ? 
+                     AND id_exercicios IN (SELECT id FROM exercicios WHERE nivel = ?)";
         $stmtReset = $conn->prepare($sqlReset);
         $stmtReset->bind_param("ii", $aluno, $nivel);
         $stmtReset->execute();
         $stmtReset->close();
     }
 } else {
-    $desempenhoMsg = "<div class='alert alert-warning'>Nenhum exercício concluído neste nível ainda.</div>";
+    $desempenhoMsg = "<div class='alert alert-warning'>
+                        Nenhum exercício concluído neste nível ainda.
+                      </div>";
 }
+
+// Combina mensagens do nível anterior e atual
+$desempenhoMsg = $prevMsg . $desempenhoMsg;
 ?>
 <html lang="pt-br">
 

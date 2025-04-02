@@ -61,7 +61,7 @@ session_start();
 
 						<li class="dropdown"><a class="dropdown-toggle" href="#" data-toggle="dropdown">Exercicios<b class="caret"></b></a>
 							<ul class="dropdown-menu">
-								<li><a href="login.php">Sou Aluno/Usuario</a></li>
+								<li><a href="/login.php">Sou Aluno/Usuario</a></li>
 								<li><a href="login_professor.php">Sou Professor</a></li>
 							</ul>
 						</li>
