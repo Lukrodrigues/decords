@@ -3,118 +3,103 @@ session_start();
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-// Ativa a exibição de erros apenas em desenvolvimento
-error_reporting(E_ALL);
-ini_set('display_errors', '1');
-ini_set('display_startup_errors', '1');
-
-// Configuração de segurança de headers
+// Configurações de segurança e cache
 header("Cache-Control: no-cache, must-revalidate");
 header("Expires: Sat, 26 Jul 1997 05:00:00 GMT");
 
-// Configuração da conexão MySQLi
+// Dados de conexão com o banco
 $servername = "localhost";
-$dbname = "decords_bd";
-$username = "root";
-$password = "";
+$dbname     = "decords_bd";
+$username   = "root";
+$password   = "";
 
 try {
     $conn = new mysqli($servername, $username, $password, $dbname);
-
     if ($conn->connect_errno) {
         throw new Exception("Falha na conexão: " . $conn->connect_error);
     }
 
-    // Verificação de sessão consolidada
+    // Verifica sessão do aluno
     if (!isset($_SESSION['aluno_logado']) || !$_SESSION['aluno_logado'] || !isset($_SESSION['aluno_id'])) {
         header("Location: login_aluno.php");
         exit;
     }
+    $alunoId = (int) $_SESSION['aluno_id'];
 
-    // Dados do aluno
-    $alunoId = (int)$_SESSION['aluno_id'];
-
-    // Busca nível ATUALIZADO do banco
+    // Busca o nível atualizado do aluno
     $stmt = $conn->prepare("SELECT nivel FROM alunos WHERE id = ?");
     $stmt->bind_param('i', $alunoId);
-
     if (!$stmt->execute()) {
         throw new Exception("Erro ao buscar nível: " . $stmt->error);
     }
-
     $resultado = $stmt->get_result();
-    $aluno = $resultado->fetch_assoc();
+    $aluno     = $resultado->fetch_assoc();
     $nivelAtual = (int)($aluno['nivel'] ?? 0);
     $stmt->close();
 
-    // Consulta desempenho
-    $sqlDesempenho = "SELECT 
-        COUNT(*) AS total,
-        SUM(CASE WHEN resultado = 1 THEN 1 ELSE 0 END) AS acertos
+    /*--- Performance ---*/
+    // Total de exercícios do nível (pode ser mais que 10, mas a página exibe 10)
+    $stmtTotal = $conn->prepare("SELECT COUNT(*) as total_questions FROM exercicios WHERE nivel = ?");
+    $stmtTotal->bind_param("i", $nivelAtual);
+    if (!$stmtTotal->execute()) {
+        throw new Exception("Erro ao buscar total de questões: " . $stmtTotal->error);
+    }
+    $resultTotal = $stmtTotal->get_result();
+    $rowTotal    = $resultTotal->fetch_assoc();
+    $totalQuestionsDB = (int)$rowTotal['total_questions'];
+    $stmtTotal->close();
+
+    // Para efeito de exibição, usamos somente os 10 exercícios da página
+    $totalQuestionsExibidas = ($totalQuestionsDB > 10) ? 10 : $totalQuestionsDB;
+
+    // Consulta a soma de acertos e erros para o nível
+    $sqlPerformance = "SELECT 
+            SUM(CASE WHEN ae.resultado = 1 THEN 1 ELSE 0 END) AS acertos,
+            SUM(CASE WHEN ae.resultado = 0 THEN 1 ELSE 0 END) AS erros
         FROM alunos_exercicios ae
         INNER JOIN exercicios e ON ae.id_exercicios = e.id
         WHERE ae.id_usuario = ? AND e.nivel = ?";
-
-    $stmtDesempenho = $conn->prepare($sqlDesempenho);
-    $stmtDesempenho->bind_param("ii", $alunoId, $nivelAtual);
-
-    if (!$stmtDesempenho->execute()) {
-        throw new Exception("Erro na consulta de desempenho: " . $stmtDesempenho->error);
+    $stmtPerf = $conn->prepare($sqlPerformance);
+    $stmtPerf->bind_param("ii", $alunoId, $nivelAtual);
+    if (!$stmtPerf->execute()) {
+        throw new Exception("Erro na consulta de desempenho: " . $stmtPerf->error);
     }
+    $stmtPerf->bind_result($acertos, $erros);
+    $stmtPerf->fetch();
+    $stmtPerf->close();
+    $acertos = (int)$acertos;
+    $erros   = (int)$erros;
+    $naoRespondidos = $totalQuestionsExibidas - ($acertos + $erros);
 
-    $stmtDesempenho->bind_result($total, $acertos);
-    $stmtDesempenho->fetch();
-    $stmtDesempenho->close();
+    // Percentual de acertos com base em 10 exercícios exibidos
+    $percentualAcertos = $totalQuestionsExibidas > 0 ? ($acertos / $totalQuestionsExibidas) * 100 : 0;
 
-    // Lógica de reinício
-    $percentualAcertos = 0;
-    if ($total > 0) {
-        $percentualAcertos = ($acertos / $total) * 100;
-
-        if ($percentualAcertos < 60 && !isset($_GET['reiniciado'])) {
-            $sqlReset = "UPDATE alunos_exercicios ae
-                        INNER JOIN exercicios e ON ae.id_exercicios = e.id
-                        SET ae.status = 0, ae.resultado = NULL
-                        WHERE ae.id_usuario = ? AND e.nivel = ?";
-
-            $stmtReset = $conn->prepare($sqlReset);
-            $stmtReset->bind_param("ii", $alunoId, $nivelAtual);
-
-            if (!$stmtReset->execute()) {
-                throw new Exception("Erro ao reiniciar nível: " . $stmtReset->error);
-            }
-
-            $stmtReset->close();
-            header("Location: iniciantes.php?reiniciado=1");
-            exit;
-        }
-    }
-
-    // Consulta exercícios
+    /*--- Consulta dos Exercícios ---*/
+    // Consulta os exercícios com LEFT JOIN para obter informações do status e resultado
     $sqlExercicios = "SELECT 
-        e.id,
-        e.pergunta,
-        IF(ae.status = 1, 'Sim', 'Não') AS concluido,
-        CASE 
-            WHEN ae.resultado = 1 THEN 'Acertou' 
-            WHEN ae.resultado = 0 THEN 'Errou' 
-            ELSE '--' 
-        END AS resultado
+            e.id,
+            e.pergunta,
+            IF(MAX(ae.status)=1, 'Sim', 'Não') AS concluido,
+            CASE 
+                WHEN MAX(ae.status)=1 AND MAX(ae.resultado)=1 THEN 'Certo' 
+                WHEN MAX(ae.status)=1 AND MAX(ae.resultado)=0 THEN 'Errado' 
+                ELSE '--' 
+            END AS resultado
         FROM exercicios e
         LEFT JOIN alunos_exercicios ae 
             ON e.id = ae.id_exercicios AND ae.id_usuario = ?
-        WHERE e.nivel = ?";
-
-    $stmt = $conn->prepare($sqlExercicios);
-    $stmt->bind_param("ii", $alunoId, $nivelAtual);
-
-    if (!$stmt->execute()) {
-        throw new Exception("Erro na consulta de exercícios: " . $stmt->error);
+        WHERE e.nivel = ?
+        GROUP BY e.id
+        ORDER BY e.id ASC
+        LIMIT 10";
+    $stmtExercicios = $conn->prepare($sqlExercicios);
+    $stmtExercicios->bind_param("ii", $alunoId, $nivelAtual);
+    if (!$stmtExercicios->execute()) {
+        throw new Exception("Erro na consulta de exercícios: " . $stmtExercicios->error);
     }
-
-    $result = $stmt->get_result();
-    $exercicios = $result->fetch_all(MYSQLI_ASSOC);
-    $stmt->close();
+    $resultExercicios = $stmtExercicios->get_result();
+    $exercicios = $resultExercicios->fetch_all(MYSQLI_ASSOC);
+    $stmtExercicios->close();
 } catch (Exception $e) {
     die("Erro crítico: " . $e->getMessage());
 }
@@ -141,9 +126,30 @@ try {
             transition: background-color 0.2s;
         }
 
-        .badge-realizado {
-            background-color: var(--bs-success);
+        /* Badge para botão "Concluído" (ação) */
+        .badge-concluido {
+            background-color: orange;
+            color: #fff;
             padding: 0.5em 1em;
+            font-size: 0.875rem;
+            border-radius: 0.25rem;
+        }
+
+        /* Badges para resultado */
+        .badge-resultado-certo {
+            background-color: green;
+            color: #fff;
+            padding: 0.5em 1em;
+            font-size: 0.875rem;
+            border-radius: 0.25rem;
+        }
+
+        .badge-resultado-errado {
+            background-color: red;
+            color: #fff;
+            padding: 0.5em 1em;
+            font-size: 0.875rem;
+            border-radius: 0.25rem;
         }
     </style>
 </head>
@@ -158,7 +164,6 @@ try {
             </div>
         </div>
     </nav>
-
     <div class="container">
         <!-- Seção de Desempenho -->
         <div class="card shadow-sm mb-4">
@@ -166,11 +171,11 @@ try {
                 <h5 class="mb-0"><i class="bi bi-speedometer2 me-2"></i>Desempenho</h5>
             </div>
             <div class="card-body">
-                <?php if ($total > 0): ?>
+                <?php if ($totalQuestionsExibidas > 0): ?>
                     <div class="progress mb-3" style="height: 25px;">
                         <div class="progress-bar bg-success"
                             role="progressbar"
-                            style="width: <?= $percentualAcertos ?>%"
+                            style="width: <?= $percentualAcertos ?>%;"
                             aria-valuenow="<?= $percentualAcertos ?>"
                             aria-valuemin="0"
                             aria-valuemax="100">
@@ -179,20 +184,20 @@ try {
                     </div>
                     <div class="d-flex gap-3 justify-content-center">
                         <span class="badge bg-success fs-6">Acertos: <?= $acertos ?></span>
-                        <span class="badge bg-danger fs-6">Erros: <?= $total - $acertos ?></span>
+                        <span class="badge bg-danger fs-6">Erros: <?= $erros ?></span>
+                        <span class="badge bg-secondary fs-6">Não respondidos: <?= $naoRespondidos ?></span>
                     </div>
                 <?php else: ?>
                     <div class="alert alert-info mb-0">
-                        <i class="bi bi-info-circle me-2"></i>Nenhum exercício concluído ainda
+                        <i class="bi bi-info-circle me-2"></i>Nenhum exercício disponível para este nível!
                     </div>
                 <?php endif; ?>
             </div>
         </div>
-
-        <!-- Lista de Exercícios -->
+        <!-- Lista de Exercícios (limitada aos 10) -->
         <div class="card shadow-sm">
             <div class="card-header bg-primary text-white">
-                <h5 class="mb-0"><i class="bi bi-journal-text me-2"></i>Exercícios do Nível</h5>
+                <h5 class="mb-0"><i class="bi bi-journal-text me-2"></i>Exercícios do Nível Iniciante</h5>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -209,27 +214,30 @@ try {
                         <tbody>
                             <?php if (!empty($exercicios)): ?>
                                 <?php foreach ($exercicios as $index => $exercicio): ?>
-                                    <tr class="<?= $exercicio['concluido'] === 'Sim' ? 'table-success' : '' ?>">
+                                    <tr class="<?= ($exercicio['concluido'] === 'Sim') ? 'table-success' : '' ?>">
                                         <th scope="row"><?= $index + 1 ?></th>
                                         <td><?= htmlspecialchars($exercicio['pergunta']) ?></td>
                                         <td><?= $exercicio['concluido'] ?></td>
                                         <td>
                                             <?php if ($exercicio['resultado'] !== '--'): ?>
-                                                <span class="badge <?= $exercicio['resultado'] === 'Acertou' ? 'bg-success' : 'bg-danger' ?>">
+                                                <?php if ($exercicio['resultado'] === 'Certo'): ?>
+                                                    <span class="badge-resultado-certo"><?= $exercicio['resultado'] ?></span>
+                                                <?php elseif ($exercicio['resultado'] === 'Errado'): ?>
+                                                    <span class="badge-resultado-errado"><?= $exercicio['resultado'] ?></span>
+                                                <?php else: ?>
                                                     <?= $exercicio['resultado'] ?>
-                                                </span>
+                                                <?php endif; ?>
+                                            <?php else: ?>
+                                                <?= $exercicio['resultado'] ?>
                                             <?php endif; ?>
                                         </td>
                                         <td>
                                             <?php if ($exercicio['concluido'] === 'Não'): ?>
-                                                <a href="exercicio.php?id=<?= $exercicio['id'] ?>"
-                                                    class="btn btn-sm btn-primary">
+                                                <a href="exercicio.php?id=<?= $exercicio['id'] ?>" class="btn btn-sm btn-primary">
                                                     Iniciar
                                                 </a>
                                             <?php else: ?>
-                                                <span class="badge badge-realizado">
-                                                    <i class="bi bi-check2-circle me-1"></i>Realizado
-                                                </span>
+                                                <span class="badge-concluido">Concluído</span>
                                             <?php endif; ?>
                                         </td>
                                     </tr>
@@ -250,11 +258,10 @@ try {
             </div>
         </div>
     </div>
-
+    <!-- Scripts do Bootstrap -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // Fechar alertas automaticamente após 5 segundos
             setTimeout(() => {
                 document.querySelectorAll('.alert').forEach(alert => {
                     new bootstrap.Alert(alert).close();
