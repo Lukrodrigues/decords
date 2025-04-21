@@ -17,19 +17,19 @@ if ($conn->connect_error) {
 
 // Verificação de sessão
 if (!isset($_SESSION['aluno_logado'])) {
-	$redirect = urlencode("exercicio.php?id=" . $_GET['id']);
+	$redirect = urlencode("exercicio.php?id=" . ($_GET['id'] ?? ''));
 	header("Location: login_aluno.php?redirect=$redirect");
 	exit;
 }
 
 // Validação do ID do exercício
 $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
-if ($id <= 0 || !ctype_digit($_GET['id'] ?? '')) {
+if ($id <= 0) {
 	header("Location: tutorial-01.php");
 	exit;
 }
 
-// Processamento do POST
+// Processamento do POST via AJAX
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	header('Content-Type: application/json');
 	try {
@@ -48,21 +48,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		$respostaUsuario  = $_POST['resposta'];
 		$acertou = ($respostaUsuario === $respostaCorreta) ? 1 : 0;
 
-		// Salva no banco de dados (a lógica de bloqueio será processada no valida_exercicio.php)
-		$stmt = $conn->prepare("INSERT INTO alunos_exercicios 
-            (id_usuario, id_exercicios, status, resultado) 
-            VALUES (?, ?, 1, ?)
-            ON DUPLICATE KEY UPDATE 
-                status = 1, 
-                resultado = VALUES(resultado)");
+		// Salva no banco de dados
+		$stmt = $conn->prepare(
+			"INSERT INTO alunos_exercicios 
+                (id_usuario, id_exercicios, status, resultado) 
+             VALUES (?, ?, 1, ?) 
+             ON DUPLICATE KEY UPDATE status = 1, resultado = VALUES(resultado)"
+		);
 		$stmt->bind_param("iii", $_SESSION['aluno_id'], $_POST['id_exercicios'], $acertou);
 		$stmt->execute();
 
+		// Retorna JSON com resultado, mensagem e rota de redirect
 		echo json_encode([
-			"success" => true,
-			"redirect" => "iniciantes.php",
-			"acertou" => $acertou,
-			"message" => $acertou ? "✓ Resposta Correta!" : "✗ Resposta Incorreta!"
+			'success'  => true,
+			'acertou'  => (bool)$acertou,
+			'message'  => $acertou ? "✓ Resposta Correta!" : "✗ Resposta Incorreta!",
+			'redirect' => 'iniciantes.php'
 		]);
 		exit;
 	} catch (Exception $e) {
@@ -72,15 +73,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	}
 }
 
-// Busca dados do exercício
+// Busca dados do exercício para exibição
 $stmt = $conn->prepare("SELECT * FROM exercicios WHERE id = ?");
 $stmt->bind_param("i", $id);
 $stmt->execute();
 $result = $stmt->get_result();
 $exercicio = $result->fetch_assoc();
+$stmt->close();
 
 // Sanitização dos dados
-// Substitui null por string vazia usando ??
 $pergunta = htmlspecialchars($exercicio['pergunta'] ?? '');
 $opcoes = [
 	'a' => htmlspecialchars($exercicio['a'] ?? ''),
@@ -189,40 +190,47 @@ $opcoes = [
 			</div>
 		</div>
 	</div>
+
+	<!-- Scripts -->
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script>
 		$(document).ready(function() {
 			$('#formExercicio').on('submit', function(e) {
 				e.preventDefault();
+				var feedback = $('#feedback');
+				feedback.hide().removeClass('alert-success alert-danger').text('');
+
 				$.ajax({
-					type: 'POST',
-					url: window.location.href,
-					data: $(this).serialize(),
-					dataType: 'json',
-					success: function(response) {
-						const feedback = $('#feedback');
-						const message = response.message || 'Resposta processada!';
-						const redirect = response.redirect || '';
-						const acertou = response.acertou || false;
-						feedback.html(message)
-							.removeClass('alert-success alert-danger')
+						type: 'POST',
+						url: window.location.href,
+						data: $(this).serialize(),
+						dataType: 'json'
+					})
+					.done(function(response) {
+						var msg = response.message || 'Resposta processada!';
+						var redirect = response.redirect || '';
+						var acertou = response.acertou === true;
+
+						feedback.text(msg)
 							.addClass(acertou ? 'alert-success' : 'alert-danger')
 							.fadeIn();
+
 						if (redirect) {
-							setTimeout(() => {
+							setTimeout(function() {
 								window.location.href = redirect;
 							}, 1500);
 						}
-					},
-					error: function(xhr) {
-						$('#feedback').html('Erro: ' + (xhr.responseJSON?.error || 'Erro desconhecido'))
+					})
+					.fail(function(xhr) {
+						var err = xhr.responseJSON?.error || 'Erro desconhecido';
+						feedback.text('Erro: ' + err)
 							.addClass('alert-danger')
 							.fadeIn();
-					}
-				});
+					});
 			});
 		});
 	</script>
+
 </body>
 
 </html>
