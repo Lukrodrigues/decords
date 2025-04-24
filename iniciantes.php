@@ -1,222 +1,199 @@
 <?php
-ob_start();
+
+declare(strict_types=1);
 session_start();
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
 
-header("Cache-Control: no-cache, no-store, must-revalidate");
-header("Pragma: no-cache");
-header("Expires: 0");
+// 1. Se solicitado reset, apaga todas as tentativas do nível atual
+if (isset($_GET['reset']) && $_GET['reset'] === '1') {
+    require_once 'conexao.php';
+    $alunoId = (int) $_SESSION['aluno_id'];
 
-// Configuração do banco
-$servername = "localhost";
-$dbname = "decords_bd";
-$username = "root";
-$password = "";
+    // Busca nível atual
+    $stmtNivel = $conn->prepare("SELECT nivel FROM alunos WHERE id = ?");
+    $stmtNivel->bind_param('i', $alunoId);
+    $stmtNivel->execute();
+    $nivel = (int) $stmtNivel->get_result()->fetch_assoc()['nivel'];
+    $stmtNivel->close();
 
-try {
-    $conn = new mysqli($servername, $username, $password, $dbname);
-    if ($conn->connect_errno) {
-        throw new Exception("Falha na conexão: " . $conn->connect_error);
-    }
-
-    // Verificação de autenticação
-    if (empty($_SESSION['aluno_logado']) || empty($_SESSION['aluno_id'])) {
-        header("Location: login_aluno.php");
-        exit;
-    }
-    $alunoId = (int)$_SESSION['aluno_id'];
-
-    // Reset completo se necessário
-    if (isset($_GET['reset'])) {
-        $stmt = $conn->prepare("
-            DELETE ae FROM alunos_exercicios ae
-            INNER JOIN exercicios e ON ae.id_exercicios = e.id
-            WHERE ae.id_usuario = ? AND e.nivel = (
-                SELECT nivel FROM alunos WHERE id = ?
-            )
-        ");
-        $stmt->bind_param("ii", $alunoId, $alunoId);
-        $stmt->execute();
-        header("Location: iniciantes.php"); // Limpa parâmetros
-        exit;
-    }
-
-    // Mensagens do sistema
-    $mensagem = $_SESSION['mensagem'] ?? '';
-    unset($_SESSION['mensagem']);
-
-    // Nível atual
-    $stmt = $conn->prepare("SELECT nivel FROM alunos WHERE id = ?");
-    $stmt->bind_param("i", $alunoId);
+    // Deleta tentativas
+    $stmt = $conn->prepare(
+        "DELETE ae FROM alunos_exercicios ae
+         JOIN exercicios e ON ae.id_exercicios = e.id
+         WHERE ae.id_usuario = ? AND e.nivel = ?"
+    );
+    $stmt->bind_param('ii', $alunoId, $nivel);
     $stmt->execute();
-    $nivelAtual = (int)$stmt->get_result()->fetch_assoc()['nivel'];
+    $stmt->close();
 
-    // Cálculo do progresso
-    $stmt = $conn->prepare("
-        SELECT 
-            COUNT(CASE WHEN resultado = 1 THEN 1 END) as acertos,
-            COUNT(CASE WHEN resultado = 0 THEN 1 END) as erros
-        FROM alunos_exercicios ae
-        INNER JOIN exercicios e ON ae.id_exercicios = e.id
-        WHERE ae.id_usuario = ? AND e.nivel = ?
-    ");
-    $stmt->bind_param("ii", $alunoId, $nivelAtual);
-    $stmt->execute();
-    $progresso = $stmt->get_result()->fetch_assoc();
-    $acertos = (int)($progresso['acertos'] ?? 0);
-    $erros = (int)($progresso['erros'] ?? 0);
-    $totalExercicios = 10;
-    $percentual = ($acertos / $totalExercicios) * 100;
-
-    // Lista de exercícios com status
-    $stmt = $conn->prepare("
-        SELECT 
-            e.id,
-            e.pergunta,
-            MAX(ae.resultado) as resultado,
-            MAX(ae.status) as status
-        FROM exercicios e
-        LEFT JOIN alunos_exercicios ae 
-            ON e.id = ae.id_exercicios AND ae.id_usuario = ?
-        WHERE e.nivel = ?
-        GROUP BY e.id
-        ORDER BY e.id
-        LIMIT 10
-    ");
-    $stmt->bind_param("ii", $alunoId, $nivelAtual);
-    $stmt->execute();
-    $exercicios = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
-} catch (Exception $e) {
-    die("Erro crítico: " . $e->getMessage());
+    $_SESSION['mensagem'] = "Infelizmente não atingiu o desempenho para próximo nível!! Tente novamente.";
+    header('Location: iniciantes.php');
+    exit;
 }
-?>
 
+// 2. Captura e limpa mensagem de flash
+$mensagem = $_SESSION['mensagem'] ?? '';
+unset($_SESSION['mensagem']);
+
+// 3. Conexão e lógica original de busca de exercícios/desempenho
+require_once 'conexao.php';
+$alunoId = (int) $_SESSION['aluno_id'];
+
+// Busca nível
+$stmt      = $conn->prepare("SELECT nivel FROM alunos WHERE id = ?");
+$stmt->bind_param('i', $alunoId);
+$stmt->execute();
+$nivelAtual  = (int) $stmt->get_result()->fetch_assoc()['nivel'];
+$stmt->close();
+
+// Total disponível e exibido (até 10)
+$stmt      = $conn->prepare("SELECT COUNT(*) AS total_questions FROM exercicios WHERE nivel = ?");
+$stmt->bind_param('i', $nivelAtual);
+$stmt->execute();
+$totalDB   = (int) $stmt->get_result()->fetch_assoc()['total_questions'];
+$stmt->close();
+$totalExib = min(10, $totalDB);
+
+// Desempenho atual
+$sqlPerf = "
+    SELECT
+      SUM(CASE WHEN ae.resultado = 1 THEN 1 ELSE 0 END) AS acertos,
+      SUM(CASE WHEN ae.resultado = 0 THEN 1 ELSE 0 END) AS erros
+    FROM alunos_exercicios ae
+    JOIN exercicios e ON ae.id_exercicios = e.id
+    WHERE ae.id_usuario = ? AND e.nivel = ?
+";
+$stmt = $conn->prepare($sqlPerf);
+$stmt->bind_param('ii', $alunoId, $nivelAtual);
+$stmt->execute();
+$stmt->bind_result($acertos, $erros);
+$stmt->fetch();
+$stmt->close();
+
+$naoResp   = $totalExib - ($acertos + $erros);
+$percent   = $totalExib > 0 ? ($acertos / $totalExib) * 100 : 0;
+
+// Lista de até 10 exercícios
+$sqlEx = "
+    SELECT
+      e.id, e.pergunta,
+      IF(MAX(ae.status)=1,'Sim','Não') AS concluido,
+      CASE
+        WHEN MAX(ae.status)=1 AND MAX(ae.resultado)=1 THEN 'Certo'
+        WHEN MAX(ae.status)=1 AND MAX(ae.resultado)=0 THEN 'Errado'
+        ELSE '--'
+      END AS resultado
+    FROM exercicios e
+    LEFT JOIN alunos_exercicios ae
+      ON e.id = ae.id_exercicios AND ae.id_usuario = ?
+    WHERE e.nivel = ?
+    GROUP BY e.id
+    ORDER BY e.id ASC
+    LIMIT 10
+";
+$stmt = $conn->prepare($sqlEx);
+$stmt->bind_param('ii', $alunoId, $nivelAtual);
+$stmt->execute();
+$exercicios = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+$stmt->close();
+
+$conn->close();
+?>
 <!DOCTYPE html>
-<html lang="pt-br" data-bs-theme="light">
+<html lang="pt-br">
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nível Iniciante</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Exercícios Iniciantes</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        .progresso-baixo {
-            background-color: #f8d7da;
-        }
-
-        /* Vermelho para <60% */
-        .acertou {
-            background-color: #d4edda;
-        }
-
-        /* Verde para acertos */
-        .errou {
-            background-color: #f8d7da;
-        }
-
-        /* Vermelho para erros */
-        .badge-acerto {
-            background-color: #28a745 !important;
-        }
-
-        .badge-erro {
-            background-color: #dc3545 !important;
-        }
-    </style>
 </head>
 
 <body class="bg-light">
-    <nav class="navbar navbar-dark bg-dark mb-4">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
         <div class="container">
             <a class="navbar-brand" href="#">DECORDS</a>
-            <div class="text-light">
+            <span class="navbar-text text-light">
                 <?= htmlspecialchars($_SESSION['aluno_nome'] ?? 'Usuário') ?>
                 <span class="badge bg-secondary">Nível <?= $nivelAtual ?></span>
-            </div>
+            </span>
         </div>
     </nav>
 
     <div class="container">
+
         <?php if ($mensagem): ?>
-            <div class="alert alert-danger alert-dismissible fade show">
-                <?= htmlspecialchars($mensagem) ?>
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
+            <div class="alert alert-info"><?= htmlspecialchars($mensagem) ?></div>
         <?php endif; ?>
 
-        <!-- Seção de Progresso -->
-        <div class="card mb-4 <?= $percentual < 60 ? 'progresso-baixo' : '' ?>">
+        <!-- Desempenho -->
+        <div class="card mb-4">
             <div class="card-header bg-primary text-white">
-                Progresso: <?= number_format($percentual, 1) ?>%
+                Desempenho (<?= number_format($percent, 1) ?>%)
             </div>
             <div class="card-body">
-                <div class="progress mb-3" style="height: 25px;">
-                    <div class="progress-bar"
-                        role="progressbar"
-                        style="width: <?= $percentual ?>%; background-color: <?= $percentual >= 60 ? '#28a745' : '#dc3545' ?>">
+                <div class="progress mb-3" style="height:25px;">
+                    <div class="progress-bar" role="progressbar"
+                        style="width:<?= $percent ?>%"
+                        aria-valuenow="<?= $percent ?>" aria-valuemin="0" aria-valuemax="100">
+                        <?= number_format($percent, 1) ?>%
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <span class="badge badge-acerto">Acertos: <?= $acertos ?></span>
-                    </div>
-                    <div class="col-md-6">
-                        <span class="badge badge-erro">Erros: <?= $erros ?></span>
-                    </div>
+                <div class="d-flex gap-3">
+                    <span class="badge bg-success">Acertos: <?= $acertos ?></span>
+                    <span class="badge bg-danger">Erros: <?= $erros ?></span>
+                    <span class="badge bg-secondary">Não resp.: <?= $naoResp ?></span>
                 </div>
             </div>
         </div>
 
-        <!-- Lista de Exercícios -->
-        <div class="card shadow">
-            <div class="card-header bg-primary text-white">
-                Exercícios
-            </div>
+        <!-- Exercícios -->
+        <div class="card">
+            <div class="card-header bg-primary text-white">Exercícios</div>
             <div class="card-body">
                 <table class="table table-hover">
                     <thead>
                         <tr>
                             <th>#</th>
                             <th>Pergunta</th>
-                            <th>Status</th>
+                            <th>Concluído</th>
+                            <th>Resultado</th>
                             <th>Ação</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($exercicios as $idx => $ex): ?>
-                            <?php
-                            $statusClass = '';
-                            $statusText = 'Não iniciado';
-                            if ($ex['status'] == 1) {
-                                $statusClass = $ex['resultado'] ? 'acertou' : 'errou';
-                                $statusText = $ex['resultado'] ? 'Acertou' : 'Errou';
-                            }
-                            ?>
-                            <tr class="<?= $statusClass ?>">
-                                <td><?= $idx + 1 ?></td>
-                                <td><?= htmlspecialchars($ex['pergunta']) ?></td>
-                                <td>
-                                    <span class="badge <?= $ex['resultado'] ? 'badge-acerto' : 'badge-erro' ?>">
-                                        <?= $statusText ?>
-                                    </span>
-                                </td>
-                                <td>
-                                    <?php if ($ex['status'] != 1): ?>
-                                        <a href="exercicio.php?id=<?= $ex['id'] ?>"
-                                            class="btn btn-sm <?= $ex['resultado'] === null ? 'btn-primary' : 'btn-danger' ?>">
-                                            <?= $ex['resultado'] === null ? 'Iniciar' : 'Tentar Novamente' ?>
-                                        </a>
-                                    <?php else: ?>
-                                        <span class="badge bg-secondary">Concluído</span>
-                                    <?php endif; ?>
-                                </td>
+                        <?php if ($exercicios): foreach ($exercicios as $i => $e): ?>
+                                <tr class="<?= $e['concluido'] === 'Sim' ? 'table-success' : '' ?>">
+                                    <td><?= $i + 1 ?></td>
+                                    <td><?= htmlspecialchars($e['pergunta']) ?></td>
+                                    <td><?= $e['concluido'] ?></td>
+                                    <td>
+                                        <?php if ($e['resultado'] == 'Certo'): ?>
+                                            <span class="badge bg-success">Certo</span>
+                                        <?php elseif ($e['resultado'] == 'Errado'): ?>
+                                            <span class="badge bg-danger">Errado</span>
+                                        <?php else: ?>
+                                            --
+                                        <?php endif; ?>
+                                    </td>
+                                    <td>
+                                        <?php if ($e['concluido'] === 'Não'): ?>
+                                            <a href="exercicio.php?id=<?= $e['id'] ?>" class="btn btn-sm btn-primary">Iniciar</a>
+                                        <?php else: ?>
+                                            <span class="badge bg-warning text-dark">Concluído</span>
+                                        <?php endif; ?>
+                                    </td>
+                                </tr>
+                            <?php endforeach;
+                        else: ?>
+                            <tr>
+                                <td colspan="5" class="text-center">Nenhum exercício disponível</td>
                             </tr>
-                        <?php endforeach; ?>
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>
         </div>
+
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>

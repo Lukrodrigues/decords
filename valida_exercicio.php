@@ -70,6 +70,8 @@ try {
 		$stmt->execute();
 		$totalRespondidos = (int)$stmt->get_result()->fetch_assoc()['total_respondidos'];
 
+		$redirect = null;
+
 		// Lógica de progresso
 		if ($totalRespondidos >= 10) {
 			$stmt = $conn->prepare("
@@ -93,10 +95,13 @@ try {
 				$stmt->bind_param("is", $alunoId, $nivelAtual);
 				$stmt->execute();
 
-				$_SESSION['mensagem'] = "REPROVADO! {$percentual}% de acertos. Nível reiniciado!";
+				$_SESSION['mensagem'] = "Infelizmente não atingiu o desempenho para próximo nível! Tente novamente. ({$percentual}% de acertos)";
+				$_SESSION['mensagem_tipo'] = "error";
 				$redirect = 'iniciantes.php?reset=' . time(); // Força reload
 			} else {
 				// Lógica de aprovação
+				$_SESSION['mensagem'] = "Parabéns! Concluiu com desempenho acima da média! Inicie o próximo nível. ({$percentual}% de acertos)";
+				$_SESSION['mensagem_tipo'] = "success";
 				$redirect = 'intermediarios.php';
 			}
 		}
@@ -107,7 +112,7 @@ try {
 			'success'  => true,
 			'acertou'  => (bool)$acerto,
 			'message'  => $acerto ? "✓ Resposta Correta!" : "✗ Resposta Incorreta!",
-			'redirect' => $redirect ?? 'iniciantes.php'
+			'redirect' => $redirect ?? null
 		]);
 	} catch (Exception $e) {
 		$conn->rollback();
@@ -117,6 +122,8 @@ try {
 	http_response_code($e->getCode() ?: 500);
 	echo json_encode(['success' => false, 'error' => $e->getMessage()]);
 } finally {
-	$conn->close();
+	if (isset($conn) && $conn instanceof mysqli) {
+		$conn->close();
+	}
 	exit;
 }
