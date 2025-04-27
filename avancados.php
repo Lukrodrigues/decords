@@ -1,30 +1,55 @@
 <!DOCTYPE html>
 <?php
 session_start();
-if (!isset($_SESSION['AlunoEmail']) || !isset($_SESSION['AlunoSenha'])) {
-	header("Location: index.php");
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+if (!isset($_SESSION['aluno_logado']) || $_SESSION['aluno_logado'] !== true) {
+	header("Location: login_aluno.php");
 	exit;
 }
-/*
-// Redirecionar se não concluiu o intermediarios  
-if ($_SESSION['nivel_concluido'] !== 'intermediarios') {
-	header("Location: " . ($_SESSION['nivel_concluido'] === 'iniciantes' ? 'intermediarios.php' : 'iniciantes.php'));
+
+if (isset($_GET['logout'])) {
+	session_destroy();
+	header("Location: login.php");
 	exit;
 }
-*/
+
 include_once("conexao.php");
 
 $aluno = filter_var($_SESSION['AlunoId'], FILTER_VALIDATE_INT);
 $nivel = 3; // Nível avançado
 
+// Verifica se foi redirecionado do nível anterior (intermediário)
+$prevMsg = "";
+if (isset($_GET['novo_nivel']) && $_GET['novo_nivel'] == 2) {
+	// Consulta desempenho no nível anterior (nivel=2)
+	$sqlPrev = "SELECT COUNT(*) AS total, 
+                       SUM(CASE WHEN resultado = 1 THEN 1 ELSE 0 END) AS acertos 
+                FROM alunos_exercicios ae 
+                INNER JOIN exercicios e ON ae.id_exercicios = e.id 
+                WHERE ae.id_usuario = ? AND e.nivel = 2";
+	$stmtPrev = $conn->prepare($sqlPrev);
+	$stmtPrev->bind_param("i", $aluno);
+	$stmtPrev->execute();
+	$stmtPrev->bind_result($prevTotal, $prevAcertos);
+	$stmtPrev->fetch();
+	$stmtPrev->close();
 
-// Consultar desempenho geral no nível atual
-$sqlDesempenho = "
-    SELECT COUNT(*) AS total,
-           SUM(CASE WHEN resultado = 1 THEN 1 ELSE 0 END) AS acertos
-    FROM alunos_exercicios ae
-    INNER JOIN exercicios e ON ae.id_exercicios = e.id
-    WHERE ae.id_usuario = ? AND e.nivel = ? AND ae.status = 1";
+	if ($prevTotal > 0) {
+		$prevPercentual = ($prevAcertos / $prevTotal) * 100;
+		$prevMsg = "<div class='alert alert-success'>
+                        Parabéns! Você atingiu " . round($prevPercentual, 2) . "% de acertos no nível intermediário.
+                    </div>";
+	}
+}
+
+// Consulta desempenho no nível atual (avançado)
+$sqlDesempenho = "SELECT COUNT(*) AS total, 
+                         SUM(CASE WHEN resultado = 1 THEN 1 ELSE 0 END) AS acertos 
+                  FROM alunos_exercicios ae 
+                  INNER JOIN exercicios e ON ae.id_exercicios = e.id 
+                  WHERE ae.id_usuario = ? AND e.nivel = ? AND ae.status = 1";
 $stmtDesempenho = $conn->prepare($sqlDesempenho);
 $stmtDesempenho->bind_param("ii", $aluno, $nivel);
 $stmtDesempenho->execute();
@@ -32,42 +57,62 @@ $stmtDesempenho->bind_result($total, $acertos);
 $stmtDesempenho->fetch();
 $stmtDesempenho->close();
 
+$desempenhoMsg = "";
 if ($total > 0) {
 	$percentualAcertos = ($acertos / $total) * 100;
 
 	if ($total === 10 && $percentualAcertos >= 60) {
-		echo "<script>alert('Parabéns! Você concluiu todos os níveis e está apto para iniciar a tocar violão.'); window.location.href='login.php';</script>";
-		exit;
-	}
+		$desempenhoMsg .= "<div class='alert alert-success'>
+                                Parabéns! Você concluiu o nível avançado com sucesso!
+                            </div>";
+	} elseif ($total === 10 && $percentualAcertos < 60) {
+		$desempenhoMsg .= "<div class='alert alert-warning'>
+                                Você precisa de 60% de acertos para concluir o nível. Progresso reiniciado!
+                            </div>";
 
-	$desempenhoMsg = "<div class='alert alert-info'>
-                        <strong>Total de Exercícios:</strong> $total<br>
-                        <strong>Acertos:</strong> $acertos<br>
-                        <strong>Percentual de Acertos:</strong> " . round($percentualAcertos, 2) . "%
-                      </div>";
-
-	if ($total === 10 && $percentualAcertos < 60) {
-		$desempenhoMsg .= "<div class='alert alert-warning'>Você precisa de pelo menos 60% de acertos para avançar. Progresso reiniciado!</div>";
-		$sqlReset = "DELETE FROM alunos_exercicios WHERE id_usuario = ? AND id_exercicios IN (SELECT id FROM exercicios WHERE nivel = ?)";
+		// Reinicia os exercícios
+		$sqlReset = "DELETE FROM alunos_exercicios 
+                     WHERE id_usuario = ? 
+                     AND id_exercicios IN (SELECT id FROM exercicios WHERE nivel = ?)";
 		$stmtReset = $conn->prepare($sqlReset);
 		$stmtReset->bind_param("ii", $aluno, $nivel);
 		$stmtReset->execute();
 		$stmtReset->close();
 	}
+
+	$desempenhoMsg .= "<div class='alert alert-info'>
+                            <strong>Total de Exercícios:</strong> $total<br>
+                            <strong>Acertos:</strong> $acertos<br>
+                            <strong>Percentual de Acertos:</strong> " . round($percentualAcertos, 2) . "%
+                       </div>";
 } else {
-	$desempenhoMsg = "<div class='alert alert-warning'>Nenhum exercício concluído neste nível ainda.</div>";
+	$desempenhoMsg = "<div class='alert alert-warning'>
+                        Nenhum exercício concluído neste nível ainda.
+                      </div>";
 }
+
+// Combina mensagens
+$desempenhoMsg = $prevMsg . $desempenhoMsg;
 ?>
 <html lang="pt-br">
 
 <head>
-	<meta charset="utf-8">
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Decords Música e Teoria - Avançados</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Decords Música e Teoria - Avançado</title>
+	<meta name="description" content="Decords Música e Teoria">
+	<link rel="icon" href="img/favicon-96x96.png">
 	<link href="css/bootstrap.min.css" rel="stylesheet">
 	<link href="css/style.css" rel="stylesheet">
+	<link href="css/signin.css" rel="stylesheet">
 	<script src="js/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
+	<!-- Partitura -->
+	<script src="js/partitura/vexflow-min.js"></script>
+	<script src="js/partitura/underscore-min.js"></script>
+	<script src="js/partitura/jquery.js"></script>
+	<script src="js/partitura/tabdiv-min.js"></script>
 </head>
 
 <body>
@@ -79,10 +124,14 @@ if ($total > 0) {
 			</ul>
 		</div>
 	</nav>
+
 	<div class="container" style="margin-top: 80px;">
 		<h1 class="text-center">Exercícios Avançados</h1>
 		<hr>
+
+		<!-- Mensagens de desempenho -->
 		<?= $desempenhoMsg; ?>
+
 		<h2>Exercícios Disponíveis</h2>
 		<div class="table-responsive">
 			<table class="table table-bordered">
@@ -130,6 +179,7 @@ if ($total > 0) {
 
 						$contador++;
 					}
+
 					$stmtExercicios->close();
 					$conn->close();
 					?>
