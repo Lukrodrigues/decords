@@ -76,8 +76,8 @@ try {
     /*--- Redirecionamento Condicional com base no desempenho ---*/
     if ($totalQuestionsExibidas > 0 && ($acertos + $erros) === $totalQuestionsExibidas) {
         if ($percentualAcertos >= 60) {
-            $_SESSION['mensagem'] = "🎉 Parabéns! Você será direcionado para o nível intermediário.";
-            header("Location: intermediarios.php");
+            $_SESSION['mensagem'] = "🎉 Parabéns! Você virou intermediario.";
+            header('Location: intermediarios.php?novo_nivel=2');
             exit;
         } else {
             // Limpa respostas para permitir novo início

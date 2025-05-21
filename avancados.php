@@ -65,9 +65,11 @@ try {
 	// Se completou 10 exercícios, decide transição ou reset
 	if (($acertos + $erros) === $totalExibidas && $totalExibidas > 0) {
 		if ($percentual >= 60) {
-			// Prepara flash e recarrega nesta página
-			$_SESSION['mensagem'] = "🎉 Parabéns! Você concluiu o nível avançado.";
-			header("Location: avancados.php?novo_nivel=2");
+			// Prepara mensagem, encerra sessão e redireciona
+			$_SESSION['mensagem'] = "🎉 Parabéns! Você concluiu todos os níveis.";
+			unset($_SESSION['aluno_logado']);
+			unset($_SESSION['aluno_id']);
+			header("Location: login.php");
 			exit;
 		} else {
 			// Limpa progresso e recarrega com reset
@@ -139,11 +141,6 @@ try {
 			position: relative;
 		}
 	</style>
-	<!-- jQuery antes de VexFlow/TabDiv -->
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-	<script src="js/partitura/vexflow-min.js"></script>
-	<script src="js/partitura/underscore-min.js"></script>
-	<script src="js/partitura/tabdiv-min.js"></script>
 </head>
 
 <body class="bg-light">
@@ -169,14 +166,6 @@ try {
 		<?php if ($resetMsg): ?>
 			<div class="alert alert-warning"><?= htmlspecialchars($resetMsg) ?></div>
 		<?php endif; ?>
-
-		<!-- Partitura e Tablatura -->
-		<div class="card mb-4">
-			<div class="card-header bg-primary text-white">Partitura e Tablatura</div>
-			<div class="card-body">
-				<div id="tablatura"></div>
-			</div>
-		</div>
 
 		<!-- Desempenho -->
 		<div class="card shadow-sm mb-4">
@@ -257,47 +246,6 @@ try {
 				window.history.replaceState({}, '', url);
 			}
 		}, 2000);
-
-		// Inicializa VexFlow & TabDiv
-		$(function() {
-			var VF = Vex.Flow;
-			var renderer = new VF.Renderer(
-				document.getElementById("tablatura"),
-				VF.Renderer.Backends.CANVAS
-			);
-			renderer.resize(600, 200);
-			var ctx = renderer.getContext();
-			var stave = new VF.Stave(10, 10, 500);
-			stave.addClef("treble").addTimeSignature("4/4");
-			stave.setContext(ctx).draw();
-			var notes = [
-				new VF.StaveNote({
-					clef: "treble",
-					keys: ["c/4"],
-					duration: "q"
-				}),
-				new VF.StaveNote({
-					clef: "treble",
-					keys: ["d/4"],
-					duration: "q"
-				}),
-				new VF.StaveNote({
-					clef: "treble",
-					keys: ["e/4"],
-					duration: "q"
-				}),
-				new VF.StaveNote({
-					clef: "treble",
-					keys: ["f/4"],
-					duration: "q"
-				})
-			];
-			VF.Formatter.FormatAndDraw(ctx, stave, notes);
-			$("#tablatura").tabdiv({
-				sheet: false,
-				tab: true
-			});
-		});
 	</script>
 </body>
 

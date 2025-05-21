@@ -19,6 +19,13 @@ if (!isset($_SESSION['aluno_logado']) || !$_SESSION['aluno_logado'] || !isset($_
 $alunoId    = (int) $_SESSION['aluno_id'];
 $nivelAtual = 2; // intermediário
 
+// Flash de sucesso (apenas via novo_nivel=1)
+$flashMsg = '';
+if (isset($_GET['novo_nivel']) && $_GET['novo_nivel'] == 1 && !empty($_SESSION['mensagem'])) {
+    $flashMsg = $_SESSION['mensagem'];
+    unset($_SESSION['mensagem']);
+}
+
 try {
     // Total de questões
     $stmtTotal = $conn->prepare("SELECT COUNT(*) AS total_questions FROM exercicios WHERE nivel = ?");
@@ -50,12 +57,14 @@ try {
         ? ($acertos / $totalExibidas) * 100
         : 0;
 
+
+
     // Redirecionamento condicional
     if (($acertos + $erros) === $totalExibidas && $totalExibidas > 0) {
         if ($percentual >= 60) {
             // Seta flash e manda para avançados
             $_SESSION['mensagem'] = "🎉 Parabéns! Você virou avançado.";
-            header('Location: avancados.php?novo_nivel=2');
+            header('Location: avancados.php?novo_nivel=3');
             exit;
         } else {
             // Reinicia progresso
