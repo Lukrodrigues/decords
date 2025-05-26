@@ -21,7 +21,7 @@ $nivelAtual = 3; // avançado
 
 // Flash de sucesso (apenas via novo_nivel=2)
 $flashMsg = '';
-if (isset($_GET['novo_nivel']) && $_GET['novo_nivel'] == 2 && !empty($_SESSION['mensagem'])) {
+if (isset($_GET['novo_nivel']) && $_GET['novo_nivel'] == 3 && !empty($_SESSION['mensagem'])) {
 	$flashMsg = $_SESSION['mensagem'];
 	unset($_SESSION['mensagem']);
 }
@@ -66,7 +66,7 @@ try {
 	if (($acertos + $erros) === $totalExibidas && $totalExibidas > 0) {
 		if ($percentual >= 60) {
 			// Prepara mensagem, encerra sessão e redireciona
-			$_SESSION['mensagem'] = "🎉 Parabéns! Você concluiu todos os níveis.";
+			$_SESSION['mensagem'] = "🎉 Parabéns! Terminou todos os niveis, tornou-se um musico";
 			unset($_SESSION['aluno_logado']);
 			unset($_SESSION['aluno_id']);
 			header("Location: login.php");

@@ -21,7 +21,7 @@ $nivelAtual = 2; // intermediário
 
 // Flash de sucesso (apenas via novo_nivel=1)
 $flashMsg = '';
-if (isset($_GET['novo_nivel']) && $_GET['novo_nivel'] == 1 && !empty($_SESSION['mensagem'])) {
+if (isset($_GET['novo_nivel']) && $_GET['novo_nivel'] == 2 && !empty($_SESSION['mensagem'])) {
     $flashMsg = $_SESSION['mensagem'];
     unset($_SESSION['mensagem']);
 }
@@ -63,7 +63,7 @@ try {
     if (($acertos + $erros) === $totalExibidas && $totalExibidas > 0) {
         if ($percentual >= 60) {
             // Seta flash e manda para avançados
-            $_SESSION['mensagem'] = "🎉 Parabéns! Você virou avançado.";
+            $_SESSION['mensagem'] = "🎉 Parabéns! Atingiu a média percentual, acesse o nível Avançado";
             header('Location: avancados.php?novo_nivel=3');
             exit;
         } else {

@@ -36,6 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		if (!isset($_POST['id_exercicios'], $_POST['resposta'])) {
 			throw new Exception('Selecione uma resposta antes de enviar!');
 		}
+
 		// Busca a resposta correta do exercício
 		$stmt = $conn->prepare("SELECT resposta FROM exercicios WHERE id = ?");
 		if (!$stmt) {
@@ -79,8 +80,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	}
 }
 
-// Busca dados do exercício para exibição
-$stmt = $conn->prepare("SELECT * FROM exercicios WHERE id = ?");
+// Busca dados do exercício para exibição (incluindo nível e partitura)
+$stmt = $conn->prepare("SELECT id, pergunta, resposta, tablatura, nivel, dica, a, b, c, d  FROM exercicios WHERE id = ?");
 if (!$stmt) {
 	die("Erro ao preparar consulta de exercício: " . $conn->error);
 }
@@ -92,6 +93,8 @@ $stmt->close();
 
 // Sanitização dos dados
 $pergunta = htmlspecialchars($exercicio['pergunta'] ?? '');
+$nivelExercicio = (int)($exercicio['nivel'] ?? 1);
+$tablaturaContent = $exercicio['tablatura'] ?? '';
 $opcoes = [
 	'a' => htmlspecialchars($exercicio['a'] ?? ''),
 	'b' => htmlspecialchars($exercicio['b'] ?? ''),
@@ -99,8 +102,8 @@ $opcoes = [
 	'd' => htmlspecialchars($exercicio['d'] ?? '')
 ];
 
-// Exibe tablatura/partitura a partir do exercício 11
-$showTablatura = ($id >= 11);
+// Exibe tablatura/partitura para níveis intermediário (2) e avançado (3)
+$showTablatura = ($nivelExercicio >= 2) && !empty($tablaturaContent);
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -112,9 +115,10 @@ $showTablatura = ($id >= 11);
 	<link rel="stylesheet" href="css/bootstrap.min.css">
 	<?php if ($showTablatura): ?>
 		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-		<script src="js/partitura/vexflow-min.js"></script>
 		<script src="js/partitura/underscore-min.js"></script>
+		<script src="js/partitura/vexflow-min.js"></script>
 		<script src="js/partitura/tabdiv-min.js"></script>
+
 	<?php endif; ?>
 	<style>
 		body {
@@ -148,6 +152,15 @@ $showTablatura = ($id >= 11);
 
 		.tablatura-container {
 			margin: 20px 0;
+			border: 1px solid #ddd;
+			padding: 15px;
+			border-radius: 5px;
+			background: white;
+		}
+
+		#tablatura canvas {
+			max-width: 100%;
+			height: auto;
 		}
 	</style>
 </head>
@@ -182,8 +195,11 @@ $showTablatura = ($id >= 11);
 						<h5>Escolha uma opção:</h5>
 						<?php foreach ($opcoes as $letra => $descricao): ?>
 							<div class="form-check">
-								<input class="form-check-input" type="radio" name="resposta" id="opcao-<?= $letra ?>" value="<?= $letra ?>" required>
-								<label class="form-check-label" for="opcao-<?= $letra ?>"><?= $descricao ?></label>
+								<input class="form-check-input" type="radio" name="resposta"
+									id="opcao-<?= $letra ?>" value="<?= $letra ?>" required>
+								<label class="form-check-label" for="opcao-<?= $letra ?>">
+									<?= $descricao ?>
+								</label>
 							</div>
 						<?php endforeach; ?>
 					</div>
@@ -205,46 +221,19 @@ $showTablatura = ($id >= 11);
 	<?php if ($showTablatura): ?>
 		<script>
 			$(function() {
-				var VF = Vex.Flow;
-				var div = document.getElementById("tablatura");
-				var renderer = new VF.Renderer(div, VF.Renderer.Backends.CANVAS);
-				renderer.resize(600, 200);
-				var context = renderer.getContext();
-				var stave = new VF.Stave(10, 10, 500);
-				stave.addClef("treble").addTimeSignature("4/4");
-				stave.setContext(context).draw();
+				const tablaturaData = <?= json_encode($tablaturaContent) ?>;
 
-				// Exemplo de notas, ajuste conforme BD se necessário
-				var notes = [
-					new VF.StaveNote({
-						clef: "treble",
-						keys: ["c/4"],
-						duration: "q"
-					}),
-					new VF.StaveNote({
-						clef: "treble",
-						keys: ["d/4"],
-						duration: "q"
-					}),
-					new VF.StaveNote({
-						clef: "treble",
-						keys: ["e/4"],
-						duration: "q"
-					}),
-					new VF.StaveNote({
-						clef: "treble",
-						keys: ["f/4"],
-						duration: "q"
-					})
-				];
-				VF.Formatter.FormatAndDraw(context, stave, notes);
-				$("#tablatura").tabdiv({
-					tab: true,
-					sheet: false
-				});
+				if (tablaturaData) {
+					// Inicialize manualmente se necessário
+					VexTabDiv = VexTabDiv || {};
+					new VexTabDiv.Editor($("#tablatura")[0], {
+						content: tablaturaData
+					});
+				}
 			});
 		</script>
 	<?php endif; ?>
+
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script>
 		$(document).ready(function() {
