@@ -116,9 +116,15 @@ $showTablatura = ($nivelExercicio >= 2) && !empty($tablaturaContent);
 	<?php if ($showTablatura): ?>
 		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 		<script src="js/partitura/underscore-min.js"></script>
-		<script src="js/partitura/vexflow-min.js"></script>
-		<script src="js/partitura/tabdiv-min.js"></script>
+		<script src="https://unpkg.com/vexflow/releases/vexflow-debug.js"></script>
+		<script src="https://unpkg.com/vextab/releases/vextab-div.js"></script>
 
+		<style>
+			.vextab-div canvas {
+				width: 100% !important;
+				height: auto !important;
+			}
+		</style>
 	<?php endif; ?>
 	<style>
 		body {
@@ -210,7 +216,10 @@ $showTablatura = ($nivelExercicio >= 2) && !empty($tablaturaContent);
 					</div>
 
 					<input type="hidden" name="id_exercicios" value="<?= $id ?>">
-					<button type="submit" class="btn btn-primary btn-submit btn-block">Enviar Resposta</button>
+					<button type="submit" class="btn btn-primary btn-submit btn-block" style="padding:8px 16px; font-size:14px;">
+						Enviar Resposta
+					</button>
+
 				</form>
 
 				<div id="feedback" class="alert alert-dismissible mt-3" style="display: none;"></div>
@@ -221,17 +230,27 @@ $showTablatura = ($nivelExercicio >= 2) && !empty($tablaturaContent);
 	<?php if ($showTablatura): ?>
 		<script>
 			$(function() {
-				const tablaturaData = <?= json_encode($tablaturaContent) ?>;
+				const data = <?= json_encode($tablaturaContent) ?>;
 
-				if (tablaturaData) {
-					// Inicialize manualmente se necessário
-					VexTabDiv = VexTabDiv || {};
-					new VexTabDiv.Editor($("#tablatura")[0], {
-						content: tablaturaData
+				try {
+					const VF = Vex.Flow;
+					const div = document.getElementById("tablatura");
+
+					const renderer = new VF.Renderer(div, VF.Renderer.Backends.SVG);
+					renderer.resize(600, 200);
+					const artist = new VexTabDiv.Artist(10, 10, 600, {
+						scale: 1.0
 					});
+					const vextab = new VexTabDiv.VexTab(artist);
+
+					vextab.parse(data);
+					artist.render(renderer);
+				} catch (e) {
+					console.error("Erro ao renderizar a tablatura:", e);
 				}
 			});
 		</script>
+
 	<?php endif; ?>
 
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

@@ -125,20 +125,25 @@ try {
 		.badge-concluido {
 			background: orange;
 			color: #fff;
+			padding: 0.5em 1em;
+			font-size: 0.875rem;
+			border-radius: 0.25rem;
 		}
 
-		.badge-certo {
+		.badge-resultado-certo {
 			background: green;
 			color: #fff;
+			padding: 0.5em 1em;
+			font-size: 0.875rem;
+			border-radius: 0.25rem;
 		}
 
-		.badge-errado {
+		.badge-resultado-errado {
 			background: red;
 			color: #fff;
-		}
-
-		.alert {
-			position: relative;
+			padding: 0.5em 1em;
+			font-size: 0.875rem;
+			border-radius: 0.25rem;
 		}
 	</style>
 </head>
@@ -215,9 +220,9 @@ try {
 								<td><?= $ex['concluido'] ?></td>
 								<td>
 									<?= $ex['resultado'] === 'Certo'
-										? '<span class="badge-certo">Certo</span>'
+										? '<span class="badge-resultado-certo">Certo</span>'
 										: ($ex['resultado'] === 'Errado'
-											? '<span class="badge-errado">Errado</span>'
+											? '<span class="badge-resultado-errado">Errado</span>'
 											: '--') ?>
 								</td>
 								<td>
