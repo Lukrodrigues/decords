@@ -9,8 +9,8 @@ if (!isset($_SESSION['aluno_logado']) || $_SESSION['aluno_logado'] !== true) {
 	exit;
 }
 
-// Use sempre a mesma chave de sessão para o nível do aluno
-$nivelAtual = $_SESSION['aluno_nivel'] ?? 1;
+// Obtém o nível do aluno da sessão (que é o nível mais alto alcançado)
+$nivelAluno = $_SESSION['aluno_nivel'] ?? 1;
 
 // Define os itens do menu com seus respectivos níveis
 $menuItens = [
@@ -30,6 +30,31 @@ $menuItens = [
 	<link rel="stylesheet" href="css/bootstrap.min.css">
 	<script src="js/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
+	<style>
+		.menu-concluido {
+			color: green !important;
+		}
+
+		.menu-em-andamento {
+			color: orange !important;
+			font-weight: bold;
+		}
+
+		.menu-bloqueado {
+			color: #ccc !important;
+			cursor: not-allowed;
+		}
+
+		.menu-bloqueado a {
+			pointer-events: none;
+		}
+
+		.dropdown-menu span.menu-bloqueado {
+			display: block;
+			padding: 3px 20px;
+			color: #ccc;
+		}
+	</style>
 </head>
 
 <body>
@@ -52,51 +77,49 @@ $menuItens = [
 								<li><a href="tutorial_02.php">Tutorial-02</a></li>
 								<li class="divider"></li>
 							</ul>
-							<!-- Menu dinâmico -->
+						</li>
+						<!-- Menu dinâmico de exercícios -->
 						<li class="dropdown">
 							<a class="dropdown-toggle" href="#" data-toggle="dropdown">Exercícios <b class="caret"></b></a>
 							<ul class="dropdown-menu">
-								<?php
-								// Nível atual do aluno (supondo que começa em 1 para novos usuários)
-								$nivelAtual = $_SESSION['aluno_nivel'] ?? 1;
-
-								foreach ($menuItens as $nome => $dados):
-									// Define valores padrão
-									$resultado = $dados['resultado'] ?? 0;
+								<?php foreach ($menuItens as $nome => $dados): ?>
+									<?php
+									$classe = '';
 									$status = '';
-									$style = '';
-									$link = '#'; // Padrão bloqueado
 
-									// Lógica de liberação dos itens do menu
-									if ($dados['nivel'] < $nivelAtual) {
+									if ($dados['nivel'] < $nivelAluno) {
 										// Nível já concluído
+										$classe = 'menu-concluido';
 										$status = ' - Concluído ✅';
-										$style = 'style="color: gray;"';
-										$link = $dados['link'];
-									} elseif ($dados['nivel'] == $nivelAtual) {
-										// Nível atual: verifica se o aluno já foi aprovado
-										if ($resultado >= 60) {
-											$status = ' - Aprovado 🎉';
-											$style = 'style="color: green;"';
-										} else {
-											$status = ' - Em andamento 🚀';
-											$link = $dados['link']; // Libera o acesso mesmo que ainda esteja em andamento
-										}
+									} elseif ($dados['nivel'] == $nivelAluno) {
+										// Nível atual
+										$classe = 'menu-em-andamento';
+										$status = ' - Em andamento 🚀';
 									} else {
-										// Níveis superiores permanecem bloqueados
+										// Próximos níveis (bloqueados)
+										$classe = 'menu-bloqueado';
 										$status = ' - Bloqueado 🔒';
-										$style = 'style="color: gray;"';
 									}
-								?>
-									<li>
-										<a href="<?= htmlspecialchars($link) ?>" <?= $style ?>>
-											<?= htmlspecialchars($nome) . $status ?>
-										</a>
-									</li>
+									?>
+
+									<?php if ($dados['nivel'] <= $nivelAluno): ?>
+										<li>
+											<a href="<?= htmlspecialchars($dados['link']) ?>" class="<?= $classe ?>">
+												<?= htmlspecialchars($nome) . $status ?>
+											</a>
+										</li>
+									<?php else: ?>
+										<li>
+											<span class="<?= $classe ?>">
+												<?= htmlspecialchars($nome) . $status ?>
+											</span>
+										</li>
+									<?php endif; ?>
 									<li class="divider"></li>
 								<?php endforeach; ?>
 							</ul>
-						<li class="active"><a href="login.php">Sair</a></li>
+						</li>
+						<li><a href="logout.php">Sair</a></li>
 					</ul>
 				</div>
 			</div>

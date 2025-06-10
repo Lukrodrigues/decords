@@ -24,12 +24,6 @@ if (isset($_SESSION['AlunoId'])) {
 	<script src="js/bootstrap.min.js"></script>
 	<script src="js/ie-emulation-modes-warning.js"></script>
 
-	<!-- Support partitura -->
-	<script src="js/partitura/vexflow-min.js"></script>
-	<script src="js/partitura/underscore-min.js"></script>
-	<script src="js/partitura/jquery.js"></script>
-	<script src="js/partitura/tabdiv-min.js"></script>
-	<!-- Support partitura -->
 </head>
 
 <body>

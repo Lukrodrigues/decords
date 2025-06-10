@@ -14,6 +14,8 @@ $dbname     = "decords_bd";
 $username   = "root";
 $password   = "";
 
+$deveRedirecionar = false; // Variável para controle de redirecionamento
+
 try {
     $conn = new mysqli($servername, $username, $password, $dbname);
     if ($conn->connect_errno) {
@@ -76,9 +78,18 @@ try {
     /*--- Redirecionamento Condicional com base no desempenho ---*/
     if ($totalQuestionsExibidas > 0 && ($acertos + $erros) === $totalQuestionsExibidas) {
         if ($percentualAcertos >= 60) {
-            $_SESSION['mensagem'] = "🎉Parabéns! terminou o nivel iniciantes, será direcionado para nivel intermediarios.";
-            header('Location: intermediarios.php?novo_nivel=2');
-            exit;
+            // Atualiza o nível do aluno no banco
+            $novoNivel = 2;
+            $stmtUpdate = $conn->prepare("UPDATE alunos SET nivel = ? WHERE id = ?");
+            $stmtUpdate->bind_param('ii', $novoNivel, $alunoId);
+            if (!$stmtUpdate->execute()) {
+                throw new Exception("Erro ao atualizar nível: " . $stmtUpdate->error);
+            }
+            $stmtUpdate->close();
+
+            // Define a mensagem e flag para redirecionamento
+            $_SESSION['mensagem'] = "🎉 Parabéns! Concluiu o nível iniciante. Será direcionado para o próximo nível em 5 segundos.";
+            $deveRedirecionar = true;
         } else {
             // Limpa respostas para permitir novo início
             $stmtReset = $conn->prepare("DELETE FROM alunos_exercicios WHERE id_usuario = ? AND id_exercicios IN (SELECT id FROM exercicios WHERE nivel = ?)");
@@ -166,6 +177,11 @@ try {
             font-size: 0.875rem;
             border-radius: 0.25rem;
         }
+
+        .countdown {
+            font-weight: bold;
+            color: #0d6efd;
+        }
     </style>
 </head>
 
@@ -184,6 +200,9 @@ try {
         <?php if (isset($_SESSION['mensagem'])): ?>
             <div class="alert alert-info">
                 <?= htmlspecialchars($_SESSION['mensagem']) ?>
+                <?php if ($deveRedirecionar): ?>
+                    <div class="mt-2">Redirecionando em <span class="countdown">5</span> segundos...</div>
+                <?php endif; ?>
             </div>
             <?php unset($_SESSION['mensagem']); ?>
         <?php endif; ?>
@@ -286,6 +305,20 @@ try {
                     new bootstrap.Alert(alert).close();
                 });
             }, 5000);
+
+            <?php if ($deveRedirecionar): ?>
+                // Contagem regressiva para redirecionamento
+                let seconds = 5;
+                const countdownEl = document.querySelector('.countdown');
+                const countdownInterval = setInterval(() => {
+                    seconds--;
+                    countdownEl.textContent = seconds;
+                    if (seconds <= 0) {
+                        clearInterval(countdownInterval);
+                        window.location.href = 'intermediarios.php?novo_nivel=2';
+                    }
+                }, 1000);
+            <?php endif; ?>
         });
     </script>
 </body>

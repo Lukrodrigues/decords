@@ -16,23 +16,19 @@ if (!isset($_SESSION['aluno_logado']) || !$_SESSION['aluno_logado'] || !isset($_
 	header('Location: login_aluno.php');
 	exit;
 }
-$alunoId    = (int) $_SESSION['aluno_id'];
-$nivelAtual = 3; // avançado
-
-// Flash de sucesso (apenas via novo_nivel=2)
-$flashMsg = '';
-if (isset($_GET['novo_nivel']) && $_GET['novo_nivel'] == 3 && !empty($_SESSION['mensagem'])) {
-	$flashMsg = $_SESSION['mensagem'];
-	unset($_SESSION['mensagem']);
-}
-
-// Mensagem de reset
-$resetMsg = '';
-if (isset($_GET['reset']) && $_GET['reset'] == 1) {
-	$resetMsg = '😔 Você não atingiu 60% de aproveitamento. Progresso reiniciado!';
-}
+$alunoId = (int) $_SESSION['aluno_id'];
+$deveRedirecionar = false; // Variável para controle de redirecionamento
 
 try {
+	// Busca o nível atual do aluno
+	$stmtNivel = $conn->prepare("SELECT nivel FROM alunos WHERE id = ?");
+	$stmtNivel->bind_param('i', $alunoId);
+	$stmtNivel->execute();
+	$resultadoNivel = $stmtNivel->get_result();
+	$aluno = $resultadoNivel->fetch_assoc();
+	$nivelAtual = (int)($aluno['nivel'] ?? 3); // Default para avançado
+	$stmtNivel->close();
+
 	// Total de exercícios no nível
 	$stmtTotal = $conn->prepare("SELECT COUNT(*) AS total_questions FROM exercicios WHERE nivel = ?");
 	$stmtTotal->bind_param('i', $nivelAtual);
@@ -62,15 +58,12 @@ try {
 		? ($acertos / $totalExibidas) * 100
 		: 0;
 
-	// Se completou 10 exercícios, decide transição ou reset
+	// Se completou todos os exercícios
 	if (($acertos + $erros) === $totalExibidas && $totalExibidas > 0) {
 		if ($percentual >= 60) {
-			// Prepara mensagem, encerra sessão e redireciona
-			$_SESSION['mensagem'] = "🎉 Parabéns! Terminou todos os niveis, tornou-se um musico";
-			unset($_SESSION['aluno_logado']);
-			unset($_SESSION['aluno_id']);
-			header("Location: login.php");
-			exit;
+			// Define a mensagem e flag para redirecionamento
+			$_SESSION['mensagem'] = "🎉 Parabéns! Concluiu todos os níveis e tornou-se um músico. Será direcionado para o login em 5 segundos.";
+			$deveRedirecionar = true;
 		} else {
 			// Limpa progresso e recarrega com reset
 			$stmtReset = $conn->prepare("
@@ -145,6 +138,11 @@ try {
 			font-size: 0.875rem;
 			border-radius: 0.25rem;
 		}
+
+		.countdown {
+			font-weight: bold;
+			color: #0d6efd;
+		}
 	</style>
 </head>
 
@@ -160,16 +158,22 @@ try {
 	</nav>
 	<div class="container">
 
-		<!-- Flash sucesso (só via novo_nivel=2) -->
-		<?php if ($flashMsg): ?>
-			<div id="flash-success" class="alert alert-success alert-dismissible fade show">
-				<?= htmlspecialchars($flashMsg) ?>
+		<!-- Mensagem de sucesso -->
+		<?php if (isset($_SESSION['mensagem'])): ?>
+			<div class="alert alert-info">
+				<?= htmlspecialchars($_SESSION['mensagem']) ?>
+				<?php if ($deveRedirecionar): ?>
+					<div class="mt-2">Redirecionando em <span class="countdown">5</span> segundos...</div>
+				<?php endif; ?>
 			</div>
+			<?php unset($_SESSION['mensagem']); ?>
 		<?php endif; ?>
 
 		<!-- Mensagem de reset -->
-		<?php if ($resetMsg): ?>
-			<div class="alert alert-warning"><?= htmlspecialchars($resetMsg) ?></div>
+		<?php if (isset($_GET['reset']) && $_GET['reset'] == 1): ?>
+			<div class="alert alert-warning">
+				😔 Você não atingiu 60% de aproveitamento. Progresso reiniciado!
+			</div>
 		<?php endif; ?>
 
 		<!-- Desempenho -->
@@ -238,19 +242,32 @@ try {
 		</div>
 	</div>
 
-	<!-- Fecha e limpa query string após 2s -->
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 	<script>
-		setTimeout(() => {
-			const el = document.getElementById('flash-success');
-			if (el) {
-				bootstrap.Alert.getOrCreateInstance(el).close();
-				const url = new URL(window.location);
-				url.searchParams.delete('novo_nivel');
-				url.searchParams.delete('reset');
-				window.history.replaceState({}, '', url);
-			}
-		}, 2000);
+		document.addEventListener('DOMContentLoaded', () => {
+			<?php if ($deveRedirecionar): ?>
+				// Contagem regressiva para redirecionamento
+				let seconds = 5;
+				const countdownEl = document.querySelector('.countdown');
+				const countdownInterval = setInterval(() => {
+					seconds--;
+					countdownEl.textContent = seconds;
+					if (seconds <= 0) {
+						clearInterval(countdownInterval);
+
+						// Encerrar sessão e redirecionar para login
+						fetch('logout.php')
+							.then(() => {
+								window.location.href = 'login.php';
+							})
+							.catch(error => {
+								console.error('Erro ao fazer logout:', error);
+								window.location.href = 'login.php';
+							});
+					}
+				}, 1000);
+			<?php endif; ?>
+		});
 	</script>
 </body>
 
