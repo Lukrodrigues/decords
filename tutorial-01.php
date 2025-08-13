@@ -9,23 +9,34 @@ if (!isset($_SESSION['aluno_logado']) || $_SESSION['aluno_logado'] !== true) {
 	exit;
 }
 
-// Obtém o nível do aluno da sessão (que é o nível mais alto alcançado)
-$nivelAluno = $_SESSION['aluno_nivel'] ?? 1;
-
 // Define os itens do menu com seus respectivos níveis
 $menuItens = [
-	'Iniciantes'       => ['link' => 'iniciantes.php', 'nivel' => 1],
-	'Intermediários'   => ['link' => 'intermediarios.php', 'nivel' => 2],
-	'Avançados'        => ['link' => 'avancados.php', 'nivel' => 3],
+	'Iniciantes'      => ['link' => 'iniciantes.php', 'nivel' => 1],
+	'Intermediários'  => ['link' => 'intermediarios.php', 'nivel' => 2],
+	'Avançados'       => ['link' => 'avancados.php', 'nivel' => 3],
 ];
-?>
 
+// Obtém o nível atual e desempenho do aluno
+$nivelAluno = $_SESSION['aluno_nivel'] ?? 1;
+$desempenho = $_SESSION['aluno_desempenho'] ?? 0;
+
+// Verifica se o aluno completou o nível atual
+$nivelCompleto = ($desempenho >= 60);
+
+// Avanço automático de nível
+if ($nivelCompleto && $nivelAluno < max(array_column($menuItens, 'nivel'))) {
+	$nivelAluno++;
+	$_SESSION['aluno_nivel'] = $nivelAluno;
+	$_SESSION['aluno_desempenho'] = 0; // Zera o desempenho para o novo nível
+	$desempenho = 0;
+	$nivelCompleto = false; // Reseta para o novo nível
+}
+?>
 <!DOCTYPE html>
 <html lang="pt-br">
 
 <head>
 	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Tutorial - Decords Música e Teoria</title>
 	<link rel="stylesheet" href="css/bootstrap.min.css">
 	<script src="js/jquery.min.js"></script>
@@ -45,6 +56,10 @@ $menuItens = [
 			cursor: not-allowed;
 		}
 
+		.menu-bloqueado a {
+			pointer-events: none;
+		}
+
 		.dropdown-menu li.disabled a {
 			pointer-events: none;
 			cursor: not-allowed;
@@ -61,7 +76,9 @@ $menuItens = [
 					<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
 						<span class="sr-only">Toggle navigation</span>
 					</button>
-					<a class="navbar-brand" href="index.php"><img id="logo" src="img/foto22.jpg" width="100" height="30"></a>
+					<a class="navbar-brand" href="index.php">
+						<img id="logo" src="img/foto22.jpg" width="100" height="30">
+					</a>
 				</div>
 				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 					<ul class="nav navbar-nav">
@@ -74,46 +91,60 @@ $menuItens = [
 								<li class="divider"></li>
 							</ul>
 						</li>
-						<!-- Menu dinâmico de exercícios -->
+
+						<!-- Menu dinâmico -->
 						<li class="dropdown">
 							<a class="dropdown-toggle" href="#" data-toggle="dropdown">Exercícios <b class="caret"></b></a>
 							<ul class="dropdown-menu">
-								<?php foreach ($menuItens as $nome => $dados): ?>
-									<?php
+								<?php
+								$total = count($menuItens);
+								$contador = 0;
+
+								foreach ($menuItens as $nome => $dados):
+									$contador++;
+									$nivel = $dados['nivel'];
 									$classe = '';
 									$status = '';
-									$disabled = false;
-									$isCurrentLevel = ($dados['nivel'] == $nivelAluno);
-									$isCompleted = ($dados['nivel'] < $nivelAluno);
-									$isLocked = ($dados['nivel'] > $nivelAluno);
+									$link = '#';
+									$disabled = true;
 
-									if ($isCompleted) {
+									if ($nivel < $nivelAluno || ($nivel == $nivelAluno && $nivelCompleto)) {
+										// Níveis concluídos (anteriores ou atual com desempenho >=60%)
 										$classe = 'menu-concluido';
 										$status = ' - Concluído ✅';
-									} elseif ($isCurrentLevel) {
+										$link = $dados['link']; // Permite revisitar níveis concluídos
+										$disabled = false;
+									} elseif ($nivel == $nivelAluno && !$nivelCompleto) {
+										// Nível atual em andamento (desempenho <60%)
 										$classe = 'menu-em-andamento';
 										$status = ' - Em andamento 🚀';
-									} elseif ($isLocked) {
+										$link = $dados['link'];
+										$disabled = false;
+									} else {
+										// Níveis futuros bloqueados
 										$classe = 'menu-bloqueado';
 										$status = ' - Bloqueado 🔒';
+										$link = '#';
 										$disabled = true;
 									}
-									?>
+								?>
 
-									<?php if ($isLocked): ?>
+									<?php if ($disabled): ?>
 										<li class="disabled">
-											<span class="<?= $classe ?>">
-												<?= htmlspecialchars($nome) . $status ?>
-											</span>
+											<span class="<?= $classe ?>"><?= htmlspecialchars($nome) . $status ?></span>
 										</li>
 									<?php else: ?>
 										<li>
-											<a href="<?= htmlspecialchars($dados['link']) ?>" class="<?= $classe ?>">
+											<a href="<?= htmlspecialchars($link) ?>" class="<?= $classe ?>">
 												<?= htmlspecialchars($nome) . $status ?>
 											</a>
 										</li>
 									<?php endif; ?>
-									<li class="divider"></li>
+
+									<?php if ($contador < $total): ?>
+										<li class="divider"></li>
+									<?php endif; ?>
+
 								<?php endforeach; ?>
 							</ul>
 						</li>
@@ -123,27 +154,28 @@ $menuItens = [
 			</div>
 		</div>
 	</nav>
+
 	<div class="container">
 		<h1>Bem-vindo ao Tutorial 01</h1>
 		<p>Você está logado como: <?= htmlspecialchars($_SESSION['aluno_nome'] ?? 'Visitante') ?></p>
 		<p>Nível atual: <?= $nivelAluno ?></p>
+		<p>Desempenho atual: <strong><?= $desempenho ?>%</strong></p>
 		<p>Status:
 			<?php
-			if ($nivelAluno == 1) {
-				echo "Iniciante";
-			} elseif ($nivelAluno == 2) {
-				echo "Intermediário";
-			} else {
-				echo "Avançado";
-			}
+			if ($nivelAluno == 1) echo "Iniciante";
+			elseif ($nivelAluno == 2) echo "Intermediário";
+			else echo "Avançado";
 			?>
 		</p>
+		<?php if ($nivelCompleto): ?>
+			<div class="alert alert-success">
+				Parabéns! Você completou este nível com sucesso!
+			</div>
+		<?php endif; ?>
 	</div>
 </body>
 
 </html>
-
-
 <h1 style="text-align:center">Introdução Violão:</h1>
 <div class="container inicial">
 	<div class="row-fluid">
