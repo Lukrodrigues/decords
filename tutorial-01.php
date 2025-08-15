@@ -23,13 +23,19 @@ $desempenho = $_SESSION['aluno_desempenho'] ?? 0;
 // Verifica se o aluno completou o nível atual
 $nivelCompleto = ($desempenho >= 60);
 
-// Avanço automático de nível
-if ($nivelCompleto && $nivelAluno < max(array_column($menuItens, 'nivel'))) {
-	$nivelAluno++;
-	$_SESSION['aluno_nivel'] = $nivelAluno;
-	$_SESSION['aluno_desempenho'] = 0; // Zera o desempenho para o novo nível
-	$desempenho = 0;
-	$nivelCompleto = false; // Reseta para o novo nível
+// Corrige avanço e status para todos os níveis
+if ($nivelCompleto) {
+	if ($nivelAluno < max(array_column($menuItens, 'nivel'))) {
+		// Avança de nível
+		$nivelAluno++;
+		$_SESSION['aluno_nivel'] = $nivelAluno;
+		$_SESSION['aluno_desempenho'] = 0;
+		$desempenho = 0;
+		$nivelCompleto = false; // novo nível começa em andamento
+	} else {
+		// Se for último nível, mantém concluído
+		$nivelCompleto = true;
+	}
 }
 ?>
 <!DOCTYPE html>
@@ -108,24 +114,24 @@ if ($nivelCompleto && $nivelAluno < max(array_column($menuItens, 'nivel'))) {
 									$link = '#';
 									$disabled = true;
 
-									if ($nivel < $nivelAluno || ($nivel == $nivelAluno && $nivelCompleto)) {
-										// Níveis concluídos (anteriores ou atual com desempenho >=60%)
+									if ($nivel < $nivelAluno) {
 										$classe = 'menu-concluido';
 										$status = ' - Concluído ✅';
-										$link = $dados['link']; // Permite revisitar níveis concluídos
+										$link = $dados['link'];
 										$disabled = false;
-									} elseif ($nivel == $nivelAluno && !$nivelCompleto) {
-										// Nível atual em andamento (desempenho <60%)
-										$classe = 'menu-em-andamento';
-										$status = ' - Em andamento 🚀';
+									} elseif ($nivel == $nivelAluno) {
+										if ($desempenho >= 60 && $nivel == max(array_column($menuItens, 'nivel'))) {
+											$classe = 'menu-concluido';
+											$status = ' - Concluído ✅';
+										} else {
+											$classe = 'menu-em-andamento';
+											$status = ' - Em andamento 🚀';
+										}
 										$link = $dados['link'];
 										$disabled = false;
 									} else {
-										// Níveis futuros bloqueados
 										$classe = 'menu-bloqueado';
 										$status = ' - Bloqueado 🔒';
-										$link = '#';
-										$disabled = true;
 									}
 								?>
 
@@ -167,7 +173,11 @@ if ($nivelCompleto && $nivelAluno < max(array_column($menuItens, 'nivel'))) {
 			else echo "Avançado";
 			?>
 		</p>
-		<?php if ($nivelCompleto): ?>
+		<?php if ($nivelCompleto && $nivelAluno == max(array_column($menuItens, 'nivel'))): ?>
+			<div class="alert alert-success">
+				Parabéns! Você completou todo o curso com sucesso!
+			</div>
+		<?php elseif ($nivelCompleto): ?>
 			<div class="alert alert-success">
 				Parabéns! Você completou este nível com sucesso!
 			</div>
@@ -176,6 +186,7 @@ if ($nivelCompleto && $nivelAluno < max(array_column($menuItens, 'nivel'))) {
 </body>
 
 </html>
+
 <h1 style="text-align:center">Introdução Violão:</h1>
 <div class="container inicial">
 	<div class="row-fluid">
