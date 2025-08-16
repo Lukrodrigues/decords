@@ -11,32 +11,28 @@ if (!isset($_SESSION['aluno_logado']) || $_SESSION['aluno_logado'] !== true) {
 
 // Define os itens do menu com seus respectivos níveis
 $menuItens = [
-	'Iniciantes'      => ['link' => 'iniciantes.php', 'nivel' => 1],
-	'Intermediários'  => ['link' => 'intermediarios.php', 'nivel' => 2],
-	'Avançados'       => ['link' => 'avancados.php', 'nivel' => 3],
+	1 => ['nome' => 'Iniciantes', 'link' => 'iniciantes.php'],
+	2 => ['nome' => 'Intermediários', 'link' => 'intermediarios.php'],
+	3 => ['nome' => 'Avançados', 'link' => 'avancados.php'],
 ];
 
 // Obtém o nível atual e desempenho do aluno
 $nivelAluno = $_SESSION['aluno_nivel'] ?? 1;
 $desempenho = $_SESSION['aluno_desempenho'] ?? 0;
 
-// Verifica se o aluno completou o nível atual
-$nivelCompleto = ($desempenho >= 60);
-
-// Corrige avanço e status para todos os níveis
-if ($nivelCompleto) {
-	if ($nivelAluno < max(array_column($menuItens, 'nivel'))) {
-		// Avança de nível
-		$nivelAluno++;
-		$_SESSION['aluno_nivel'] = $nivelAluno;
-		$_SESSION['aluno_desempenho'] = 0;
-		$desempenho = 0;
-		$nivelCompleto = false; // novo nível começa em andamento
-	} else {
-		// Se for último nível, mantém concluído
-		$nivelCompleto = true;
+// Função para retornar status do menu
+function getMenuStatus($menuItens, $nivelAluno)
+{
+	$status = [];
+	foreach ($menuItens as $nivel => $dados) {
+		if ($nivel < $nivelAluno) $status[$nivel] = 'concluido';
+		elseif ($nivel == $nivelAluno) $status[$nivel] = 'andamento';
+		else $status[$nivel] = 'bloqueado';
 	}
+	return $status;
 }
+
+$menuStatus = getMenuStatus($menuItens, $nivelAluno);
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -97,60 +93,25 @@ if ($nivelCompleto) {
 								<li class="divider"></li>
 							</ul>
 						</li>
-
 						<!-- Menu dinâmico -->
 						<li class="dropdown">
 							<a class="dropdown-toggle" href="#" data-toggle="dropdown">Exercícios <b class="caret"></b></a>
-							<ul class="dropdown-menu">
-								<?php
-								$total = count($menuItens);
-								$contador = 0;
-
-								foreach ($menuItens as $nome => $dados):
-									$contador++;
-									$nivel = $dados['nivel'];
-									$classe = '';
-									$status = '';
-									$link = '#';
-									$disabled = true;
-
-									if ($nivel < $nivelAluno) {
-										$classe = 'menu-concluido';
-										$status = ' - Concluído ✅';
-										$link = $dados['link'];
-										$disabled = false;
-									} elseif ($nivel == $nivelAluno) {
-										if ($desempenho >= 60 && $nivel == max(array_column($menuItens, 'nivel'))) {
-											$classe = 'menu-concluido';
-											$status = ' - Concluído ✅';
-										} else {
-											$classe = 'menu-em-andamento';
-											$status = ' - Em andamento 🚀';
-										}
-										$link = $dados['link'];
-										$disabled = false;
-									} else {
-										$classe = 'menu-bloqueado';
-										$status = ' - Bloqueado 🔒';
-									}
+							<ul class="dropdown-menu" id="menuExercicios">
+								<?php foreach ($menuItens as $nivel => $dados):
+									$classe = $menuStatus[$nivel] === 'concluido' ? 'menu-concluido' : ($menuStatus[$nivel] === 'andamento' ? 'menu-em-andamento' : 'menu-bloqueado');
+									$status = $menuStatus[$nivel] === 'concluido' ? ' - Concluído ✅' : ($menuStatus[$nivel] === 'andamento' ? ' - Em andamento 🚀' : ' - Bloqueado 🔒');
+									$disabled = $menuStatus[$nivel] === 'bloqueado';
 								?>
-
-									<?php if ($disabled): ?>
-										<li class="disabled">
-											<span class="<?= $classe ?>"><?= htmlspecialchars($nome) . $status ?></span>
-										</li>
-									<?php else: ?>
-										<li>
-											<a href="<?= htmlspecialchars($link) ?>" class="<?= $classe ?>">
-												<?= htmlspecialchars($nome) . $status ?>
+									<li class="<?= $disabled ? 'disabled' : '' ?>">
+										<?php if ($disabled): ?>
+											<span class="<?= $classe ?>"><?= htmlspecialchars($dados['nome']) . $status ?></span>
+										<?php else: ?>
+											<a href="<?= htmlspecialchars($dados['link']) ?>" class="<?= $classe ?>">
+												<?= htmlspecialchars($dados['nome']) . $status ?>
 											</a>
-										</li>
-									<?php endif; ?>
-
-									<?php if ($contador < $total): ?>
-										<li class="divider"></li>
-									<?php endif; ?>
-
+										<?php endif; ?>
+									</li>
+									<li class="divider"></li>
 								<?php endforeach; ?>
 							</ul>
 						</li>
@@ -173,19 +134,41 @@ if ($nivelCompleto) {
 			else echo "Avançado";
 			?>
 		</p>
-		<?php if ($nivelCompleto && $nivelAluno == max(array_column($menuItens, 'nivel'))): ?>
-			<div class="alert alert-success">
-				Parabéns! Você completou todo o curso com sucesso!
-			</div>
-		<?php elseif ($nivelCompleto): ?>
-			<div class="alert alert-success">
-				Parabéns! Você completou este nível com sucesso!
-			</div>
-		<?php endif; ?>
+		<button id="btnConcluirNivel" class="btn btn-success">Concluir Nível</button>
+		<div id="alertaNivel" style="margin-top:15px;"></div>
 	</div>
+
+	<script>
+		$('#btnConcluirNivel').on('click', function() {
+			$.post('atualiza_nivel.php', {
+				desempenho: <?= $desempenho ?>
+			}, function(res) {
+				if (res.status === 'ok') {
+					$('#alertaNivel').html('<div class="alert alert-success">Nível concluído! Menu atualizado.</div>');
+					// Atualiza o menu dinamicamente
+					$('#menuExercicios').empty();
+					let menuItens = <?= json_encode($menuItens) ?>;
+					$.each(menuItens, function(nivel, dados) {
+						let status = res.menuStatus[nivel];
+						let classe = status === 'concluido' ? 'menu-concluido' :
+							(status === 'andamento' ? 'menu-em-andamento' : 'menu-bloqueado');
+						let texto = status === 'concluido' ? ' - Concluído ✅' :
+							(status === 'andamento' ? ' - Em andamento 🚀' : ' - Bloqueado 🔒');
+						if (status === 'bloqueado') {
+							$('#menuExercicios').append('<li class="disabled"><span class="' + classe + '">' + dados.nome + texto + '</span></li><li class="divider"></li>');
+						} else {
+							$('#menuExercicios').append('<li><a href="' + dados.link + '" class="' + classe + '">' + dados.nome + texto + '</a></li><li class="divider"></li>');
+						}
+					});
+				}
+			}, 'json');
+		});
+	</script>
 </body>
 
 </html>
+
+
 
 <h1 style="text-align:center">Introdução Violão:</h1>
 <div class="container inicial">
