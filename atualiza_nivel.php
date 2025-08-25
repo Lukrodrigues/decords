@@ -1,29 +1,50 @@
 <?php
 session_start();
-header('Content-Type: application/json');
+include_once("conexao.php");
 
-$desempenho = $_POST['desempenho'] ?? 0;
-$nivelAluno = $_SESSION['aluno_nivel'] ?? 1;
+// Obtém o nível atual
+$nivelAtual = $_SESSION['aluno_nivel'] ?? 1;
+$nivelMaximo = 3;
 
+// Avança nível
+if ($nivelAtual < $nivelMaximo) {
+    $nivelAtual++;
+    $_SESSION['aluno_nivel'] = $nivelAtual;
+    $_SESSION['aluno_desempenho'] = 0;
+}
+
+// Menu atualizado
 $menuItens = [
     1 => ['nome' => 'Iniciantes', 'link' => 'iniciantes.php'],
     2 => ['nome' => 'Intermediários', 'link' => 'intermediarios.php'],
     3 => ['nome' => 'Avançados', 'link' => 'avancados.php'],
 ];
 
-// Avança de nível se desempenho >= 60
-if ($desempenho >= 60 && $nivelAluno < max(array_keys($menuItens))) {
-    $nivelAluno++;
-    $_SESSION['aluno_nivel'] = $nivelAluno;
-    $_SESSION['aluno_desempenho'] = 0;
+function getMenuStatus($menuItens, $nivelAluno)
+{
+    $status = [];
+    foreach ($menuItens as $nivel => $dados) {
+        if ($nivel < $nivelAluno) $status[$nivel] = 'concluido';
+        elseif ($nivel == $nivelAluno) $status[$nivel] = 'andamento';
+        else $status[$nivel] = 'bloqueado';
+    }
+    return $status;
 }
 
-// Atualiza status do menu
-$menuStatus = [];
+$menuStatus = getMenuStatus($menuItens, $nivelAtual);
+$htmlMenu = '';
 foreach ($menuItens as $nivel => $dados) {
-    if ($nivel < $nivelAluno) $menuStatus[$nivel] = 'concluido';
-    elseif ($nivel == $nivelAluno) $menuStatus[$nivel] = 'andamento';
-    else $menuStatus[$nivel] = 'bloqueado';
+    $classe = $menuStatus[$nivel] === 'concluido' ? 'menu-concluido' : ($menuStatus[$nivel] === 'andamento' ? 'menu-em-andamento' : 'menu-bloqueado');
+    $status = $menuStatus[$nivel] === 'concluido' ? ' - Concluído ✅' : ($menuStatus[$nivel] === 'andamento' ? ' - Em andamento 🚀' : ' - Bloqueado 🔒');
+    if ($menuStatus[$nivel] === 'bloqueado') {
+        $htmlMenu .= "<li class='disabled'><span class='$classe'>{$dados['nome']}{$status}</span></li><li class='divider'></li>";
+    } else {
+        $htmlMenu .= "<li><a href='{$dados['link']}' class='$classe'>{$dados['nome']}{$status}</a></li><li class='divider'></li>";
+    }
 }
 
-echo json_encode(['status' => 'ok', 'menuStatus' => $menuStatus, 'nivelAluno' => $nivelAluno]);
+echo json_encode([
+    'sucesso' => true,
+    'nivelAtual' => $nivelAtual,
+    'htmlMenu' => $htmlMenu
+]);

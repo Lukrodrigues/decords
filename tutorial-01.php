@@ -16,9 +16,21 @@ $menuItens = [
 	3 => ['nome' => 'Avançados', 'link' => 'avancados.php'],
 ];
 
-// Obtém o nível atual e desempenho do aluno
-$nivelAluno = $_SESSION['aluno_nivel'] ?? 1;
-$desempenho = $_SESSION['aluno_desempenho'] ?? 0;
+// Obtém o nível atual e desempenho do aluno (armazenados em sessão)
+$nivelAluno   = $_SESSION['aluno_nivel'] ?? 1;
+$desempenho   = $_SESSION['aluno_desempenho'] ?? 0;
+$nivelMaximo  = max(array_keys($menuItens));
+
+// --- Regras de avanço automático ---
+// Se desempenho >= 60, marca nível como concluído e avança
+if ($desempenho >= 60) {
+	if ($nivelAluno < $nivelMaximo) {
+		$nivelAluno++;
+		$desempenho = 0;
+		$_SESSION['aluno_nivel'] = $nivelAluno;
+		$_SESSION['aluno_desempenho'] = 0;
+	}
+}
 
 // Função para retornar status do menu
 function getMenuStatus($menuItens, $nivelAluno)
@@ -134,41 +146,10 @@ $menuStatus = getMenuStatus($menuItens, $nivelAluno);
 			else echo "Avançado";
 			?>
 		</p>
-		<button id="btnConcluirNivel" class="btn btn-success">Concluir Nível</button>
-		<div id="alertaNivel" style="margin-top:15px;"></div>
 	</div>
-
-	<script>
-		$('#btnConcluirNivel').on('click', function() {
-			$.post('atualiza_nivel.php', {
-				desempenho: <?= $desempenho ?>
-			}, function(res) {
-				if (res.status === 'ok') {
-					$('#alertaNivel').html('<div class="alert alert-success">Nível concluído! Menu atualizado.</div>');
-					// Atualiza o menu dinamicamente
-					$('#menuExercicios').empty();
-					let menuItens = <?= json_encode($menuItens) ?>;
-					$.each(menuItens, function(nivel, dados) {
-						let status = res.menuStatus[nivel];
-						let classe = status === 'concluido' ? 'menu-concluido' :
-							(status === 'andamento' ? 'menu-em-andamento' : 'menu-bloqueado');
-						let texto = status === 'concluido' ? ' - Concluído ✅' :
-							(status === 'andamento' ? ' - Em andamento 🚀' : ' - Bloqueado 🔒');
-						if (status === 'bloqueado') {
-							$('#menuExercicios').append('<li class="disabled"><span class="' + classe + '">' + dados.nome + texto + '</span></li><li class="divider"></li>');
-						} else {
-							$('#menuExercicios').append('<li><a href="' + dados.link + '" class="' + classe + '">' + dados.nome + texto + '</a></li><li class="divider"></li>');
-						}
-					});
-				}
-			}, 'json');
-		});
-	</script>
 </body>
 
 </html>
-
-
 
 <h1 style="text-align:center">Introdução Violão:</h1>
 <div class="container inicial">
