@@ -206,13 +206,13 @@ try {
             </div>
             <?php unset($_SESSION['mensagem']); ?>
         <?php endif; ?>
-
+        <!--
         <?php if (isset($_GET['reset']) && $_GET['reset'] == 1): ?>
             <div class="alert alert-warning">
                 Reinício do Nível Iniciante - as perguntas foram reiniciadas, comece novamente!
             </div>
         <?php endif; ?>
-
+        -->
         <div class="card shadow-sm mb-4">
             <div class="card-header bg-primary text-white">
                 <h5 class="mb-0">Desempenho</h5>

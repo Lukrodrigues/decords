@@ -2,38 +2,47 @@
 session_start();
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
+require_once "conexao.php";
 
-// Verifica se o aluno está logado
-if (!isset($_SESSION['aluno_logado']) || $_SESSION['aluno_logado'] !== true) {
-	header('Location: login_aluno.php');
+// Evita cache
+header('Cache-Control: no-cache, no-store, must-revalidate');
+header('Pragma: no-cache');
+header('Expires: 0');
+
+// Verifica login
+if (!isset($_SESSION['aluno_id']) || empty($_SESSION['aluno_id'])) {
+	header('Location: login.php');
 	exit;
 }
 
-// Define os itens do menu com seus respectivos níveis
+$alunoId = (int)$_SESSION['aluno_id'];
+
+// Consulta nível do aluno
+$stmt = $conn->prepare("SELECT nivel, nome FROM alunos WHERE id = ?");
+$stmt->bind_param('i', $alunoId);
+$stmt->execute();
+$result = $stmt->get_result();
+if (!$aluno = $result->fetch_assoc()) {
+	// Usuário não existe, força logout
+	session_unset();
+	session_destroy();
+	header("Location: login.php");
+	exit;
+}
+$stmt->close();
+
+$nivelAluno = (int)$aluno['nivel'];
+$nomeAluno  = $aluno['nome'] ?? 'Visitante';
+
+// Menu simples
 $menuItens = [
 	1 => ['nome' => 'Iniciantes', 'link' => 'iniciantes.php'],
 	2 => ['nome' => 'Intermediários', 'link' => 'intermediarios.php'],
 	3 => ['nome' => 'Avançados', 'link' => 'avancados.php'],
 ];
 
-// Obtém o nível atual e desempenho do aluno (armazenados em sessão)
-$nivelAluno   = $_SESSION['aluno_nivel'] ?? 1;
-$desempenho   = $_SESSION['aluno_desempenho'] ?? 0;
-$nivelMaximo  = max(array_keys($menuItens));
-
-// --- Regras de avanço automático ---
-// Se desempenho >= 60, marca nível como concluído e avança
-if ($desempenho >= 60) {
-	if ($nivelAluno < $nivelMaximo) {
-		$nivelAluno++;
-		$desempenho = 0;
-		$_SESSION['aluno_nivel'] = $nivelAluno;
-		$_SESSION['aluno_desempenho'] = 0;
-	}
-}
-
-// Função para retornar status do menu
-function getMenuStatus($menuItens, $nivelAluno)
+// Função status menu
+function getMenuStatus(array $menuItens, int $nivelAluno): array
 {
 	$status = [];
 	foreach ($menuItens as $nivel => $dados) {
@@ -43,7 +52,6 @@ function getMenuStatus($menuItens, $nivelAluno)
 	}
 	return $status;
 }
-
 $menuStatus = getMenuStatus($menuItens, $nivelAluno);
 ?>
 <!DOCTYPE html>
@@ -74,83 +82,119 @@ $menuStatus = getMenuStatus($menuItens, $nivelAluno);
 			pointer-events: none;
 		}
 
-		.dropdown-menu li.disabled a {
-			pointer-events: none;
-			cursor: not-allowed;
-			opacity: 0.6;
+		.tutorial-header {
+			background: linear-gradient(135deg, #2980b9, #6dd5fa);
+			color: #fff;
+			padding: 40px 20px;
+			border-radius: 0 0 25px 25px;
+			text-align: center;
+			font-family: "Segoe UI", Arial, sans-serif;
+			box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+			margin-bottom: 30px;
+		}
+
+		.tutorial-title {
+			font-size: 2.2rem;
+			margin-bottom: 25px;
+		}
+
+		.tutorial-status {
+			font-size: 1.2rem;
+			max-width: 700px;
+			margin: 0 auto;
+		}
+
+		.tutorial-status p {
+			margin: 10px 0;
+		}
+
+		.label {
+			font-weight: bold;
+			color: #ffeaa7;
+		}
+
+		strong {
+			color: #fff;
+		}
+
+		/* Barra de progresso */
+		.progress-bar {
+			margin-top: 20px;
+			height: 20px;
+			background: rgba(255, 255, 255, 0.3);
+			border-radius: 10px;
+			overflow: hidden;
+		}
+
+		.progress-fill {
+			height: 100%;
+			background: #27ae60;
+			transition: width 0.6s ease;
 		}
 	</style>
 </head>
 
 <body>
-	<nav class="navbar navbar-inverse navbar" role="navigation">
+	<nav class="navbar navbar-inverse">
 		<div class="container">
-			<div class="row">
-				<div class="navbar-header">
-					<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-						<span class="sr-only">Toggle navigation</span>
-					</button>
-					<a class="navbar-brand" href="index.php">
-						<img id="logo" src="img/foto22.jpg" width="100" height="30">
-					</a>
-				</div>
-				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-					<ul class="nav navbar-nav">
-						<li class="dropdown">
-							<a class="dropdown-toggle" href="#" data-toggle="dropdown">Tutorial <b class="caret"></b></a>
-							<ul class="dropdown-menu">
-								<li><a href="tutorial-01.php">Tutorial-01</a></li>
-								<li class="divider"></li>
-								<li><a href="tutorial_02.php">Tutorial-02</a></li>
-								<li class="divider"></li>
-							</ul>
-						</li>
-						<!-- Menu dinâmico -->
-						<li class="dropdown">
-							<a class="dropdown-toggle" href="#" data-toggle="dropdown">Exercícios <b class="caret"></b></a>
-							<ul class="dropdown-menu" id="menuExercicios">
-								<?php foreach ($menuItens as $nivel => $dados):
-									$classe = $menuStatus[$nivel] === 'concluido' ? 'menu-concluido' : ($menuStatus[$nivel] === 'andamento' ? 'menu-em-andamento' : 'menu-bloqueado');
-									$status = $menuStatus[$nivel] === 'concluido' ? ' - Concluído ✅' : ($menuStatus[$nivel] === 'andamento' ? ' - Em andamento 🚀' : ' - Bloqueado 🔒');
-									$disabled = $menuStatus[$nivel] === 'bloqueado';
-								?>
-									<li class="<?= $disabled ? 'disabled' : '' ?>">
-										<?php if ($disabled): ?>
-											<span class="<?= $classe ?>"><?= htmlspecialchars($dados['nome']) . $status ?></span>
-										<?php else: ?>
-											<a href="<?= htmlspecialchars($dados['link']) ?>" class="<?= $classe ?>">
-												<?= htmlspecialchars($dados['nome']) . $status ?>
-											</a>
-										<?php endif; ?>
-									</li>
-									<li class="divider"></li>
-								<?php endforeach; ?>
-							</ul>
-						</li>
-						<li><a href="login.php">Sair</a></li>
+			<ul class="nav navbar-nav">
+				<!-- Tutoriais -->
+				<li><a href="tutorial-01.php">Tutorial 01</a></li>
+				<li><a href="tutorial_02.php">Tutorial 02</a></li>
+
+				<!-- Exercícios -->
+				<li class="dropdown">
+					<a class="dropdown-toggle" data-toggle="dropdown" href="#">Exercícios <b class="caret"></b></a>
+					<ul class="dropdown-menu" id="menuExercicios">
+						<?php foreach ($menuItens as $nivel => $dados):
+							$status = $menuStatus[$nivel] ?? 'bloqueado';
+							$classe = ($status === 'concluido') ? 'menu-concluido' : (($status === 'andamento') ? 'menu-em-andamento' : 'menu-bloqueado');
+							$icone  = ($status === 'concluido') ? ' ✅' : (($status === 'andamento') ? ' ⏳' : ' 🔒');
+						?>
+							<li class="<?= $classe ?>">
+								<?php if ($status === 'bloqueado'): ?>
+									<span><?= htmlspecialchars($dados['nome'] . $icone) ?></span>
+								<?php else: ?>
+									<a href="<?= htmlspecialchars($dados['link']) ?>"><?= htmlspecialchars($dados['nome'] . $icone) ?></a>
+								<?php endif; ?>
+							</li>
+							<li class="divider"></li>
+						<?php endforeach; ?>
 					</ul>
-				</div>
-			</div>
+				</li>
+
+				<li><a href="login.php">Sair</a></li>
+			</ul>
 		</div>
 	</nav>
 
-	<div class="container">
-		<h1>Bem-vindo ao Tutorial 01</h1>
-		<p>Você está logado como: <?= htmlspecialchars($_SESSION['aluno_nome'] ?? 'Visitante') ?></p>
-		<p>Nível atual: <?= $nivelAluno ?></p>
-		<p>Desempenho atual: <strong><?= $desempenho ?>%</strong></p>
-		<p>Status:
-			<?php
-			if ($nivelAluno == 1) echo "Iniciante";
-			elseif ($nivelAluno == 2) echo "Intermediário";
-			else echo "Avançado";
-			?>
-		</p>
-	</div>
+	<script>
+		$(document).ready(function() {
+			// Atualiza menu quando volta da aba
+			document.addEventListener('visibilitychange', function() {
+				if (!document.hidden) location.reload();
+			});
+			window.addEventListener('focus', function() {
+				location.reload();
+			});
+		});
+	</script>
 </body>
 
-</html>
+<div class="tutorial-header">
+	<h1 class="tutorial-title">🎸 Bem-vindo ao Tutorial 01</h1>
 
+	<div class="tutorial-status">
+		<p><span class="label">Usuário:</span>
+			<?= htmlspecialchars($_SESSION['aluno_nome'] ?? 'Visitante') ?>
+		</p>
+		<p><span class="label">Nível atual:</span>
+			<strong id="nivelAtual"><?= $nivelAluno ?></strong>
+		</p>
+	</div>
+</div>
+
+</html>
 <h1 style="text-align:center">Introdução Violão:</h1>
 <div class="container inicial">
 	<div class="row-fluid">
