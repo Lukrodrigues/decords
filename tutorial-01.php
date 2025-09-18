@@ -163,7 +163,7 @@ $menuStatus = getMenuStatus($menuItens, $nivelAluno);
 					</ul>
 				</li>
 
-				<li><a href="login.php">Sair</a></li>
+				<li><a href="logout.php">Sair</a></li>
 			</ul>
 		</div>
 	</nav>
