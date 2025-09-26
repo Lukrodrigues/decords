@@ -50,7 +50,7 @@ if (!isset($_SESSION['AlunoEmail']) and !isset($_SESSION['AlunoSenha'])) {
 				<li class="active"><a href="tuto.php">Tutorial</a></li>
 				<li class="active"><a href="lista_alunos.php">Lista Alunos</a></li>
 				<li class="active"><a href="administrativo.php">Voltar</a></li>
-				<li class="active"><a href="login.php">Sair</a></li>
+				<li class="active"><a href="logout.php">Sair</a></li>
 			</ul>
 		</div>
 	</nav>
@@ -64,6 +64,7 @@ if (!isset($_SESSION['AlunoEmail']) and !isset($_SESSION['AlunoSenha'])) {
 		<div class="container-fluid">
 			<form class="form-horizontal" role="form">
 				<div class="form-group">
+					<ul class="resultados"></ul>
 					<?php
 					$aux = 1;
 					while ($aux <= 3) {
@@ -97,115 +98,206 @@ if (!isset($_SESSION['AlunoEmail']) and !isset($_SESSION['AlunoSenha'])) {
 			<h2>Acompanhamento do Aluno</h2>
 			<div class="panel panel-default">
 				<div class="panel-heading">
-					<form action="lista_alunos.php" method="post" class="form-inline">
-						<input type="search" id="pesquisar" name="pesquisar" class="form-control"
-							placeholder="Pesquisar aluno" required maxlength="500" />
-						<button type="submit" class="btn btn-primary">Pesquisar</button>
+					<form action="lista_alunos.php" method="post">
+						<input type="search" id="pesquisar" name="pesquisar" placeholder="Pesquisar"
+							required="required" maxlength="500" />
+						<input type="submit" value="Pesquisar" />
 					</form>
 				</div>
 				<div class="panel-body">
-					<?php
-					$pesquisar = isset($_POST['pesquisar']) ? trim($_POST['pesquisar']) : '';
-					if ($pesquisar !== '') {
-						$stmt = $conn->prepare("
-                            SELECT a.nome, a.email, a.nivel, b.data_termino 
-                            FROM alunos a 
-                            JOIN alunos_exercicios b ON a.id = b.id_usuario 
-                            WHERE a.nome LIKE ?
-                        ");
-						$pesquisarLike = "%$pesquisar%";
-						$stmt->bind_param("s", $pesquisarLike);
-						$stmt->execute();
-						$result = $stmt->get_result();
-						$rowCount = $result->num_rows;
+					<div class="table-responsive">
+						<?php
+						$pesquisar = isset($_POST['pesquisar']) ? trim($_POST['pesquisar']) : '';
+						if ($pesquisar !== '') {
 
-						if ($rowCount > 0) {
-							echo "<h3>Resultados da pesquisa:</h3>";
-							echo '<table class="table table-striped table-condensed">';
-							echo '<thead><tr><th>Nome</th><th>Email</th><th>Nível</th><th>Data de Acesso</th></tr></thead><tbody>';
-							while ($row = $result->fetch_assoc()) {
-								echo "<tr>
-                                        <td>{$row['nome']}</td>
-                                        <td>{$row['email']}</td>
-                                        <td>{$row['nivel']}</td>
-                                        <td>{$row['data_termino']}</td>
-                                    </tr>";
+							// Busca todos os exercícios do aluno pesquisado
+							$sql = "
+                        SELECT a.id as aluno_id, a.nome, a.email,
+                               ae.id_exercicios, ae.resultado, ae.data_termino,
+                               e.nivel
+                        FROM alunos a
+                        LEFT JOIN alunos_exercicios ae ON a.id = ae.id_usuario
+                        LEFT JOIN exercicios e ON ae.id_exercicios = e.id
+                        WHERE a.nome LIKE ?
+                        ORDER BY ae.data_termino DESC
+                    ";
+							$stmt = $conn->prepare($sql);
+							$pesquisarLike = "%$pesquisar%";
+							$stmt->bind_param("s", $pesquisarLike);
+							$stmt->execute();
+							$result = $stmt->get_result();
+
+							if ($result->num_rows > 0) {
+								echo "<h3>Resultados encontrados:</h3>";
+
+								$alunos = [];
+								while ($row = $result->fetch_assoc()) {
+									$idAluno = $row['aluno_id'];
+
+									if (!isset($alunos[$idAluno])) {
+										$alunos[$idAluno] = [
+											'nome' => $row['nome'],
+											'email' => $row['email'],
+											'concluidos' => [],
+											'ultimo_exercicio' => null,
+											'ultimo_nivel' => null,
+											'data_termino' => null
+										];
+									}
+
+									// Marca níveis concluídos (apenas se realmente finalizado)
+									if ($row['resultado'] == 1 && $row['nivel']) {
+										$alunos[$idAluno]['concluidos'][$row['nivel']] = true;
+
+										// Atualiza último exercício concluído
+										if (!$alunos[$idAluno]['ultimo_exercicio']) {
+											$alunos[$idAluno]['ultimo_exercicio'] = $row['id_exercicios'];
+											$alunos[$idAluno]['ultimo_nivel'] = $row['nivel'];
+											$alunos[$idAluno]['data_termino'] = $row['data_termino'];
+										}
+									}
+								}
+
+								// Exibe resultados formatados
+								foreach ($alunos as $aluno) {
+									$mapaNiveis = [1 => "Iniciante", 2 => "Intermediário", 3 => "Avançado"];
+
+									$concluidos = [];
+									foreach ($aluno['concluidos'] as $n => $val) {
+										$concluidos[] = $mapaNiveis[$n];
+									}
+									$txtConcluidos = $concluidos ? implode(", ", $concluidos) : "Nenhum concluído";
+
+									$ondeParou = $aluno['ultimo_exercicio']
+										? "Parou no Exercício {$aluno['ultimo_exercicio']} do Nível " . $mapaNiveis[$aluno['ultimo_nivel']]
+										: "Ainda não iniciou";
+
+									echo "
+                            <div class='panel panel-info'>
+                                <div class='panel-heading'><strong>{$aluno['nome']}</strong></div>
+                                <div class='panel-body'>
+                                    <p><b>Email:</b> {$aluno['email']}</p>
+                                    <p><b>Níveis concluídos:</b> {$txtConcluidos}</p>
+                                    <p><b>Onde parou:</b> {$ondeParou}</p>
+                                    <p><b>Última atividade:</b> " . ($aluno['data_termino'] ? date('d/m/Y H:i', strtotime($aluno['data_termino'])) : '-') . "</p>
+                                </div>
+                            </div>";
+								}
+							} else {
+								echo "<p>Nenhum resultado encontrado para '$pesquisar'.</p>";
 							}
-							echo '</tbody></table>';
-						} else {
-							echo "<p>Nenhum resultado encontrado para '$pesquisar'.</p>";
+							$stmt->close();
 						}
-						$stmt->close();
-					}
-					?>
+						?>
+					</div>
 				</div>
 			</div>
 		</div>
 
-		<!-- Exercícios Recentes (Tabela Compacta) -->
+
+
+		<!-- Exercícios Recentes -->
 		<?php
 		// --- PAGINAÇÃO ---
-		$limite = 10; // número de linhas por página
+		$limite = 6;
 		$pagina = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
 		$inicio = ($pagina - 1) * $limite;
 
-		// --- CONSULTA COM PAGINAÇÃO ---
+		// --- CONSULTA: último exercício de cada aluno ---
 		$sql4 = "
-            SELECT a.nome, a.nivel, a.email, e.id_exercicios, e.data_termino, e.resultado, e.id_usuario 
-            FROM alunos a 
-            JOIN alunos_exercicios e ON a.id = e.id_usuario 
+            SELECT a.nome, a.email, e.id_exercicios, e.data_termino, e.resultado, e.id_usuario, x.nivel as nivel_exercicio
+            FROM alunos a
+            LEFT JOIN (
+                SELECT ae.*
+                FROM alunos_exercicios ae
+                INNER JOIN (
+                    SELECT id_usuario, MAX(id) as ultimo_id
+                    FROM alunos_exercicios
+                    GROUP BY id_usuario
+                ) ult
+                ON ae.id = ult.ultimo_id
+            ) e ON a.id = e.id_usuario
+            LEFT JOIN exercicios x ON e.id_exercicios = x.id
             ORDER BY e.data_termino DESC
             LIMIT $inicio, $limite
         ";
 		$queryResult4 = $conn->query($sql4);
 
 		echo "<h2>Exercícios Recentes:</h2>";
-		echo '<table class="table table-bordered table-condensed table-hover">';
-		echo '<thead>
-                <tr>
-                    <th>Nome</th>
-                    <th>Nível</th>
-                    <th>Email</th>
-                    <th>Data Término</th>
-                    <th>Exercício Atual</th>
-                    <th>Acertos</th>
-                </tr>
-              </thead><tbody>';
+		echo '<div class="row">';
 
+		$contador = 0;
 		while ($row4 = $queryResult4->fetch_assoc()) {
 			$nome = $row4['nome'];
-			$nivel = $row4['nivel'];
 			$exercicios = $row4['id_exercicios'];
 			$id_usuario = $row4['id_usuario'];
 			$email = $row4['email'];
 			$data = $row4['data_termino'];
+			$resultado = $row4['resultado'];
+			$nivelExercicio = $row4['nivel_exercicio'];
 
-			$resultados = ($nivel == 1) ? "Iniciante" : (($nivel == 2) ? "Intermediário" : "Avançado");
+			// Traduz o nível do exercício
+			if ($nivelExercicio == 1) {
+				$nivelNome = "Iniciante";
+			} elseif ($nivelExercicio == 2) {
+				$nivelNome = "Intermediário";
+			} elseif ($nivelExercicio == 3) {
+				$nivelNome = "Avançado";
+			} else {
+				$nivelNome = "Não iniciado";
+			}
 
-			$stmtAcertos = $conn->prepare("
-                SELECT COUNT(*) 
-                FROM alunos_exercicios 
-                WHERE id_usuario = ? AND resultado = 1
-            ");
-			$stmtAcertos->bind_param("i", $id_usuario);
-			$stmtAcertos->execute();
-			$stmtAcertos->bind_result($acertos);
-			$stmtAcertos->fetch();
-			$stmtAcertos->close();
+			// Conta acertos
+			$acertos = 0;
+			if ($id_usuario) {
+				$stmtAcertos = $conn->prepare("
+                    SELECT COUNT(*) 
+                    FROM alunos_exercicios 
+                    WHERE id_usuario = ? AND resultado = 1
+                ");
+				$stmtAcertos->bind_param("i", $id_usuario);
+				$stmtAcertos->execute();
+				$stmtAcertos->bind_result($acertos);
+				$stmtAcertos->fetch();
+				$stmtAcertos->close();
+			}
 
-			echo "<tr>
-                    <td>$nome</td>
-                    <td>$resultados</td>
-                    <td>$email</td>
-                    <td>" . date('d/m/Y', strtotime($data)) . "</td>
-                    <td>$exercicios</td>
-                    <td>$acertos</td>
-                 </tr>";
+			// Status
+			$status = ($resultado == 1) ? "✅ Concluído" : (($resultado === null) ? "-" : "❌ Não concluído");
+
+			// Onde parou
+			if ($exercicios) {
+				$ondeParou = "Parou no Exercício " . $exercicios . " do Nível " . $nivelNome;
+			} else {
+				$ondeParou = "Ainda não iniciou os exercícios";
+			}
+
+			echo '
+            <div class="col-sm-4">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <strong>' . $nome . '</strong>
+                    </div>
+                    <div class="panel-body">
+                        <p><b>Email:</b> ' . $email . '</p>
+                        <p><b>Data Término:</b> ' . ($data ? date('d/m/Y H:i', strtotime($data)) : '-') . '</p>
+                        <p><b>Status:</b> ' . $status . '</p>
+                        <p><b>Onde Parou:</b> ' . $ondeParou . '</p>
+                        <p><b>Total de Acertos:</b> ' . $acertos . '</p>
+                    </div>
+                </div>
+            </div>
+            ';
+
+			$contador++;
+			if ($contador % 3 == 0) {
+				echo '</div><div class="row">';
+			}
 		}
-		echo '</tbody></table>';
+		echo '</div>';
 
 		// --- PAGINAÇÃO ---
-		$resultTotal = $conn->query("SELECT COUNT(*) as total FROM alunos_exercicios")->fetch_assoc();
+		$resultTotal = $conn->query("SELECT COUNT(*) as total FROM alunos")->fetch_assoc();
 		$totalPaginas = ceil($resultTotal['total'] / $limite);
 
 		if ($totalPaginas > 1) {

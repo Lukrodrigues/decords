@@ -123,7 +123,11 @@ if (isset($_SESSION['AlunoId'])) {
 		}
 		?>
 	</p>
-
+	<?php if (isset($_GET['msg']) && $_GET['msg'] === 'timeout'): ?>
+		<div style="padding:10px; background:#f2dede; color:#a94442; border-radius:5px; margin-bottom:10px;">
+			⚠️ Sua sessão expirou por inatividade. Faça login novamente.
+		</div>
+	<?php endif; ?>
 
 	</div>
 

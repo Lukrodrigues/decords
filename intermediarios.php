@@ -159,6 +159,7 @@ try {
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
         <div class="container">
             <a class="navbar-brand fw-bold" href="#">DECORDS</a>
+            <a href="tutorial-01.php">Tutoria-01</a>
             <span class="navbar-text text-light">
                 <?= htmlspecialchars($_SESSION['aluno_nome'] ?? 'Usuário') ?>
                 <span class="badge bg-secondary">Nível <?= $nivelAtual ?></span>
