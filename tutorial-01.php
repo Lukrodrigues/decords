@@ -209,35 +209,35 @@ $menuStatus = getMenuStatus($menuItens, $nivelAluno);
 <!DOCTYPE html>
 <html lang="pt-br">
 
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<!DOCTYPE html>
+<html lang="pt-br">
+
 <head>
 	<meta charset="UTF-8">
-	<title>Tutorial de Violão - Iniciantes</title>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Tutorial de Violão</title>
 	<style>
 		body {
-			background: #f9f9f9;
-			font-family: "Segoe UI", sans-serif;
-			line-height: 1.7;
-		}
-
-		.tutorial-container {
-			max-width: 950px;
-			margin: 40px auto;
-		}
-
-		.card {
-			background: #fff;
-			border-radius: 6px;
-			padding: 20px;
-			margin-bottom: 30px;
-			box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+			font-family: Arial, sans-serif;
+			margin: 20px;
+			line-height: 1.6;
+			background: #fafafa;
 		}
 
 		h1,
-		h2,
-		h3 {
-			margin-top: 10px;
-			font-weight: 600;
+		h2 {
+			color: #333;
+		}
+
+		section {
+			margin-bottom: 40px;
+			padding: 20px;
+			background: #fff;
+			border-radius: 8px;
+			box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 		}
 
 		figure {
@@ -245,128 +245,121 @@ $menuStatus = getMenuStatus($menuItens, $nivelAluno);
 			margin: 20px 0;
 		}
 
-		figure img {
+		img {
 			max-width: 100%;
+			height: auto;
+			border: 1px solid #ddd;
 			border-radius: 6px;
+			background: #fff;
 		}
 
 		figcaption {
 			font-size: 0.9em;
-			color: #777;
-			margin-top: 5px;
+			color: #555;
+			margin-top: 8px;
 		}
 	</style>
 </head>
 
 <body>
-	<div class="tutorial-container">
 
-		<!-- Introdução -->
-		<div class="card">
-			<h1 class="text-center">Tutorial de Violão para Iniciantes</h1>
-			<p>
-				Aprender violão é uma jornada divertida e enriquecedora.
-				Neste tutorial, você conhecerá as principais partes do instrumento,
-				os acordes básicos, técnicas de afinação e leitura de tablaturas.
-				O conteúdo está dividido em seções claras, com explicações em texto e imagens ilustrativas.
-			</p>
-		</div>
+	<h1>Tutorial de Violão</h1>
 
-		<!-- Corpo do Violão -->
-		<section class="card">
-			<h2>Corpo do Violão</h2>
-			<figure>
-				<img class="img-responsive-center" src="img/violao.png" alt="Partes do corpo do violão" width="540" height="340" class="img-responsive center-block">
-				<figcaption>Principais partes do corpo de um violão.</figcaption>
-			</figure>
-			<p>
-				O corpo do violão é a parte responsável por amplificar o som.
-				Nele encontramos a <b>boca</b>, o <b>cavalete</b> e o <b>rastilho</b>.
-				Esses elementos trabalham juntos para sustentar as cordas e projetar o som.
-			</p>
-			<p>
-				A <b>boca</b> é a abertura central, por onde o som vibra e se espalha.
-				O <b>cavalete</b> segura as cordas em sua extremidade inferior,
-				enquanto o <b>rastilho</b> mantém a altura adequada das cordas,
-				garantindo precisão na afinação.
-			</p>
-		</section>
+	<!-- Módulo 1 -->
+	<section>
+		<h2>1. Corpo do Violão</h2>
+		<p>Conheça as partes principais do corpo do violão: corpo, boca, cavalete e rastilho.</p>
+		<figure>
+			<img src="img/violao.png" alt="Desenho instrucional do corpo do violão com labels" width="500" class="img-responsive center-block" />
+			<figcaption>Ilustração instrucional mostrando corpo, boca, cavalete e rastilho.</figcaption>
+		</figure>
+	</section>
 
-		<!-- Braço do Violão -->
-		<section class="card">
-			<h2>Braço do Violão</h2>
-			<center>
-				<img class="img-responsive-center" src="img/braco.png" alt="Braco do violão" width="540" height="340">
-			</center>
-			<figure>
-				<figcaption>Braço, casas e trastes do violão.</figcaption>
-			</figure>
-			<p>
-				O braço do violão é a parte longa que conecta o corpo à cabeça.
-				É nele que o músico pressiona as cordas para formar acordes e notas.
-			</p>
-			<p>
-				O braço é dividido por <b>trastes</b>, pequenas divisórias metálicas
-				que criam as chamadas <b>casas</b>.
-				Cada casa representa um semitom e permite ao violonista tocar diferentes notas.
-			</p>
-		</section>
+	<!-- Módulo 2 -->
+	<section>
+		<h2>2. Braço do Violão</h2>
+		<p>No braço ficam as casas, trastes, pestana e as tarraxas.</p>
+		<figure>
+			<img src="img/bracoviol.png" alt="Diagrama didático do braço do violão com labels" width="500" class="img-responsive center-block" />
+			<figcaption>Diagrama mostrando mão, tarraxas, trastes, casas e pestana.</figcaption>
+		</figure>
+	</section>
 
-		<!-- Acordes Básicos -->
-		<section class="card">
-			<h2>Acordes Básicos</h2>
-			<figure>
-				<img class="img-responsive-center" src="img/la-violao.png" alt="Acorde do violão" width="440" height="240" class="img-responsive center-block">
-				<figcaption>Diagrama do acorde de Lá (A).</figcaption>
-			</figure>
-			<p>
-				Os acordes são a base da maioria das músicas.
-				Entre os primeiros acordes que todo iniciante deve aprender estão:
-				<b>A (Lá)</b>, <b>C (Dó)</b> e <b>G (Sol)</b>.
-			</p>
-			<p>
-				Para tocar o acorde <b>A</b>, posicione os dedos 1, 2 e 3
-				nas segundas casas das cordas 2, 3 e 4.
-				Toque as demais cordas soltas para formar o acorde completo.
-			</p>
-		</section>
+	<!-- Módulo 3 -->
+	<section>
+		<h2>3. Acordes Básicos</h2>
+		<p>Os acordes são a base para tocar músicas. Vamos ver os principais acordes iniciais.</p>
+		<figure>
+			<img src="imagens/acordes-basicos.png" alt="Diagramas didáticos de acordes básicos C, G, D, Em, Am" />
+			<figcaption>Diagramas de acordes básicos: C, G, D, Em, Am.</figcaption>
+		</figure>
+	</section>
 
-		<!-- Tablatura -->
-		<section class="card">
-			<h2>Tablatura</h2>
-			<figure>
-				<img class="img-responsive-center" src="img/tablatura.png" alt="tablatura do violão" width="440" height="240" class="img-responsive center-block">
-				<figcaption>Exemplo simples de tablatura.</figcaption>
-			</figure>
-			<p>
-				A tablatura é uma forma prática de ler música para violão.
-				Ela utiliza seis linhas que representam as cordas do instrumento.
-				Os números indicam em qual casa a corda deve ser pressionada.
-			</p>
-			<p>
-				Por exemplo, se na segunda linha aparecer o número "3",
-				significa que você deve pressionar a terceira casa da segunda corda.
-			</p>
-		</section>
+	<!-- Módulo 4 -->
+	<section>
+		<h2>4. Afinação</h2>
+		<p>O violão possui afinação padrão: E - A - D - G - B - E.</p>
+		<figure>
+			<img src="imagens/afinacao.png" alt="Diagrama educativo da afinação padrão do violão" />
+			<figcaption>Afinação padrão das cordas: E - A - D - G - B - E.</figcaption>
+		</figure>
+	</section>
 
-		<!-- Afinação -->
-		<section class="card">
-			<h2>Afinação</h2>
-			<figure>
-				<figcaption>Afinação usando afinador eletrônico.</figcaption>
-			</figure>
-			<p>
-				Afinar o violão corretamente é essencial para que ele produza um som agradável.
-				A afinação padrão das cordas, de cima para baixo, é:
-				<b>E (Mi)</b>, <b>A (Lá)</b>, <b>D (Ré)</b>, <b>G (Sol)</b>, <b>B (Si)</b>, <b>E (Mi)</b>.
-			</p>
-			<p>
-				Você pode usar um afinador eletrônico, um aplicativo de celular
-				ou até mesmo afinar de ouvido com base em outra referência musical.
-			</p>
-		</section>
+	<!-- Módulo 5 -->
+	<section>
+		<h2>5. Tablaturas</h2>
+		<p>Tablaturas são representações gráficas que indicam onde tocar as notas no braço do violão.</p>
+		<figure>
+			<img src="imagens/tablatura.png" alt="Representação didática de tablatura de violão" />
+			<figcaption>Exemplo de tablatura com seis linhas e números indicando casas.</figcaption>
+		</figure>
+	</section>
 
-	</div>
+	<!-- Módulo 6 -->
+	<section>
+		<h2>6. Partituras</h2>
+		<p>A partitura é a forma tradicional de leitura musical, utilizando o pentagrama.</p>
+		<figure>
+			<img src="imagens/partitura.png" alt="Ilustração simples de partitura com notas básicas" />
+			<figcaption>Exemplo de partitura em pentagrama com notas simples.</figcaption>
+		</figure>
+	</section>
+
+	<!-- Módulo 7 -->
+	<section>
+		<h2>7. Compassos</h2>
+		<p>O compasso organiza a música em tempos. Exemplos: 4/4 e 3/4.</p>
+		<figure>
+			<img src="imagens/compasso.png" alt="Diagrama instrucional de compassos 4/4 e 3/4" />
+			<figcaption>Exemplo de compassos 4/4 e 3/4 em partitura.</figcaption>
+		</figure>
+	</section>
+
+	<!-- Módulo 8 -->
+	<section>
+		<h2>8. Pausas Musicais</h2>
+		<p>As pausas indicam momentos de silêncio na música.</p>
+		<figure>
+			<img src="imagens/pausas.png" alt="Ilustração instrucional mostrando pausas musicais" />
+			<figcaption>Exemplos: pausa inteira, meia, semínima, colcheia.</figcaption>
+		</figure>
+	</section>
+
+	<!-- Módulo 9 -->
+	<section>
+		<h2>9. Duração das Notas</h2>
+		<p>Cada nota tem uma duração específica: inteira, meia, semínima, colcheia, semicolcheia.</p>
+		<figure>
+			<img src="imagens/duracao-notas.png" alt="Diagrama educativo de notas musicais com diferentes durações" />
+			<figcaption>Notas com diferentes durações representadas em símbolos.</figcaption>
+		</figure>
+	</section>
+
 </body>
+
+</html>
+
+</html>
+
 
 </html>
