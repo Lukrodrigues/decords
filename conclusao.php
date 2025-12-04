@@ -150,7 +150,7 @@ $mesAno = date("m/Y");
         <br>
 
         <!-- Botão para gerar certificado PDF -->
-        <a class="button" href="certificado.php" target="_blank">Baixar Certificado em PDF</a>
+        <a href="certificado.php" class="button">Baixar Certificado em PDF</a>
 
         <a class="button" href="logout.php" style="background:#555;">Sair</a>
     </div>
