@@ -1,4 +1,10 @@
 <?php
+
+/**
+ * @noinspection PhpUndefinedClassInspection
+ * @noinspection PhpUndefinedNamespaceInspection
+ */
+
 session_start();
 require_once "conexao.php";
 
@@ -71,6 +77,9 @@ $ano = date("Y");
 // =========================
 
 $pdf = new FPDF("L", "mm", "A4");
+/** @noinspection PhpUndefinedClassInspection */
+/** @var FPDF $pdf */
+
 $pdf->AddPage();
 
 // Fundo claro
