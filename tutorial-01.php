@@ -490,7 +490,7 @@ foreach ($menuItens as $nivel => $dados) {
 			text-align: center;
 			font-size: 20px;
 			margin-bottom: 25px;
-			color: #444;
+			color: #0d7f5b0f;
 		}
 
 		.label {

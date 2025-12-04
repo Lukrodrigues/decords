@@ -1,33 +1,33 @@
 <?php
 session_start();
 require_once "conexao.php";
-session_unset();
-session_destroy();
 
-// Verifica login
-if (isset($_POST['finalizar'])) {
-    header('Location: login.php');
+// Impede acesso direto
+if (!isset($_SESSION['aluno_id'])) {
+    header("Location: login.php");
     exit;
 }
 
-$alunoId = (int)$_SESSION['aluno_id'];
+$alunoId = (int) $_SESSION['aluno_id'];
 $nomeUsuario = $_SESSION['aluno_nome'] ?? 'Aluno';
 
-// Função para calcular o desempenho médio final
+// ---- CÁLCULO DA MÉDIA FINAL ----
 function calcularMediaFinal($conn, $alunoId)
 {
     $totalNiveis = 3;
     $soma = 0;
 
     for ($nivel = 1; $nivel <= $totalNiveis; $nivel++) {
+
         $stmt = $conn->prepare("
-			SELECT 
-				COUNT(ae.id) AS total,
-				SUM(CASE WHEN ae.resultado = 1 THEN 1 ELSE 0 END) AS acertos
-			FROM alunos_exercicios ae
-			JOIN exercicios e ON e.id = ae.id_exercicio
-			WHERE ae.id_usuario = ? AND e.nivel = ?
-		");
+            SELECT 
+                COUNT(ae.id) AS total,
+                SUM(CASE WHEN ae.resultado = 1 THEN 1 ELSE 0 END) AS acertos
+            FROM alunos_exercicios ae
+            JOIN exercicios e ON e.id = ae.id_exercicio
+            WHERE ae.id_usuario = ? AND e.nivel = ?
+        ");
+
         $stmt->bind_param("ii", $alunoId, $nivel);
         $stmt->execute();
         $res = $stmt->get_result()->fetch_assoc();
@@ -37,24 +37,27 @@ function calcularMediaFinal($conn, $alunoId)
             $soma += $percentual;
         }
     }
+
     return round($soma / $totalNiveis, 2);
 }
 
 $mediaFinal = calcularMediaFinal($conn, $alunoId);
 
-// Caso o aluno acesse sem ter completado tudo, redireciona de volta
+// Bloqueia acesso sem concluir
 if ($mediaFinal < 60) {
     header("Location: tutorial-01.php");
     exit;
 }
-?>
 
+$mesAno = date("m/Y");
+?>
 <!DOCTYPE html>
 <html lang="pt-br">
 
 <head>
     <meta charset="UTF-8">
     <title>Conclusão do Curso</title>
+
     <style>
         body {
             font-family: "Segoe UI", sans-serif;
@@ -103,14 +106,14 @@ if ($mediaFinal < 60) {
 
         .button {
             display: inline-block;
-            margin-top: 25px;
-            padding: 12px 24px;
+            margin-top: 20px;
+            padding: 12px 22px;
             background: #007bff;
             color: #fff;
-            text-decoration: none;
             border-radius: 8px;
+            text-decoration: none;
             font-weight: bold;
-            transition: background 0.3s;
+            transition: 0.3s;
         }
 
         .button:hover {
@@ -120,17 +123,21 @@ if ($mediaFinal < 60) {
         .trophy {
             font-size: 70px;
             color: #ffcc00;
-            margin-bottom: 15px;
         }
     </style>
 </head>
 
 <body>
+
     <div class="card">
         <div class="trophy">🏆</div>
-        <h1>Parabéns, <?php echo htmlspecialchars($nomeUsuario); ?>!</h1>
-        <p>Você concluiu todos os níveis do curso com um desempenho médio de</p>
-        <h2><?php echo $mediaFinal; ?>%</h2>
+
+        <h1>Parabéns, <?= htmlspecialchars($nomeUsuario) ?>!</h1>
+
+        <p>Você concluiu todos os níveis do curso.</p>
+
+        <p>Desempenho final:</p>
+        <h2><?= $mediaFinal ?>%</h2>
 
         <?php if ($mediaFinal >= 90): ?>
             <p class="highlight">Excelente! Você demonstrou domínio total do conteúdo. 🎶</p>
@@ -140,11 +147,14 @@ if ($mediaFinal < 60) {
             <p class="highlight">Bom trabalho! Você superou o desafio com sucesso. 🎵</p>
         <?php endif; ?>
 
-        <a href="login.php" class="button">Sair e voltar ao início</a>
+        <br>
+
+        <!-- Botão para gerar certificado PDF -->
+        <a class="button" href="certificado.php" target="_blank">Baixar Certificado em PDF</a>
+
+        <a class="button" href="logout.php" style="background:#555;">Sair</a>
     </div>
+
 </body>
-<form method="post">
-    <button type="submit" name="finalizar">Finalizar e Sair</button>
-</form>
 
 </html>
