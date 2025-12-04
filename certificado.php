@@ -1,45 +1,38 @@
 <?php
-
-/**
- * @noinspection PhpUndefinedClassInspection
- * @noinspection PhpUndefinedNamespaceInspection
- */
-
 session_start();
 require_once "conexao.php";
 
-// Impede acesso sem login
+// Segurança — impede acesso sem login
 if (!isset($_SESSION['aluno_id'])) {
     header("Location: login.php");
     exit;
 }
 
-// Importa a biblioteca FPDF
-require_once __DIR__ . "/fpdf/fpdf.php";
+// Carrega tFPDF (UTF-8 completo)
+require_once __DIR__ . "/tfpdf/tfpdf.php";
 
-// Dados do aluno para o certificado
-$alunoId = $_SESSION['aluno_id'];
-$nomeAluno = $_SESSION['aluno_nome'] ?? "Aluno";
-$mediaFinal = $_SESSION['media_final'] ?? 0;
+$alunoId    = $_SESSION['aluno_id'];
+$nomeAluno  = $_SESSION['aluno_nome'] ?? "Aluno";
+$mediaFinal = $_SESSION['media_final'] ?? null;
 
-// Tratamento da média se não vier por sessão (fallback)
+// Recalcula a média caso não esteja na sessão
 if (!$mediaFinal) {
-    // Calcula novamente em caso de acesso direto
     $stmt = $conn->prepare("
         SELECT 
+            e.nivel,
             COUNT(ae.id) AS total,
-            SUM(CASE WHEN ae.resultado = 1 THEN 1 ELSE 0 END) AS acertos,
-            e.nivel
+            SUM(CASE WHEN ae.resultado = 1 THEN 1 ELSE 0 END) AS acertos
         FROM alunos_exercicios ae
-        JOIN exercicios e ON ae.id_exercicio = e.id
+        JOIN exercicios e ON ae.id_exercicios = e.id
         WHERE ae.id_usuario = ?
         GROUP BY e.nivel
         ORDER BY e.nivel ASC
     ");
+
     $stmt->bind_param("i", $alunoId);
     $stmt->execute();
-    $result = $stmt->get_result();
 
+    $result = $stmt->get_result();
     $soma = 0;
     $niveis = 0;
 
@@ -50,89 +43,97 @@ if (!$mediaFinal) {
             $niveis++;
         }
     }
+
     $mediaFinal = $niveis > 0 ? round($soma / $niveis, 2) : 0;
 }
 
-// Data atual formatada
-$meses = [
-    1 => 'Janeiro',
-    2 => 'Fevereiro',
-    3 => 'Março',
-    4 => 'Abril',
-    5 => 'Maio',
-    6 => 'Junho',
-    7 => 'Julho',
-    8 => 'Agosto',
-    9 => 'Setembro',
-    10 => 'Outubro',
-    11 => 'Novembro',
-    12 => 'Dezembro'
-];
 
-$mes = $meses[(int)date("m")];
+// =============================
+//  DATA EM PT-BR (SEM DEPRECADO)
+// =============================
+$formatter = new IntlDateFormatter(
+    'pt_BR',
+    IntlDateFormatter::LONG,
+    IntlDateFormatter::NONE,
+    'America/Sao_Paulo',
+    IntlDateFormatter::GREGORIAN,
+    "MMMM"
+);
+
+$mes = ucfirst($formatter->format(new DateTime())); // Ex: Março
 $ano = date("Y");
 
-// =========================
-//  GERAÇÃO DO CERTIFICADO
-// =========================
-
-$pdf = new FPDF("L", "mm", "A4");
-/** @noinspection PhpUndefinedClassInspection */
-/** @var FPDF $pdf */
-
+// =============================
+//     GERAR CERTIFICADO
+// =============================
+$pdf = new tFPDF("L", "mm", "A4");
 $pdf->AddPage();
 
-// Fundo claro
+// Registrar fonte UTF-8
+$pdf->AddFont('DejaVu', '', 'DejaVuSans.ttf', true);
+$pdf->AddFont('DejaVu', 'B', 'DejaVuSans-Bold.ttf', true);
+
+$pdf->SetFont("DejaVu", "", 16);
+
+// Fundo suave
 $pdf->SetFillColor(240, 248, 255);
 $pdf->Rect(0, 0, 297, 210, "F");
 
-// Borda decorativa
+// Moldura
 $pdf->SetDrawColor(0, 51, 102);
 $pdf->SetLineWidth(2);
-$pdf->Rect(5, 5, 287, 200, "D");
+$pdf->Rect(5, 5, 287, 200);
 
 // Título
-$pdf->SetFont("Arial", "B", 32);
-$pdf->SetTextColor(0, 51, 102);
 $pdf->Ln(20);
-$pdf->Cell(0, 20, "CERTIFICADO DE CONCLUSAO", 0, 1, "C");
+$pdf->SetFont("DejaVu", "B", 32);
+$pdf->SetTextColor(0, 51, 102);
+$pdf->Cell(0, 20, "CERTIFICADO DE CONCLUSÃO", 0, 1, "C");
 
 // Subtítulo
-$pdf->SetFont("Arial", "", 18);
-$pdf->Ln(5);
+$pdf->SetFont("DejaVu", "", 20);
+$pdf->SetTextColor(0, 0, 0);
+$pdf->Ln(4);
 $pdf->Cell(0, 12, "Certificamos que", 0, 1, "C");
 
 // Nome do aluno
-$pdf->SetFont("Arial", "B", 26);
-$pdf->SetTextColor(0, 0, 0);
-$pdf->Cell(0, 18, utf8_decode($nomeAluno), 0, 1, "C");
+$pdf->SetFont("DejaVu", "B", 28);
+$pdf->Cell(0, 16, $nomeAluno, 0, 1, "C");
 
-// Texto de corpo
-$pdf->Ln(4);
-$pdf->SetFont("Arial", "", 16);
-$pdf->Cell(0, 10, utf8_decode("Concluiu o curso de Treinamento Musical Online,"), 0, 1, "C");
-$pdf->Cell(0, 10, utf8_decode("alcançando a média final de desempenho:"), 0, 1, "C");
+// Texto de conclusão
+$pdf->Ln(3);
+$pdf->SetFont("DejaVu", "", 18);
+$pdf->MultiCell(
+    0,
+    10,
+    "Concluiu o curso de Treinamento Musical Online no instrumento Violão, " .
+        "alcançando a média final de desempenho:",
+    0,
+    "C"
+);
 
 // Nota
-$pdf->SetFont("Arial", "B", 24);
-$pdf->Cell(0, 16, $mediaFinal . "%", 0, 1, "C");
+$pdf->Ln(3);
+$pdf->SetFont("DejaVu", "B", 26);
+$pdf->Cell(0, 14, $mediaFinal . "%", 0, 1, "C");
 
 // Data
-$pdf->Ln(4);
-$pdf->SetFont("Arial", "", 16);
-$pdf->Cell(0, 10, utf8_decode("Conferido em $mes de $ano"), 0, 1, "C");
+$pdf->Ln(6);
+$pdf->SetFont("DejaVu", "", 18);
+$pdf->Cell(0, 10, "Conferido em $mes de $ano", 0, 1, "C");
 
 // Assinaturas
 $pdf->Ln(20);
 
-// Linha da assinatura - Professor
-$pdf->SetFont("Arial", "", 14);
+// Linhas
+$pdf->SetFont("DejaVu", "", 14);
 $pdf->Cell(140, 8, "_____________________________", 0, 0, "C");
 $pdf->Cell(140, 8, "_____________________________", 0, 1, "C");
 
-$pdf->Cell(140, 8, utf8_decode("Prof. Ademir Homrich"), 0, 0, "C");
-$pdf->Cell(140, 8, utf8_decode("Luciano Rodrigues - Desenvolvedor"), 0, 1, "C");
+// Nomes
+$pdf->Cell(140, 8, "Prof. Ademir Homrich - Município de Canoas/RS", 0, 0, "C");
+$pdf->Cell(140, 8, "Luciano Moraes Rodrigues - Desenvolvedor", 0, 1, "C");
 
-// Emissão do PDF
-$pdf->Output("D", "certificado_$nomeAluno.pdf");
+// Saída do PDF
+$pdf->Output("D", "certificado_" . str_replace(" ", "_", $nomeAluno) . ".pdf");
 exit;

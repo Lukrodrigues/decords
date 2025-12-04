@@ -24,7 +24,7 @@ function calcularMediaFinal($conn, $alunoId)
                 COUNT(ae.id) AS total,
                 SUM(CASE WHEN ae.resultado = 1 THEN 1 ELSE 0 END) AS acertos
             FROM alunos_exercicios ae
-            JOIN exercicios e ON e.id = ae.id_exercicio
+            JOIN exercicios e ON e.id = ae.id_exercicios
             WHERE ae.id_usuario = ? AND e.nivel = ?
         ");
 
