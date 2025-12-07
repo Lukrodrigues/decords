@@ -69,20 +69,12 @@ session_start();
 						<span class="hover:text-blue-300 font-medium flex items-center transition">
 							Categorias <i class="fas fa-chevron-down ml-1 text-xs"></i>
 						</span>
-
-						<div class="absolute top-16 left-0 w-48 bg-white text-gray-800 shadow-xl rounded-b-md hidden group-hover:block border-t-4 border-blue-500">
-							<a href="historico.php" class="block px-4 py-3 hover:bg-gray-100 border-b border-gray-100 transition font-bold text-blue-600">
-								<i class="fas fa-history mr-2 text-blue-500"></i>Histórico
-							</a>
-							<a href="professor.php" class="block px-4 py-3 hover:bg-gray-100 border-b border-gray-100 transition">
-								<i class="fas fa-chalkboard-teacher mr-2 text-blue-500"></i>Professor
-							</a>
-							<a href="fotos.php" class="block px-4 py-3 hover:bg-gray-100 border-b border-gray-100 transition">
-								<i class="fas fa-images mr-2 text-blue-500"></i>Fotos
-							</a>
-							<a href="videos.php" class="block px-4 py-3 hover:bg-gray-100 transition">
-								<i class="fas fa-video mr-2 text-blue-500"></i>Vídeos
-							</a>
+						<!-- Submenu -->
+						<div class="absolute top-16 left-0 w-48 bg-white text-gray-800 shadow-xl rounded-b-md hidden group-hover:block border-t-4 border-blue-500 animate-fade-in">
+							<a href="historico.php" class="block px-4 py-3 hover:bg-gray-100 border-b border-gray-100 transition"><i class="fas fa-history mr-2 text-blue-500"></i>Histórico</a>
+							<a href="professor.php" class="block px-4 py-3 hover:bg-gray-100 border-b border-gray-100 transition"><i class="fas fa-chalkboard-teacher mr-2 text-blue-500"></i>Professor</a>
+							<a href="fotos.php" class="block px-4 py-3 hover:bg-gray-100 border-b border-gray-100 transition"><i class="fas fa-images mr-2 text-blue-500"></i>Fotos</a>
+							<a href="videos.php" class="block px-4 py-3 hover:bg-gray-100 transition"><i class="fas fa-video mr-2 text-blue-500"></i>Vídeos</a>
 						</div>
 					</div>
 

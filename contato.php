@@ -1,212 +1,248 @@
 <?php
 session_start();
 ?>
+<!DOCTYPE html>
 <html lang="pt-br">
 
 <head>
 	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Decords</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="description" content="Decords Música e Teoria">
-	<meta name="" content="Luciano Moraes Rodrigues">
-	<link rel="icon" href="img/favicon-96x96.png">
-	<link href="css/bootstrap.min.css" rel="stylesheet">
-	<link href="css/style.css" rel="stylesheet">
-	<link href="css/styles.css" rel="stylesheet">
-	<link href="css/map.css" rel="stylesheet">
+	<meta name="description" content="Perfil e biografia do Professor José A. Homrich - Projeto Decords Música e Teoria.">
+	<meta name="author" content="Luciano Moraes Rodrigues">
+	<title>Decords - Professor</title>
 
-	<script src="js/jquery.min.js"></script>
-	<script src="js/scripts.js"></script>
-	<script src="js/bootstrap.min.js"></script>
-	<script src="js/ie-emulation-modes-warning.js"></script>
-	<script src="http://maps.googleapis.com/maps/api/js?sensor=false&extension=.js&output=embed"></script>
+	<!-- Tailwind CSS -->
+	<script src="https://cdn.tailwindcss.com"></script>
+
+	<!-- Font Awesome -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+	<!-- Google Fonts -->
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+	<style>
+		body {
+			font-family: 'Inter', sans-serif;
+		}
+
+		/* Hover Dropdown Desktop */
+		@media (min-width: 768px) {
+			.group:hover .group-hover\:block {
+				display: block;
+			}
+		}
+
+		/* Estilo da biografia */
+		#professor-bio p {
+			text-indent: 50px;
+			text-align: justify;
+			margin-bottom: 1.5rem;
+			line-height: 1.75;
+		}
+	</style>
 </head>
+<!-- ADJUSTE IMPORTANTE -->
+<!-- pt-24 = compensação EXATA da navbar fixa (altura real ~ 96px) -->
 
-<body>
-	<nav class="navbar navbar-inverse navbar" role="navigation">
-		<div id="map-canvas"></div>
-		<div class="container">
-			<div class="row">
-				<div class="navbar-header">
-					<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-						<span class="sr-only">Toggle navigation</span>
-					</button>
+<body class="bg-gray-50 text-gray-800 flex flex-col min-h-screen pt-24">
 
-					<a class="navbar-brand" href="index.php"><img id="logo" src="img/foto22.jpg" width="100" height="40"></a>
+	<!-- NAVBAR FIXA E SEM ESPAÇOS -->
+	<nav class="bg-blue-900 text-white shadow-lg fixed top-0 left-0 w-full z-50">
+		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+			<div class="flex justify-between h-20 items-center">
+
+				<!-- LOGO -->
+				<div class="flex-shrink-0 flex items-center gap-3">
+					<a href="index.php" class="flex items-center gap-3 group">
+						<img src="img/foto22.jpg"
+							class="h-12 w-auto rounded-lg border-2 border-blue-400 group-hover:border-white transition object-cover">
+						<span class="text-xl font-bold tracking-wide">DECORDS</span>
+					</a>
 				</div>
-				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-					<ul class="nav navbar-nav">
-						<li class="dropdown"><a class="dropdown-toggle" href="#" data-toggle="dropdown">Categorias<b class="caret"></b></a>
-							<ul class="dropdown-menu">
-								<li><a href="historico.php">Historico</a></li>
-								<li class="divider"></li>
-								<li><a href="professor.php">Professor</a></li>
-								<li class="divider"></li>
-								<li><a href="fotos.php">Fotos</a></li>
-								<li class="divider"></li>
-								<li><a href="videos.php">Vídeos</a></li>
-							</ul>
-						</li>
-						<li><a href="contato.php">Contato/Agenda</a></li>
-						<li class="dropdown"><a class="dropdown-toggle" href="#" data-toggle="dropdown">Exercicios<b class="caret"></b></a>
-							<ul class="dropdown-menu">
-								<li><a href="login.php">Sou Aluno/Usuario</a></li>
-								<li><a href="login_professor.php">Sou Professor</a></li>
-							</ul>
-						</li>
-						<li><a href="comentarios.php">Comentarios</a></li>
-					</ul>
-					<div class="nav navbar-form navbar-right">
-						<a href="https://www.facebook.com/decordsoficial/" target="_blank"><img src="img/48/Facebook.png"></a>
-						<a href="https://www.youtube.com/channel/UCYlKeJvPE7jUXpZMNaVtG1A" target="_blank"><img src="img/48/Youtube.png"></a>
-						<a href="https://plus.google.com/u/0/+AdemirHomrich2/posts" target="_blank"><img src="img/48/Google-Plus.png"></a>
-						<a href=" http://ademirhomrichmusica.blogspot.com.br" target="_blank"><img src="img/48/Blogger.png"></a>
 
+				<!-- MENU DESKTOP -->
+				<div class="hidden md:flex items-center space-x-6">
+					<!-- Dropdown Categorias -->
+					<div class="relative group h-full py-6 cursor-pointer">
+						<span class="hover:text-blue-300 font-medium flex items-center transition">
+							Categorias <i class="fas fa-chevron-down ml-1 text-xs"></i>
+						</span>
+						<!-- Submenu -->
+						<div class="absolute top-16 left-0 w-48 bg-white text-gray-800 shadow-xl rounded-b-md hidden group-hover:block border-t-4 border-blue-500 animate-fade-in">
+							<a href="historico.php" class="block px-4 py-3 hover:bg-gray-100 border-b border-gray-100 transition"><i class="fas fa-history mr-2 text-blue-500"></i>Histórico</a>
+							<a href="professor.php" class="block px-4 py-3 hover:bg-gray-100 border-b border-gray-100 transition"><i class="fas fa-chalkboard-teacher mr-2 text-blue-500"></i>Professor</a>
+							<a href="fotos.php" class="block px-4 py-3 hover:bg-gray-100 border-b border-gray-100 transition"><i class="fas fa-images mr-2 text-blue-500"></i>Fotos</a>
+							<a href="videos.php" class="block px-4 py-3 hover:bg-gray-100 transition"><i class="fas fa-video mr-2 text-blue-500"></i>Vídeos</a>
+						</div>
 					</div>
+
+					<a href="contato.php" class="hover:text-blue-300 font-medium transition">Contato/Agenda</a>
+
+					<!-- Dropdown Exercícios -->
+					<div class="relative group h-full py-6 cursor-pointer">
+						<span class="hover:text-blue-300 font-medium flex items-center transition">
+							Exercícios <i class="fas fa-chevron-down ml-1 text-xs"></i>
+						</span>
+
+						<div class="absolute top-16 left-0 w-56 bg-white text-gray-800 shadow-xl rounded-b-md hidden group-hover:block border-t-4 border-blue-500">
+							<a href="login.php" class="block px-4 py-3 hover:bg-gray-100 border-b border-gray-100 transition">
+								<i class="fas fa-user-graduate mr-2 text-blue-600"></i>Sou Aluno/Usuário
+							</a>
+							<a href="login_professor.php" class="block px-4 py-3 hover:bg-gray-100 transition">
+								<i class="fas fa-chalkboard-teacher mr-2 text-blue-600"></i>Sou Professor
+							</a>
+						</div>
+					</div>
+
+					<a href="comentarios.php" class="hover:text-blue-300 font-medium transition">Comentários</a>
 				</div>
+
+				<!-- ÍCONES SOCIAIS -->
+				<div class="hidden md:flex items-center space-x-4 border-l border-blue-700 pl-6">
+					<a href="#" class="text-gray-300 hover:text-white transition"><i class="fab fa-facebook text-xl"></i></a>
+					<a href="#" class="text-gray-300 hover:text-red-500 transition"><i class="fab fa-youtube text-xl"></i></a>
+					<a href="#" class="text-gray-300 hover:text-orange-400 transition"><i class="fab fa-blogger text-xl"></i></a>
+				</div>
+
+				<!-- Botão Mobile -->
+				<div class="md:hidden">
+					<button onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
+						<i class="fas fa-bars text-2xl"></i>
+					</button>
+				</div>
+
 			</div>
 		</div>
+
+		<!-- MENU MOBILE -->
+		<div id="mobile-menu" class="hidden md:hidden bg-blue-800 border-t border-blue-700">
+			<div class="px-4 py-4 space-y-2">
+
+				<p class="text-gray-300 uppercase text-xs">Navegação</p>
+				<a href="historico.php" class="block py-2 px-2 text-white">Histórico</a>
+				<a href="professor.php" class="block py-2 px-2 text-white bg-blue-700 font-bold">Professor</a>
+				<a href="fotos.php" class="block py-2 px-2 text-white">Fotos</a>
+				<a href="videos.php" class="block py-2 px-2 text-white">Vídeos</a>
+				<a href="contato.php" class="block py-2 px-2 text-white">Contato/Agenda</a>
+
+				<p class="text-gray-300 uppercase text-xs mt-2">Acesso</p>
+				<a href="login.php" class="block py-2 px-2 text-white">Aluno</a>
+				<a href="login_professor.php" class="block py-2 px-2 text-white">Professor</a>
+			</div>
 		</div>
 	</nav>
 
+	<!-- CONTEÚDO -->
+	<main class="max-w-7xl mx-auto px-6 py-10">
 
-	<div id="container">
-		<div class="one_half">
-			<h2>Estamos Aqui</h2>
-			<div class="col-md-12">
-				<div class="map-responsive">
-					<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3458.6626103729345!2d-51.22383738488834!3d-29.902820781934093!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x951964dff354bb83%3A0xda3119108c44ac52!2sEscola+Ministro+Rubem+Carlos+Ludwig!5e0!3m2!1spt-BR!2sbr!4v1465962532071"
-						width="100" height="650" frameborder="10" style="border:10"></iframe>
+		<h1 class="text-3xl font-bold text-blue-900 mb-8 border-b pb-2">
+			📍 Localização e Informações de Contato
+		</h1>
+
+		<div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+
+			<!-- MAPA -->
+			<div>
+				<h2 class="text-2xl font-semibold mb-4">Estamos Aqui</h2>
+
+				<div class="w-full h-80 rounded-xl overflow-hidden shadow-lg border">
+					<iframe
+						src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3458.6626103729345!2d-51.22383738488834!3d-29.902820781934093!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x951964dff354bb83%3A0xda3119108c44ac52!2sEscola+Ministro+Rubem+Carlos+Ludwig!5e0!3m2!1spt-BR!2sbr!4v1465962532071"
+						width="100%" height="100%" frameborder="0" allowfullscreen loading="lazy">
+					</iframe>
 				</div>
-				<div class="page-header text-left">
-					<h1>Contato-nos</h1>
+
+				<div class="mt-6 p-5 bg-white shadow rounded-lg border">
+					<h3 class="text-xl font-bold text-blue-800 mb-2">📌 Escola Ministro Rubem Carlos Ludwig</h3>
+					<p class="text-gray-700">
+						Rua São João Batista,
+						Bairro Mathias Velho – Canoas / RS
+					</p>
+					<p class="mt-2 text-gray-700">
+						<i class="fas fa-map-marker-alt text-red-600"></i>
+						Local onde ocorrem as aulas e atividades do Projeto Decords.
+					</p>
 				</div>
-				<script type="text/javascript">
-					function validar_contato() {
-						var nome = contato.nome.value;
-						var email = contato.email.value;
-						var assunto = contato.assunto.value;
-						var mensagem = contato.mensagem.value;
-
-						if (nome == "") {
-							alert("Campo nome é obrigatorio");
-							contato.nome.focus();
-							return false;
-						}
-						if (email == "") {
-							alert("Campo email é obrigatorio");
-							contato.email.focus();
-							return false;
-						}
-						if (assunto == "") {
-							alert("Campo assunto é obrigatorio");
-							contato.assunto.focus();
-							return false;
-						}
-						if (mensagem == "") {
-							alert("Campo mensagem é obrigatorio");
-							contato.mensagem.focus();
-							return false;
-						} else {
-							cadastrar();
-						}
-					}
-
-					function cadastrar() {
-
-						//dados a enviar, vai buscar os valores dos campos que queremos enviar para a BD
-						var dadosajax = {
-							'nome': $("#nome").val(),
-							'email': $("#email").val(),
-							'assunto': $("#assunto").val(),
-							'mensagem': $("#mensagem").val()
-
-
-						};
-						pageurl = 'salva_mensagem.php';
-						//para consultar mais opcoes possiveis numa chamada ajax
-						//http://api.jquery.com/jQuery.ajax/
-						$.ajax({
-
-							//url da pagina
-							url: pageurl,
-							//parametros a passar
-							data: dadosajax,
-							//tipo: POST ou GET
-							type: 'POST',
-							//cache
-							cache: false,
-							//se ocorrer um erro na chamada ajax, retorna este alerta
-							//possiveis erros: pagina nao existe, erro de codigo na pagina, falha de comunicacao/internet, utilizar botoes dentro de form, etc etc etc
-							error: function() {
-								alert('Erro: Inserir Registo!!');
-							},
-							//retorna o resultado da pagina para onde enviamos os dados
-							success: function(result) {
-								//se foi inserido com sucesso
-								if ($.trim(result) == '1') {
-
-									alert('Obrigado pelo seu contato!!!!Mensagem enviado com sucesso!!');
-									//location.href="#" class="btn-setting";
-									//alert("Sua conta foi criada com sucesso! Agora você já pode acessar com seu E-MAIL e SENHA!");
-									//location.href="index.php";
-								}
-								//se foi um erro
-								else {
-									//erro de banco de dados ao tentar inserir
-									alert("E-mail já cadastrado!");
-								}
-
-							}
-						});
-					}
-				</script>
-
-
-				<div class="col-lg-7 text-left">
-					<form class="form-horizontal" action="envia_mensagem_email.php" name="contato" method="POST">
-						<div class="form-group">
-							<label for="nome" class="col-sm-2 control-label">Nome*:</label>
-							<div class="col-sm-6">
-								<input type="text" class="form-control" id="nome" name="nome" placeholder="Nome Completo" required>
-								<br />
-							</div>
-						</div>
-						<div class="form-group">
-							<label for="inputEmail3" class="col-sm-2 control-label">Email*:</label>
-							<div class="col-sm-6">
-								<input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
-								<br />
-							</div>
-						</div>
-						<div class="form-group">
-							<label for="inputPassword3" class="col-sm-2 control-label">Assunto*:</label>
-							<div class="col-sm-6">
-								<input type="Assunto" class="form-control" id="assunto" name="assunto" placeholder="Assunto" required>
-								<br />
-							</div>
-						</div>
-						<div class="form-group">
-							<label for="inputPassword3" class="col-sm-2 control-label">Mensagem*:</label>
-							<div class="col-sm-6">
-								<textarea class="form-control" rows="6" id="mensagem" name="mensagem" required></textarea>
-							</div>
-						</div>
-						<div class="form-group">
-							<div class="col-sm-offset-2 col-sm-10">
-								<button type="submit" onclick="validar_contato()" value="enviar" class="btn btn-success">Enviar</button>
-							</div>
-						</div>
-				</div>
-				<div class="col-lg-5 text-left">
-					<div style="background-color:black;color:white;padding:20px;">
-						<h1>Agenda Apresentações:</h1>
-						<h3>Decords - Camara de Vereadores dia 28/06 as 15:00hs</h3>
-					</div>
-				</div><br /><br /><br />
 			</div>
 
+			<!-- FORMULÁRIO (sem envio de e-mail, apenas demonstração local) -->
+			<div>
+				<h2 class="text-2xl font-semibold mb-4">Envie uma Mensagem</h2>
+
+				<form class="bg-white p-6 rounded-xl shadow-lg border space-y-5" method="POST" onsubmit="return false;">
+
+					<div>
+						<label for="nome" class="font-semibold">Nome *</label>
+						<input type="text" id="nome" name="nome"
+							class="w-full mt-1 p-3 border rounded-lg focus:ring-2 focus:ring-blue-400"
+							placeholder="Seu nome completo" required>
+					</div>
+
+					<div>
+						<label for="email" class="font-semibold">Email *</label>
+						<input type="email" id="email" name="email"
+							class="w-full mt-1 p-3 border rounded-lg focus:ring-2 focus:ring-blue-400"
+							placeholder="Seu email" required>
+					</div>
+
+					<div>
+						<label for="mensagem" class="font-semibold">Mensagem *</label>
+						<textarea id="mensagem" name="mensagem" rows="5"
+							class="w-full mt-1 p-3 border rounded-lg focus:ring-2 focus:ring-blue-400"
+							placeholder="Escreva sua mensagem..." required></textarea>
+					</div>
+
+					<button type="submit"
+						class="w-full bg-blue-700 hover:bg-blue-800 text-white font-semibold py-3 rounded-lg transition">
+						Enviar Mensagem
+					</button>
+
+					<p class="text-sm text-gray-500 mt-2">
+						⚠ Este formulário é apenas ilustrativo. O envio real de mensagens foi desativado.
+					</p>
+				</form>
+			</div>
+
+		</div>
+	</main>
+	<!-- Footer (Padrão Decords) -->
+	<footer class="bg-gray-900 text-gray-300 py-12 mt-auto">
+		<div class="max-w-7xl mx-auto px-4">
+			<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+				<div>
+					<h3 class="text-white text-lg font-bold mb-4"><i class="fas fa-guitar mr-2"></i>DECORDS</h3>
+					<p class="text-sm">Comprometidos com a educação musical de qualidade.</p>
+				</div>
+
+				<div class="text-center">
+					<h4 class="text-white text-lg font-semibold mb-4">Links úteis</h4>
+					<ul class="space-y-2">
+						<li><a href="index.php" class="hover:text-blue-400">Início</a></li>
+						<li><a href="historico.php" class="hover:text-blue-400">Histórico</a></li>
+						<li><a href="professor.php" class="hover:text-blue-400">Professor</a></li>
+						<li><a href="contato.php" class="hover:text-blue-400">Contato</a></li>
+						<li><a href="fotos.php" class="hover:text-blue-400 transition">Fotos</a></li>
+						<li><a href="videos.php" class="hover:text-blue-400 transition">Videos</a></li>
+					</ul>
+				</div>
+
+				<div class="text-right">
+					<h4 class="text-white font-semibold mb-4">Redes Sociais</h4>
+					<div class="flex justify-end space-x-4">
+						<a href="#" class="p-2 bg-gray-800 rounded-full"><i class="fab fa-facebook"></i></a>
+						<a href="#" class="p-2 bg-gray-800 rounded-full"><i class="fab fa-youtube"></i></a>
+						<a href="#" class="p-2 bg-gray-800 rounded-full"><i class="fab fa-blogger"></i></a>
+					</div>
+				</div>
+
+			</div>
+			<div class="border-t border-gray-800 pt-8 text-center text-sm text-gray-500">
+				&copy; 2016 - <?= date("Y") ?> Decords • Desenvolvido por
+				<span class="text-blue-400 font-semibold">Luciano M. Rodrigues</span>
+			</div>
+		</div>
+	</footer>
 </body>
 
 </html>
